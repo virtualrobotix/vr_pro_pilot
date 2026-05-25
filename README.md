@@ -1,5 +1,9 @@
 # vr_pro_pilot
 
+<p align="center">
+  <img src="docs/assets/vr-pro-pilot-logo.png" alt="VR Pro Pilot" width="420">
+</p>
+
 **Virtual Robotix Pro Pilot** — autopilota BSD con architettura veicolo stile ArduPilot e middleware modulare stile PX4.
 
 Repository ufficiale: [github.com/virtualrobotix/vr_pro_pilot](https://github.com/virtualrobotix/vr_pro_pilot)
