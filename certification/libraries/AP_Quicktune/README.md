@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| ArduPilot equivalent | `AP_Quicktune` |
+| Library ID | `AP_Quicktune` |
 | VR-Pilot module | `VRP_Quicktune` |
 | Parent HLRD | `VRP-HLRD-002` |
 | DAL | **D** |
@@ -28,9 +28,9 @@ Minor failure — requirements + unit tests.
 - Unit tests for public API
 - Requirements traceability
 
-## Parity checklist (1:1 ArduPilot)
+## Checklist verifica
 
-- [ ] API surface documentata vs comportamento ArduPilot
+- [ ] API surface documentata vs requisiti LLRD
 - [ ] Unit test interfaccia pubblica (`test/libraries/VRP_Quicktune/`)
 - [ ] Regressione SITL/HIL dove applicabile
 - [ ] Riga traceability in `VRP-RTM-001.md`

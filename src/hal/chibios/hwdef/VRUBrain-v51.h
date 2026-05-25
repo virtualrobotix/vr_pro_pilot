@@ -4,3 +4,8 @@
 #define VRP_USB_VENDOR "0x27AC"
 #define VRP_USB_PRODUCT "0x1351"
 #define VRP_MCU "STM32F407"
+#define VRP_TARGET_HAL "HAL_ChibiOS"
+#define VRP_IMU "MPU6000"
+#define VRP_BARO "MS5611"
+#define VRP_COMPASS "HMC5843"
+#define VRP_STORAGE "FLASH"

@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| ArduPilot equivalent | `AP_Arming` |
+| Library ID | `AP_Arming` |
 | VR-Pilot module | `VRP_Arming` |
 | Parent HLRD | `VRP-HLRD-001` |
 | DAL | **B** |
@@ -30,9 +30,9 @@ Hazardous failure — MC/DC on safety paths, no heap, bounded WCET.
 - Bounded WCET
 - MISRA subset
 
-## Parity checklist (1:1 ArduPilot)
+## Checklist verifica
 
-- [ ] API surface documentata vs comportamento ArduPilot
+- [ ] API surface documentata vs requisiti LLRD
 - [ ] Unit test interfaccia pubblica (`test/libraries/VRP_Arming/`)
 - [ ] Regressione SITL/HIL dove applicabile
 - [ ] Riga traceability in `VRP-RTM-001.md`

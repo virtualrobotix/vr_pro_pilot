@@ -2,7 +2,7 @@
 
 ## Core principles
 
-- Dual target: `HAL_SITL` and `HAL_ChibiOS`.
+- Triple target: `HAL_SITL`, `HAL_ChibiOS`, and `HAL_ESP32`.
 - Same vehicle stack for both runtime backends.
 - uORB-like in-process message bus for module boundaries.
 - Deterministic scheduler with periodic tasks.
@@ -25,7 +25,7 @@ FDM (simulation)
 
 | Layer | Path | Role |
 |---|---|---|
-| HAL | `src/hal/` | SITL and ChibiOS backends (`present`) |
+| HAL | `src/hal/` | SITL, ChibiOS, and ESP32 backends (`present`) |
 | Middleware | `src/middleware/` | uORB bus, scheduler, param store |
 | Safety | `src/modules/safety_core/` | Arming, sensors, failsafe, logging |
 | Navigation | `src/modules/nav_core/` | Mission, WPNav, fixed-wing nav |
@@ -41,7 +41,7 @@ FDM (simulation)
 All **153** ArduPilot libraries are mapped in [`PARITY_1TO1_MATRIX.md`](PARITY_1TO1_MATRIX.md):
 
 - **149** `partial` — real logic integrated via `LibraryCore::tick()`
-- **3** `present` — HAL backends in `src/hal/`
+- **3** `present` — HAL runtime backends in `src/hal/` (SITL, ChibiOS, ESP32)
 - **0** `planned`
 - **1** `n/a` — documentation only (`doc`)
 
@@ -59,7 +59,7 @@ python3 test/libraries/run_all_library_tests.py
 
 ## Runtime flow
 
-1. Select HAL and vehicle from CLI args.
+1. Select HAL and vehicle from CLI args (`--chibios`, `--esp32`, or default SITL).
 2. Initialize params, scheduler, safety core, and vehicle tasks.
 3. Each loop tick: FDM → SafetyCore → NavCore → VehicleCore → ControlCore → LibraryCore.
 4. Publish heartbeat, MAVLink, and aux library stdout markers.

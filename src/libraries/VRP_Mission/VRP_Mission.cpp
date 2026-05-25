@@ -51,6 +51,15 @@ std::string VRP_Mission::update(const LocalPosition &pos) {
   return last_status_;
 }
 
+void VRP_Mission::set_origin(double lat_deg, double lon_deg) {
+  origin_lat_deg_ = lat_deg;
+  origin_lon_deg_ = lon_deg;
+}
+
+void VRP_Mission::set_acceptance_radius(double acceptance_radius_m) {
+  acceptance_radius_m_ = acceptance_radius_m;
+}
+
 void VRP_Mission::clear() {
   waypoints_.clear();
   current_ = 0;

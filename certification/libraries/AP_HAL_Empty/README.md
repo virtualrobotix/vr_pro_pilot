@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| ArduPilot equivalent | `AP_HAL_Empty` |
+| Library ID | `AP_HAL_Empty` |
 | VR-Pilot module | `VRP_HAL_Empty` |
 | Parent HLRD | `VRP-HLRD-002` |
 | DAL | **E** |
@@ -28,9 +28,9 @@ No safety effect — best-effort tests.
 - Smoke tests
 - Best-effort review
 
-## Parity checklist (1:1 ArduPilot)
+## Checklist verifica
 
-- [ ] API surface documentata vs comportamento ArduPilot
+- [ ] API surface documentata vs requisiti LLRD
 - [ ] Unit test interfaccia pubblica (`test/libraries/VRP_HAL_Empty/`)
 - [ ] Regressione SITL/HIL dove applicabile
 - [ ] Riga traceability in `VRP-RTM-001.md`

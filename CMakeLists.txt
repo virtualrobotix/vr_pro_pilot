@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(VRP_TARGET_CHIBIOS "Build chibios target artifacts" OFF)
+option(VRP_TARGET_ESP32 "Build ESP32 target artifacts" OFF)
 set(VRP_BOARD "sitl" CACHE STRING "Board target")
 set(VRP_VEHICLE "quad" CACHE STRING "Default vehicle")
 
@@ -15,10 +16,17 @@ if(VRP_TARGET_CHIBIOS)
     add_compile_definitions(VRP_BOARD_V54=1)
   endif()
 endif()
+if(VRP_TARGET_ESP32)
+  add_compile_definitions(VRP_TARGET_ESP32=1)
+  if(VRP_BOARD STREQUAL "VREsp32-v1")
+    add_compile_definitions(VRP_BOARD_VRESP32_V1=1)
+  endif()
+endif()
 
 add_library(vrp_core
   src/hal/sitl/HAL_SITL.cpp
   src/hal/chibios/HAL_ChibiOS.cpp
+  src/hal/esp32/HAL_ESP32.cpp
   src/middleware/uorb/UORB.cpp
   src/middleware/params/VRP_Param.cpp
   src/middleware/scheduler/Scheduler.cpp

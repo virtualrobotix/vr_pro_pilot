@@ -39,6 +39,8 @@ public:
   const AirspeedSample &airspeed() const { return last_.airspeed; }
   const OpticalFlowSample &optical_flow() const { return last_.optical_flow; }
   void set_adsb_intruder_x(double x_m) { adsb_.set_intruder_x(x_m); }
+  void set_gps_origin(double lat_deg, double lon_deg) { gps_.init(lat_deg, lon_deg); }
+  void set_rangefinder_max_range(double max_range_m) { rangefinder_.init(0.0, max_range_m); }
 
 private:
   VRP_GPS gps_{};

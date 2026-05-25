@@ -85,7 +85,7 @@ void VehicleCore::build_setpoints(const LocalPosition &pos, const WpNavOutput &n
     return;
   }
 
-  if (mode_ == "AltHold" || mode_ == "Loiter" || mode_ == "DepthHold") {
+  if (mode_ == "AltHold" || mode_ == "Loiter" || mode_ == "DepthHold" || mode_ == "Guided") {
     setpoints_.attitude.thrust_base = VRP_Math::clamp(0.55 + 0.15 * (target_z_ - pos.z), 0.35, 0.85);
     setpoints_.subsea_thrust = static_cast<float>(setpoints_.attitude.thrust_base);
   }
@@ -129,6 +129,9 @@ void VehicleCore::update(uint64_t tick, bool armed, const std::string &safety_mo
 
   if (!armed || safety_mode == "Disarmed") {
     mode_ = "Disarmed";
+  } else if (mavlink_mode_active_ && mavlink_mode_ == "Land") {
+    mode_ = "Land";
+    landing_.reset();
   } else if (safety_mode == "RTL") {
     mode_ = "RTL";
   } else if (mavlink_mode_active_) {

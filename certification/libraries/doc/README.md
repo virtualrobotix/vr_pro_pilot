@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| ArduPilot equivalent | `doc` |
+| Library ID | `doc` |
 | VR-Pilot module | `VRP_DOC` |
 | Parent HLRD | `VRP-HLRD-002` |
 | DAL | **N/A** |
@@ -27,9 +27,9 @@ Documentation-only; no airborne software artifact.
 
 - Documentation review only
 
-## Parity checklist (1:1 ArduPilot)
+## Checklist verifica
 
-- [ ] API surface documentata vs comportamento ArduPilot
+- [ ] API surface documentata vs requisiti LLRD
 - [ ] Unit test interfaccia pubblica (`test/libraries/VRP_DOC/`)
 - [ ] Regressione SITL/HIL dove applicabile
 - [ ] Riga traceability in `VRP-RTM-001.md`

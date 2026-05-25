@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "hal/chibios/HAL_ChibiOS.h"
+#include "hal/esp32/HAL_ESP32.h"
 #include "hal/sitl/HAL_SITL.h"
 #include "libraries/VRP_CANManager/VRP_CANManager.h"
 #include "libraries/VRP_CRSF/VRP_CRSF.h"
@@ -81,6 +82,7 @@ int main(int argc, char **argv) {
   const std::string model = get_arg(args, "--model", "vrp_iris");
   const bool once = has_flag(args, "--once");
   const bool chibios = has_flag(args, "--chibios");
+  const bool esp32 = has_flag(args, "--esp32");
   const bool test_mavlink_rx = has_flag(args, "--test-mavlink-rx");
   const bool test_mavlink_mode = has_flag(args, "--test-mavlink-mode");
   const bool test_mavlink_mission = has_flag(args, "--test-mavlink-mission");
@@ -88,6 +90,9 @@ int main(int argc, char **argv) {
   const bool test_failsafe = has_flag(args, "--test-failsafe");
   const bool test_landing = has_flag(args, "--test-landing");
   const bool test_mavlink_param = has_flag(args, "--test-mavlink-param");
+  const bool test_calcio_mission = has_flag(args, "--test-calcio-mission");
+  const bool gcs_mode = has_flag(args, "--gcs");
+  const std::string home = get_arg(args, "--home", "");
   const bool enable_dds = has_flag(args, "--enable-dds");
   const bool enable_uxrce = has_flag(args, "--enable-uxrce");
   const bool test_adsb_avoid = has_flag(args, "--test-adsb-avoid");
@@ -95,7 +100,10 @@ int main(int argc, char **argv) {
 
   vrp::HALSITL hal_sitl;
   vrp::HALChibiOS hal_chibios;
-  vrp::IHAL &hal = chibios ? static_cast<vrp::IHAL &>(hal_chibios) : static_cast<vrp::IHAL &>(hal_sitl);
+  vrp::HALESP32 hal_esp32;
+  vrp::IHAL &hal = esp32 ? static_cast<vrp::IHAL &>(hal_esp32)
+                         : chibios ? static_cast<vrp::IHAL &>(hal_chibios)
+                                   : static_cast<vrp::IHAL &>(hal_sitl);
   hal.init();
 
   vrp::UORB uorb;
@@ -153,21 +161,78 @@ int main(int argc, char **argv) {
     params.set("system.auto_arm_sitl", 0.0);
     safety.init(vehicle_kind, params);
   }
+  if (test_calcio_mission) {
+    params.set("system.auto_arm_sitl", 0.0);
+    params.set("control.target_z", -100.0);
+    safety.configure_calcio_mission_test();
+    safety.init(vehicle_kind, params);
+    nav_core.init(vehicle_kind, params.get("nav.cruise_speed", 8.0));
+    vehicle_core.init(vehicle_kind, params);
+  }
+  if (gcs_mode) {
+    params.set("system.auto_arm_sitl", 0.0);
+    if (home == "calcio") {
+      safety.configure_calcio_home();
+    }
+    safety.init(vehicle_kind, params);
+    nav_core.init(vehicle_kind, params.get("nav.cruise_speed", 8.0));
+    vehicle_core.init(vehicle_kind, params);
+  }
   if (test_failsafe) {
     params.set("failsafe.test_force_rtl", 1.0);
     params.set("system.auto_arm_sitl", 1.0);
     safety.init(vehicle_kind, params);
   }
 
-  const uint32_t iterations = once ? (test_landing ? 10U : 5U) : 25;
+  const uint32_t iterations =
+      gcs_mode ? 0U : (once ? (test_calcio_mission ? 9000U : (test_landing ? 10U : 5U)) : 25);
   constexpr double kDtS = 0.02;
   bool gcs_link = false;
-  for (uint32_t i = 0; i < iterations; ++i) {
+  int calcio_state = 0;
+  bool calcio_pass = false;
+  vrp::WpNavOutput last_nav_for_fdm{};
+  std::string vehicle_mode;
+  if (gcs_mode) {
+    std::cout << "GCS_MODE mavlink=udp:127.0.0.1:14550 home="
+              << (home.empty() ? "default" : home) << " (QGroundControl standard)\n";
+  }
+  for (uint32_t i = 0; gcs_mode || i < iterations; ++i) {
     hal.run_once([&]() {
       const uint64_t tick = i + 1;
       vehicle->scheduler().run(hal.now_ms());
       vehicle->loop();
-      fdm.step(vehicle_kind, kDtS, fdm_state);
+
+      vrp::FDMNavInput fdm_nav{};
+      if (test_calcio_mission) {
+        if (calcio_state == 9) {
+          fdm_nav.guided_climb = true;
+          fdm_nav.guided_target_z = -100.0;
+        } else if (calcio_state == 13) {
+          fdm_nav.guided_climb = true;
+          fdm_nav.guided_target_z = 0.0;
+        } else if (calcio_state >= 11 && calcio_state < 13 && last_nav_for_fdm.valid) {
+          fdm_nav.valid = true;
+          fdm_nav.bearing_rad = last_nav_for_fdm.bearing_rad;
+          fdm_nav.target_speed_m_s = last_nav_for_fdm.target_speed_m_s;
+          fdm_nav.alt_error_m = last_nav_for_fdm.alt_error_m;
+          fdm_nav.speed_scale = 40.0;
+        }
+      } else if (gcs_mode) {
+        if (vehicle_mode == "Auto" && last_nav_for_fdm.valid) {
+          fdm_nav.valid = true;
+          fdm_nav.bearing_rad = last_nav_for_fdm.bearing_rad;
+          fdm_nav.target_speed_m_s = last_nav_for_fdm.target_speed_m_s;
+          fdm_nav.alt_error_m = last_nav_for_fdm.alt_error_m;
+          fdm_nav.speed_scale = 5.0;
+        } else if (vehicle_mode == "Guided") {
+          fdm_nav.guided_climb = true;
+          fdm_nav.guided_target_z = params.get("control.target_z", -100.0);
+        } else if (vehicle_mode == "Land") {
+          fdm_nav.guided_climb = true;
+          fdm_nav.guided_target_z = 0.0;
+        }
+      }
+      fdm.step(vehicle_kind, kDtS, fdm_state, (test_calcio_mission || gcs_mode) ? &fdm_nav : nullptr);
       safety.update(kDtS, hal.now_ms(), fdm_state, uorb);
 
       vrp::MavlinkRxAction rx_action{};
@@ -241,6 +306,52 @@ int main(int argc, char **argv) {
         rx_line = "MAVLINK_RX msg=23 param_set id=NAV_SPEED val=3.5";
         mavlink_rx_active = true;
       }
+      if (test_calcio_mission) {
+        uint8_t seq = 0;
+        static const int32_t calcio_lat[] = {455605156, 455294797, 454792625, 454792625, 455294797};
+        static const int32_t calcio_lon[] = {98494000, 99103623, 98870768, 98117232, 97884377};
+        if (calcio_state == 0 && i == 1) {
+          const auto count_frame = vrp::MavlinkCodec::mission_count(1, 1, 5, 0, seq);
+          mavlink.inject_frame_for_test(count_frame, rx_action);
+          rx_line = "MAVLINK_RX msg=44 mission_upload count=5";
+          mavlink_rx_active = true;
+          calcio_state = 1;
+        } else if (calcio_state >= 1 && calcio_state <= 5 && i == static_cast<uint32_t>(calcio_state + 1)) {
+          const int wp = calcio_state - 1;
+          const auto item = vrp::MavlinkCodec::mission_item_int(1, 1, static_cast<uint16_t>(wp), 3, calcio_lat[wp],
+                                                                  calcio_lon[wp], 100.0F, seq);
+          mavlink.inject_frame_for_test(item, rx_action);
+          rx_line = "MAVLINK_RX msg=73 mission_upload item=" + std::to_string(wp);
+          mavlink_rx_active = true;
+          ++calcio_state;
+        } else if (calcio_state == 6 && i == 7) {
+          const auto arm_frame = vrp::MavlinkCodec::command_long(1, 1, 400, 1.0F, seq);
+          mavlink.inject_frame_for_test(arm_frame, rx_action);
+          rx_line = "MAVLINK_RX msg=76 cmd=ARM";
+          mavlink_rx_active = true;
+          calcio_state = 7;
+        } else if (calcio_state == 7 && i == 8) {
+          const auto mode_frame = vrp::MavlinkCodec::set_mode(1, 1, 0x01, 4U, seq);
+          mavlink.inject_frame_for_test(mode_frame, rx_action);
+          rx_line = "MAVLINK_RX msg=11 cmd=SET_MODE custom=4";
+          mavlink_rx_active = true;
+          calcio_state = 9;
+        } else if (calcio_state == 9 && -fdm_state.z >= 99.0) {
+          const auto mode_frame = vrp::MavlinkCodec::set_mode(1, 1, 0x01, 3U, seq);
+          mavlink.inject_frame_for_test(mode_frame, rx_action);
+          rx_line = "MAVLINK_RX msg=11 cmd=SET_MODE custom=3";
+          mavlink_rx_active = true;
+          calcio_state = 11;
+          std::cout << "CALCIO_TEST climb_reached alt_m=" << -fdm_state.z << "\n";
+        } else if (calcio_state == 11 && safety.mission_complete()) {
+          const auto land_frame = vrp::MavlinkCodec::set_mode(1, 1, 0x01, 9U, seq);
+          mavlink.inject_frame_for_test(land_frame, rx_action);
+          rx_line = "MAVLINK_RX msg=11 cmd=SET_MODE custom=9";
+          mavlink_rx_active = true;
+          calcio_state = 13;
+          std::cout << "CALCIO_TEST mission_complete waypoints=5\n";
+        }
+      }
       if (mavlink_rx_active) {
         safety.note_gcs_link(tick);
         gcs_link = true;
@@ -256,10 +367,13 @@ int main(int argc, char **argv) {
       vehicle_core.apply_mavlink(rx_action);
 
       const bool rtl_nav = safety.rtl_nav_active();
+      const bool auto_nav_mode = vehicle_core.mode() == "Auto" ||
+                               (test_calcio_mission && calcio_state >= 11 && calcio_state < 13) ||
+                               (gcs_mode && vehicle_mode == "Auto");
       const bool nav_active = rtl_nav ||
                               (safety.mission_active() &&
-                               (vehicle_core.mode() == "Auto" || vehicle_core.mode() == "FW" ||
-                                safety.flight_mode() == "Auto" || safety.flight_mode() == "RTL"));
+                               (auto_nav_mode || vehicle_core.mode() == "FW" || safety.flight_mode() == "Auto" ||
+                                safety.flight_mode() == "RTL"));
       const bool use_l1 =
           vehicle_kind == "vtol" &&
           (vehicle_core.vtol_phase() == "FW" || vehicle_core.mode() == "FW" || tick >= 5);
@@ -271,6 +385,14 @@ int main(int argc, char **argv) {
                           safety.rangefinder(), gcs_link, uorb);
       const auto &sp = vehicle_core.setpoints();
       const std::string &mode = vehicle_core.mode();
+      vehicle_mode = mode;
+      last_nav_for_fdm = nav;
+      if (test_calcio_mission && calcio_state == 13 && mode == "Land" &&
+          (vehicle_core.landing().complete || (fdm_state.z >= -0.5 && fdm_state.z <= 0.05))) {
+        calcio_state = 14;
+        calcio_pass = true;
+        std::cout << "CALCIO_TEST land_complete\n";
+      }
 
       float throttle = 0.0F;
       vrp::ServoOutput servos{};
@@ -328,6 +450,10 @@ int main(int argc, char **argv) {
       uorb.publish("dronecan/heartbeat", dronecan_hb);
       uorb.publish("dronecan/esc", dronecan_esc);
 
+      const bool calcio_log_tick =
+          (!test_calcio_mission && !gcs_mode) || i < 10 || i % 400 == 0 || calcio_state >= 9 ||
+          (gcs_mode && (i < 5 || i % 500 == 0 || mavlink_rx_active));
+      if (calcio_log_tick) {
       std::cout << hb << "\n";
       std::cout << vrp::Heartbeat::build_attitude(safety.attitude(), hal.now_ms()) << "\n";
       std::cout << mavlink_v2 << "\n";
@@ -397,8 +523,14 @@ int main(int argc, char **argv) {
       std::cout << safety.logger_summary() << "\n";
       std::cout << "SIM_STATE vehicle=" << vehicle_kind << " x=" << fdm_state.x << " y=" << fdm_state.y
                 << " z=" << fdm_state.z << " yaw_deg=" << fdm_state.yaw_deg << "\n";
+      }
     });
-    hal.sleep_ms(20);
+    if (test_calcio_mission && calcio_pass) {
+      break;
+    }
+    if (gcs_mode || !test_calcio_mission) {
+      hal.sleep_ms(20);
+    }
   }
 
   mavlink.shutdown();
@@ -407,6 +539,22 @@ int main(int argc, char **argv) {
     std::cout << "BOARD " << hal_ch.board_info() << "\n";
     std::cout << hal_ch.flash_info() << "\n";
   }
-  std::cout << "VRP_SELF_TEST_PASS vehicle=" << vehicle_kind << " hal=" << hal.name() << "\n";
+  if (esp32) {
+    auto &hal_e = static_cast<vrp::HALESP32 &>(hal);
+    std::cout << "BOARD " << hal_e.board_info() << "\n";
+    std::cout << hal_e.flash_info() << "\n";
+    std::cout << hal_e.wifi_info() << "\n";
+  }
+  if (test_calcio_mission) {
+    if (calcio_pass) {
+      std::cout << "CALCIO_TEST PASS waypoints=5 guided=1 auto=1 land=1\n";
+    } else {
+      std::cout << "CALCIO_TEST FAIL state=" << calcio_state << "\n";
+      return 1;
+    }
+  }
+  if (!gcs_mode) {
+    std::cout << "VRP_SELF_TEST_PASS vehicle=" << vehicle_kind << " hal=" << hal.name() << "\n";
+  }
   return 0;
 }

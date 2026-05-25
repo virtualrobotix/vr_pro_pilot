@@ -25,6 +25,8 @@ public:
   bool init(const std::vector<Waypoint> &waypoints, double acceptance_radius_m);
   std::string update(const LocalPosition &pos);
 
+  void set_origin(double lat_deg, double lon_deg);
+  void set_acceptance_radius(double acceptance_radius_m);
   void clear();
   bool add_item_int(int32_t lat_e7, int32_t lon_e7, float alt_m);
   bool get_item_int(size_t index, int32_t &lat_e7, int32_t &lon_e7, float &alt_m) const;

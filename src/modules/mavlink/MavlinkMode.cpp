@@ -46,6 +46,8 @@ std::string mavlink_mode_from_custom(const std::string &vehicle, uint32_t custom
     return "RTL";
   case 2:
     return "AltHold";
+  case 4:
+    return "Guided";
   case 9:
     return "Land";
   default:

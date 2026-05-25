@@ -16,6 +16,12 @@ config VRP_MINIMIZE_FEATURES
     bool "Minimize features for 1MB boards"
     default n
 
+config VRP_TARGET_ESP32
+    bool "Enable ESP32 HAL target"
+    default n
+    help
+      Build with HAL_ESP32 backend and VREsp32 board hwdef.
+
 config VRP_BUILD_ID
     string "Build identifier"
     default "dev"

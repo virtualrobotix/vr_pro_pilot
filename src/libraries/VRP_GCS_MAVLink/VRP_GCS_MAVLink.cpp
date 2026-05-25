@@ -6,26 +6,22 @@
 #include "modules/mavlink/MavlinkCodec.h"
 #include "modules/mavlink/MavlinkParser.h"
 #include "modules/mavlink/MavlinkUdp.h"
-#include "modules/mavlink/MavlinkUdpRx.h"
 
 namespace vrp {
 
 namespace {
-MavlinkUdp g_udp_tx;
-MavlinkUdpRx g_udp_rx;
+MavlinkUdp g_udp;
 MavlinkParser g_parser;
 } // namespace
 
 bool VRP_GCS_MAVLink::init() {
-  ready_ = g_udp_tx.init("127.0.0.1", 14550);
-  g_udp_rx.bind(14555);
+  ready_ = g_udp.init("127.0.0.1", 14550);
   seq_ = 0;
   return ready_;
 }
 
 void VRP_GCS_MAVLink::shutdown() {
-  g_udp_tx.close_socket();
-  g_udp_rx.close_socket();
+  g_udp.close_socket();
 }
 
 std::string VRP_GCS_MAVLink::transmit(bool armed, const std::string &mode, const Attitude &attitude,
@@ -100,7 +96,7 @@ std::string VRP_GCS_MAVLink::transmit(bool armed, const std::string &mode, const
 
   for (const auto &frame : frames) {
     bytes += frame.size();
-    if (g_udp_tx.send(frame)) {
+    if (g_udp.send(frame)) {
       ++sent;
     }
   }
@@ -195,7 +191,7 @@ bool VRP_GCS_MAVLink::dispatch_message(const MavlinkMessage &msg, MavlinkRxActio
 std::string VRP_GCS_MAVLink::poll(MavlinkRxAction &action) {
   action = MavlinkRxAction{};
   std::vector<uint8_t> frame;
-  if (!g_udp_rx.recv_nonblock(frame)) {
+  if (!g_udp.recv_nonblock(frame)) {
     return "MAVLINK_RX idle";
   }
   MavlinkMessage msg;

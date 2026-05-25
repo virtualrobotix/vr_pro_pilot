@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| ArduPilot equivalent | `AP_ServoRelayEvents` |
+| Library ID | `AP_ServoRelayEvents` |
 | VR-Pilot module | `VRP_ServoRelayEvents` |
 | Parent HLRD | `VRP-HLRD-002` |
 | DAL | **C** |
@@ -29,9 +29,9 @@ Major failure — requirements + tests + review; structural coverage target 100%
 - Requirements-based tests
 - Design review
 
-## Parity checklist (1:1 ArduPilot)
+## Checklist verifica
 
-- [ ] API surface documentata vs comportamento ArduPilot
+- [ ] API surface documentata vs requisiti LLRD
 - [ ] Unit test interfaccia pubblica (`test/libraries/VRP_ServoRelayEvents/`)
 - [ ] Regressione SITL/HIL dove applicabile
 - [ ] Riga traceability in `VRP-RTM-001.md`

@@ -21,6 +21,7 @@ uxrce_out="$(./build/sitl/vrp_sitl --vehicle quad --once --enable-uxrce)"
 avoid_out="$(./build/sitl/vrp_sitl --vehicle quad --once --test-adsb-avoid)"
 flash_out="$(./build/sitl/vrp_sitl --vehicle quad --once --test-flash)"
 chibios_out="$(./build/sitl/vrp_sitl --vehicle quad --once --chibios)"
+esp32_out="$(./build/sitl/vrp_sitl --vehicle quad --once --esp32)"
 vtol_mode_out="$(./build/sitl/vrp_sitl --vehicle vtol --model vrp_standard_vtol --once --test-mavlink-mode)"
 
 echo "${quad_out}" | python3 -c '
@@ -315,6 +316,17 @@ assert "VRP_SELF_TEST_PASS vehicle=quad" in s
 assert "hal=HAL_ChibiOS" in s
 assert "FLASH sim" in s
 '
+
+echo "${esp32_out}" | python3 -c '
+import sys
+s = sys.stdin.read()
+assert "VRP_SELF_TEST_PASS vehicle=quad" in s
+assert "hal=HAL_ESP32" in s
+assert "AP_HW_VRESP32_V1" in s
+assert "WIFI enabled=1" in s
+assert "HALESP ok=1 backend=esp32" in s
+'
+echo "VRP-TST-K01 PASS (ESP32 HAL VREsp32-v1)"
 
 echo "${mission_out}" | python3 -c '
 import sys

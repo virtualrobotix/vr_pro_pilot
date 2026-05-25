@@ -19,7 +19,9 @@ bool SafetyCore::init(const std::string &vehicle, VRPParamStore &params) {
   tick_ = 0;
   fence_breach_ = false;
   mission_upload_expected_ = 0;
-  params.set("system.auto_arm_sitl", 1.0);
+  if (params.get("system.auto_arm_sitl", -1.0) < 0.0) {
+    params.set("system.auto_arm_sitl", 1.0);
+  }
 
   sensors_.init();
   ins_.init();
@@ -50,6 +52,27 @@ bool SafetyCore::init(const std::string &vehicle, VRPParamStore &params) {
 }
 
 void SafetyCore::configure_adsb_test(double intruder_x_m) { sensors_.set_adsb_intruder_x(intruder_x_m); }
+
+void SafetyCore::configure_calcio_mission_test() {
+  constexpr double kCalcioLat = 45.5156;
+  constexpr double kCalcioLon = 9.8494;
+  mission_.set_origin(kCalcioLat, kCalcioLon);
+  mission_.set_acceptance_radius(30.0);
+  mission_.clear();
+  sensors_.set_gps_origin(kCalcioLat, kCalcioLon);
+  sensors_.set_rangefinder_max_range(150.0);
+  fence_.init(0.0, 0.0, 20000.0, -500.0, 500.0);
+  mission_rtl_disabled_ = true;
+}
+
+void SafetyCore::configure_calcio_home() {
+  constexpr double kCalcioLat = 45.5156;
+  constexpr double kCalcioLon = 9.8494;
+  mission_.set_origin(kCalcioLat, kCalcioLon);
+  sensors_.set_gps_origin(kCalcioLat, kCalcioLon);
+  sensors_.set_rangefinder_max_range(150.0);
+  fence_.init(0.0, 0.0, 20000.0, -500.0, 500.0);
+}
 
 void SafetyCore::apply_mavlink_action(const MavlinkRxAction &action) {
   if (action.disarm) {
@@ -154,7 +177,7 @@ void SafetyCore::update(double dt_s, uint64_t time_ms, const FDMState &fdm, UORB
     if (!rtl_active_) {
       enter_rtl("fence");
     }
-  } else if (mission_state.find("complete") != std::string::npos) {
+  } else if (!mission_rtl_disabled_ && mission_state.find("complete") != std::string::npos) {
     if (!rtl_active_) {
       enter_rtl("mission");
     }

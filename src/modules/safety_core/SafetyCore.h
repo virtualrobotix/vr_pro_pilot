@@ -28,6 +28,8 @@ class SafetyCore {
 public:
   bool init(const std::string &vehicle, VRPParamStore &params);
   void configure_adsb_test(double intruder_x_m);
+  void configure_calcio_mission_test();
+  void configure_calcio_home();
   void update(double dt_s, uint64_t time_ms, const FDMState &fdm, UORB &uorb);
   void apply_mavlink_action(const MavlinkRxAction &action);
   void note_gcs_link(uint64_t tick);
@@ -96,6 +98,7 @@ private:
   bool rtl_active_{false};
   uint16_t mission_upload_expected_{0};
   bool mission_upload_ack_pending_{false};
+  bool mission_rtl_disabled_{false};
   AvoidanceOutput avoidance_out_{};
   std::string open_drone_line_{"OPEN_DRONE_ID idle"};
 };

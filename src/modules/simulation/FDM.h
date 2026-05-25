@@ -26,10 +26,20 @@ struct FDMState {
   double gz{0.0};
 };
 
+struct FDMNavInput {
+  bool valid{false};
+  double bearing_rad{0.0};
+  double target_speed_m_s{0.0};
+  double alt_error_m{0.0};
+  bool guided_climb{false};
+  double guided_target_z{0.0};
+  double speed_scale{1.0};
+};
+
 class FDM {
 public:
   explicit FDM(std::string model) : model_(std::move(model)) {}
-  void step(const std::string &vehicle, double dt_s, FDMState &state) const;
+  void step(const std::string &vehicle, double dt_s, FDMState &state, const FDMNavInput *nav = nullptr) const;
 
 private:
   std::string model_;
