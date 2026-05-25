@@ -2,17 +2,58 @@
 
 namespace vrp {
 
-bool NavCore::init(const std::string &vehicle, double cruise_speed_m_s) {
+bool NavCore::init(const std::string &vehicle, double cruise_speed_m_s, double wp_radius_m) {
   vehicle_ = vehicle;
   wpnav_.init(cruise_speed_m_s);
+  if (is_ar_surface_vehicle(vehicle)) {
+    ar_wpnav_.init(cruise_speed_m_s, wp_radius_m);
+  }
   l1_.init();
+  in_loiter_ = false;
   last_ = WpNavOutput{};
   last_l1_ = L1Output{};
+  last_ar_ = ArWpNavOutput{};
   return true;
 }
 
-WpNavOutput NavCore::update(const LocalPosition &pos, const Waypoint &target, const Waypoint &prev, bool use_l1,
-                            bool active, UORB &uorb) {
+void NavCore::set_loiter_center(const Waypoint &center) {
+  if (is_ar_surface_vehicle(vehicle_)) {
+    ar_wpnav_.set_loiter_center(center);
+  }
+}
+
+WpNavOutput NavCore::from_ar(const ArWpNavOutput &ar) {
+  WpNavOutput out{};
+  out.bearing_rad = ar.bearing_rad;
+  out.distance_m = ar.distance_m;
+  out.target_speed_m_s = ar.target_speed_m_s;
+  out.turn_rate_rad_s = ar.turn_rate_rad_s;
+  out.cross_track_m = ar.cross_track_m;
+  out.wp_index = ar.wp_index;
+  out.reached = ar.reached;
+  out.valid = ar.valid;
+  return out;
+}
+
+WpNavOutput NavCore::update(const LocalPosition &pos, const Attitude &attitude, const Waypoint &target,
+                            const Waypoint &prev, bool use_l1, bool active, const std::string &mode, UORB &uorb) {
+  if (is_ar_surface_vehicle(vehicle_)) {
+    if (mode == "Loiter") {
+      if (!in_loiter_) {
+        ar_wpnav_.set_loiter_center(Waypoint{pos.x, pos.y, pos.z});
+        in_loiter_ = true;
+      }
+    } else {
+      in_loiter_ = false;
+    }
+    last_ar_ = ar_wpnav_.update(pos, attitude, target, prev, mode, active);
+    last_ = from_ar(last_ar_);
+    uorb.publish("nav/ar_wp", format_ar_wpnav(last_ar_));
+    uorb.publish("nav/wp", format_wpnav(last_));
+    uorb.publish("nav/l1", "L1 n/a boat");
+    return last_;
+  }
+
   if (!active) {
     last_ = WpNavOutput{};
     last_l1_ = L1Output{};

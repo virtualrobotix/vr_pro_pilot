@@ -22,7 +22,7 @@ std::string VRP_RC_Channel::mode_from_rc(const std::string &vehicle, const RcCha
   if (vehicle == "subsea") {
     return "DepthHold";
   }
-  if (vehicle == "boat") {
+  if (is_ar_surface_vehicle(vehicle)) {
     return "Manual";
   }
   return "Loiter";

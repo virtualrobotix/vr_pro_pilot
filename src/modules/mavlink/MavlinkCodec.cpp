@@ -49,12 +49,15 @@ std::vector<uint8_t> MavlinkCodec::pack_v2(uint8_t sysid, uint8_t compid, uint32
   return frame;
 }
 
-std::vector<uint8_t> MavlinkCodec::heartbeat(uint8_t sysid, uint8_t compid, uint8_t base_mode, uint8_t system_status,
+std::vector<uint8_t> MavlinkCodec::heartbeat(uint8_t sysid, uint8_t compid, uint8_t mav_type, uint8_t autopilot,
+                                             uint8_t base_mode, uint8_t system_status, uint32_t custom_mode,
                                              uint8_t &seq) {
   uint8_t payload[9]{};
-  std::memset(payload, 0, sizeof(payload));
-  payload[4] = base_mode;
-  payload[5] = system_status;
+  std::memcpy(payload + 0, &custom_mode, 4);
+  payload[4] = mav_type;
+  payload[5] = autopilot;
+  payload[6] = base_mode;
+  payload[7] = system_status;
   payload[8] = 3;
   return pack_v2(sysid, compid, 0, 50, payload, 9, seq);
 }
@@ -118,6 +121,10 @@ uint8_t MavlinkCodec::crc_extra_for(uint32_t msgid) {
     return 220;
   case 23:
     return 168;
+  case 74:
+    return 20;
+  case 168:
+    return 81;
   case 242:
     return 104;
   default:
@@ -125,14 +132,43 @@ uint8_t MavlinkCodec::crc_extra_for(uint32_t msgid) {
   }
 }
 
-std::vector<uint8_t> MavlinkCodec::global_position_int(uint8_t sysid, uint8_t compid, int32_t lat_e7, int32_t lon_e7,
-                                                       int32_t alt_mm, uint8_t &seq) {
+std::vector<uint8_t> MavlinkCodec::global_position_int(uint8_t sysid, uint8_t compid, uint32_t time_boot_ms,
+                                                       int32_t lat_e7, int32_t lon_e7, int32_t alt_mm,
+                                                       int32_t relative_alt_mm, int16_t vx_cm_s, int16_t vy_cm_s,
+                                                       int16_t vz_cm_s, uint16_t hdg_cdeg, uint8_t &seq) {
   uint8_t payload[28]{};
-  std::memset(payload, 0, sizeof(payload));
-  std::memcpy(payload + 0, &lat_e7, 4);
-  std::memcpy(payload + 4, &lon_e7, 4);
-  std::memcpy(payload + 8, &alt_mm, 4);
+  std::memcpy(payload + 0, &time_boot_ms, 4);
+  std::memcpy(payload + 4, &lat_e7, 4);
+  std::memcpy(payload + 8, &lon_e7, 4);
+  std::memcpy(payload + 12, &alt_mm, 4);
+  std::memcpy(payload + 16, &relative_alt_mm, 4);
+  std::memcpy(payload + 20, &vx_cm_s, 2);
+  std::memcpy(payload + 22, &vy_cm_s, 2);
+  std::memcpy(payload + 24, &vz_cm_s, 2);
+  std::memcpy(payload + 26, &hdg_cdeg, 2);
   return pack_v2(sysid, compid, 33, 104, payload, 28, seq);
+}
+
+std::vector<uint8_t> MavlinkCodec::vfr_hud(uint8_t sysid, uint8_t compid, float airspeed_m_s, float groundspeed_m_s,
+                                           int16_t heading_deg, uint16_t throttle_pct, float alt_m, float climb_m_s,
+                                           uint8_t &seq) {
+  uint8_t payload[20]{};
+  std::memcpy(payload + 0, &airspeed_m_s, 4);
+  std::memcpy(payload + 4, &groundspeed_m_s, 4);
+  std::memcpy(payload + 8, &heading_deg, 2);
+  std::memcpy(payload + 10, &throttle_pct, 2);
+  std::memcpy(payload + 12, &alt_m, 4);
+  std::memcpy(payload + 16, &climb_m_s, 4);
+  return pack_v2(sysid, compid, 74, 20, payload, 20, seq);
+}
+
+std::vector<uint8_t> MavlinkCodec::wind(uint8_t sysid, uint8_t compid, float direction_deg, float speed_m_s,
+                                        float speed_z_m_s, uint8_t &seq) {
+  uint8_t payload[12]{};
+  std::memcpy(payload + 0, &direction_deg, 4);
+  std::memcpy(payload + 4, &speed_m_s, 4);
+  std::memcpy(payload + 8, &speed_z_m_s, 4);
+  return pack_v2(sysid, compid, 168, 81, payload, 12, seq);
 }
 
 std::vector<uint8_t> MavlinkCodec::gps_raw_int(uint8_t sysid, uint8_t compid, int32_t lat_e7, int32_t lon_e7,

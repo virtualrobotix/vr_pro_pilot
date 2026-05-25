@@ -6,6 +6,10 @@ Boat::Boat(UORB &uorb, VRPParamStore &params) : Vehicle("boat", uorb, params) {}
 
 void Boat::setup() {
   params_.set("boat.max_speed_mps", 6.0);
+  params_.set("rover.frame_class", 2.0);
+  params_.set("rover.skid_steer", 1.0);
+  params_.set("nav.cruise_speed", 2.0);
+  params_.set("nav.wp_radius", 2.0);
   scheduler_.add_task("boat_nav", 20, [&]() {
     if (auto m = uorb_.subscribe("vehicle/mode")) {
       mode_ = *m;

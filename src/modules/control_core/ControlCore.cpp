@@ -13,8 +13,23 @@ bool ControlCore::init(const std::string &vehicle, VRPParamStore &params) {
   motors_.init();
   apm_ctrl_.init();
   tecs_.init(5.0, 12.0);
+  if (is_ar_surface_vehicle(vehicle)) {
+    const double max_speed = params.get(vehicle + ".max_speed_mps",
+                                        vehicle == "rover" ? 4.0 : (vehicle == "sailboat" ? 4.0 : 6.0));
+    ar_att_ctrl_.init(max_speed);
+    if (vehicle == "rover") {
+      ar_motors_.init(ArFrameClass::Rover, true);
+    } else {
+      ar_motors_.init(ArFrameClass::Boat, params.get("rover.skid_steer", 1.0) > 0.5);
+    }
+    if (vehicle == "sailboat") {
+      sailboat_.init(max_speed);
+      wind_vane_.init();
+    }
+  }
   quad_out_ = MotorOutputQuad{};
   boat_out_ = BoatActuators{};
+  last_ar_motors_ = ArMotorsState{};
   return true;
 }
 
@@ -84,22 +99,56 @@ MotorOutputQuad ControlCore::update_vtol(bool armed, bool fence_breach, const At
   return quad_out_;
 }
 
-BoatActuators ControlCore::update_boat(bool armed, bool fence_breach, const LocalPosition &pos,
-                                       const VehicleSetpoints &sp, double dt_s, UORB &uorb) {
-  (void)dt_s;
-  (void)pos;
+BoatActuators ControlCore::update_boat(bool armed, bool fence_breach, const Attitude &attitude,
+                                       const LocalPosition &pos, const VehicleSetpoints &sp, double dt_s, UORB &uorb) {
   if (!armed || fence_breach) {
     boat_out_ = BoatActuators{};
-  } else if (sp.boat_forward > 0.0F || sp.boat_turn != 0.0F) {
-    boat_out_ = motors_.mix_boat(sp.boat_forward, sp.boat_turn);
-  } else {
-    const float forward = static_cast<float>(VRP_Math::clamp(0.5 + 0.05 * pos.x, 0.2, 0.8));
-    const float turn = static_cast<float>(VRP_Math::clamp(pos.y * 0.02, -0.2, 0.2));
-    boat_out_ = motors_.mix_boat(forward, turn);
+    last_ar_motors_ = ar_motors_.update(0.0F, 0.0F, false);
+    uorb.publish("control/ar_attitude", "ARATC disarmed");
+    uorb.publish("actuators/boat", "left=0 right=0");
+    return boat_out_;
   }
 
+  ArAttitudeOutput ar_out{};
+  if (sp.manual_boat) {
+    ar_out = ar_att_ctrl_.update_manual(sp.boat_forward, sp.boat_turn, true);
+  } else {
+    ar_out = ar_att_ctrl_.update_nav(attitude, pos, sp.desired_speed_m_s, sp.desired_turn_rate_rad_s, true, dt_s);
+  }
+  uorb.publish("control/ar_attitude", format_ar_attitude(ar_out));
+
+  last_ar_motors_ = ar_motors_.update(ar_out.throttle, ar_out.steering, true);
+  boat_out_.left = last_ar_motors_.left;
+  boat_out_.right = last_ar_motors_.right;
+  uorb.publish("actuators/ar_motors", format_ar_motors(last_ar_motors_));
   uorb.publish("actuators/boat",
                "left=" + std::to_string(boat_out_.left) + " right=" + std::to_string(boat_out_.right));
+  return boat_out_;
+}
+
+BoatActuators ControlCore::update_sailboat(bool armed, bool fence_breach, const Attitude &attitude,
+                                           const LocalPosition &pos, const VehicleSetpoints &sp,
+                                           const WindSample &wind, double dt_s, UORB &uorb) {
+  if (!armed || fence_breach) {
+    boat_out_ = BoatActuators{};
+    last_ar_motors_ = ar_motors_.update(0.0F, 0.0F, false);
+    uorb.publish("control/sailboat", "SAIL disarmed");
+    return boat_out_;
+  }
+
+  const auto sail = sailboat_.update(attitude, wind, static_cast<float>(sp.desired_turn_rate_rad_s),
+                                     static_cast<float>(sp.desired_speed_m_s), sp.manual_boat, sp.boat_forward,
+                                     sp.boat_turn, true);
+  uorb.publish("control/sailboat", format_sailboat(sail));
+
+  last_ar_motors_ = ar_motors_.update(sail.throttle, sail.steering, true);
+  boat_out_.left = last_ar_motors_.left;
+  boat_out_.right = last_ar_motors_.right;
+  uorb.publish("actuators/ar_motors", format_ar_motors(last_ar_motors_));
+  uorb.publish("actuators/boat",
+               "left=" + std::to_string(boat_out_.left) + " right=" + std::to_string(boat_out_.right));
+  (void)pos;
+  (void)dt_s;
   return boat_out_;
 }
 

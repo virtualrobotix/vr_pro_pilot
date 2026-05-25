@@ -50,6 +50,8 @@ add_library(vrp_core
   src/vehicles/VRP_Vehicle.cpp
   src/vehicles/quad/Quad.cpp
   src/vehicles/boat/Boat.cpp
+  src/vehicles/rover/Rover.cpp
+  src/vehicles/sailboat/Sailboat.cpp
   src/vehicles/vtol/VTOL.cpp
   src/vehicles/subsea/Subsea.cpp
 )
@@ -64,3 +66,5 @@ target_link_libraries(vrp_sitl PRIVATE vrp_core)
 enable_testing()
 add_test(NAME vrp_self_test_quad COMMAND vrp_sitl --vehicle quad --model vrp_iris --once)
 add_test(NAME vrp_self_test_boat COMMAND vrp_sitl --vehicle boat --model vrp_boat --once)
+add_test(NAME vrp_self_test_rover COMMAND vrp_sitl --vehicle rover --model vrp_rover --once)
+add_test(NAME vrp_self_test_sailboat COMMAND vrp_sitl --vehicle sailboat --model vrp_boat --once)

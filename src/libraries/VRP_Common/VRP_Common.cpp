@@ -65,7 +65,7 @@ std::string format_rc(const RcChannels &rc) {
 std::string format_wpnav(const WpNavOutput &n) {
   std::ostringstream oss;
   oss << "WPNAV brg=" << n.bearing_rad << " dist=" << n.distance_m << " spd=" << n.target_speed_m_s
-      << " valid=" << (n.valid ? 1 : 0);
+      << " trn=" << n.turn_rate_rad_s << " valid=" << (n.valid ? 1 : 0);
   return oss.str();
 }
 
@@ -74,6 +74,26 @@ std::string format_servos(const ServoOutput &s) {
   oss << "SRV m1=" << s.motor1_us << " m2=" << s.motor2_us << " m3=" << s.motor3_us << " m4=" << s.motor4_us
       << " tilt=" << s.tilt_us;
   return oss.str();
+}
+
+bool is_ar_surface_vehicle(const std::string &vehicle) {
+  return vehicle == "boat" || vehicle == "rover" || vehicle == "sailboat";
+}
+
+uint8_t mavlink_type_for_vehicle(const std::string &vehicle) {
+  if (vehicle == "boat" || vehicle == "sailboat") {
+    return 11U;
+  }
+  if (vehicle == "rover") {
+    return 10U;
+  }
+  if (vehicle == "vtol") {
+    return 22U;
+  }
+  if (vehicle == "subsea") {
+    return 12U;
+  }
+  return 2U;
 }
 
 } // namespace vrp

@@ -6,10 +6,18 @@ set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
 cd "${root}"
 
-vehicle="${1:-quad}"
+vehicle="${1:-boat}"
 home="${2:-calcio}"
+
+model="vrp_iris"
+case "${vehicle}" in
+  boat|sailboat) model="vrp_boat" ;;
+  rover) model="vrp_rover" ;;
+  vtol) model="vrp_standard_vtol" ;;
+  subsea) model="vrp_bluerov" ;;
+esac
 
 cmake -S . -B build/sitl -DVRP_BOARD=sitl -DVRP_VEHICLE="${vehicle}"
 cmake --build build/sitl
 
-exec ./build/sitl/vrp_sitl --vehicle "${vehicle}" --model vrp_iris --gcs --home "${home}"
+exec ./build/sitl/vrp_sitl --vehicle "${vehicle}" --model "${model}" --gcs --home "${home}"

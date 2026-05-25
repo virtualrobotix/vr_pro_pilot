@@ -11,7 +11,7 @@ bool VRP_AC_Autorotation::init() {
 
 AutorotationState VRP_AC_Autorotation::update(bool armed, bool rtl_active, float throttle) {
   AutorotationState out{};
-  out.active = armed && rtl_active;
+  out.active = armed && (rtl_active || throttle > 0.2F);
   out.phase = out.active ? 2 : 0;
   out.rpm = out.active ? static_cast<uint16_t>(800.0F + throttle * 2000.0F) : 0;
   ++seq_;

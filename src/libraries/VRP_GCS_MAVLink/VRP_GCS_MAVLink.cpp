@@ -1,9 +1,13 @@
 #include "libraries/VRP_GCS_MAVLink/VRP_GCS_MAVLink.h"
 
+#include <cmath>
 #include <cstring>
 #include <sstream>
 
+#include "libraries/VRP_WindVane/VRP_WindVane.h"
+#include "libraries/VRP_Math/VRP_Math.h"
 #include "modules/mavlink/MavlinkCodec.h"
+#include "modules/mavlink/MavlinkMode.h"
 #include "modules/mavlink/MavlinkParser.h"
 #include "modules/mavlink/MavlinkUdp.h"
 
@@ -24,16 +28,21 @@ void VRP_GCS_MAVLink::shutdown() {
   g_udp.close_socket();
 }
 
-std::string VRP_GCS_MAVLink::transmit(bool armed, const std::string &mode, const Attitude &attitude,
-                                      const GpsSample &gps, const BatteryStatus &battery, uint64_t time_ms,
-                                      uint16_t mission_seq, const MavlinkTxBundle *tx) {
-  (void)mode;
+std::string VRP_GCS_MAVLink::transmit(const std::string &vehicle, bool armed, const std::string &mode,
+                                      const Attitude &attitude, const LocalPosition &pos, const GpsSample &gps,
+                                      const BatteryStatus &battery, uint64_t time_ms, uint16_t mission_seq,
+                                      const MavlinkTxBundle *tx, const WindSample *wind) {
   if (!ready_) {
     return "MAVLINK_V2 skipped";
   }
 
-  const uint8_t base_mode = static_cast<uint8_t>(armed ? 0x80U : 0U);
-  const auto hb = MavlinkCodec::heartbeat(1, 1, base_mode, armed ? 4U : 3U, seq_);
+  const uint32_t custom_mode = mavlink_custom_mode_from_mode(vehicle, mode);
+  uint8_t base_mode = 0x01U | 0x10U | 0x40U;
+  if (armed) {
+    base_mode |= 0x80U;
+  }
+  const auto hb = MavlinkCodec::heartbeat(1, 1, mavlink_type_for_vehicle(vehicle), 3U, base_mode, armed ? 4U : 3U,
+                                          custom_mode, seq_);
   const auto att =
       MavlinkCodec::attitude(1, 1, static_cast<float>(attitude.roll_rad), static_cast<float>(attitude.pitch_rad),
                              static_cast<float>(attitude.yaw_rad), 0.0F, 0.0F, 0.0F, seq_);
@@ -42,12 +51,30 @@ std::string VRP_GCS_MAVLink::transmit(bool armed, const std::string &mode, const
   const int32_t lat_e7 = static_cast<int32_t>(gps.lat_deg * 1e7);
   const int32_t lon_e7 = static_cast<int32_t>(gps.lon_deg * 1e7);
   const int32_t alt_mm = static_cast<int32_t>(gps.alt_m * 1000.0);
-  const auto gpi = MavlinkCodec::global_position_int(1, 1, lat_e7, lon_e7, alt_mm, seq_);
+  const int32_t rel_alt_mm = alt_mm;
+  const int16_t vx_cm_s = static_cast<int16_t>(pos.vx * 100.0);
+  const int16_t vy_cm_s = static_cast<int16_t>(pos.vy * 100.0);
+  const int16_t vz_cm_s = static_cast<int16_t>(pos.vz * 100.0);
+  uint16_t hdg_cdeg = 65535U;
+  double yaw_rad = attitude.yaw_rad;
+  while (yaw_rad < 0.0) {
+    yaw_rad += 6.283185307179586;
+  }
+  while (yaw_rad >= 6.283185307179586) {
+    yaw_rad -= 6.283185307179586;
+  }
+  hdg_cdeg = static_cast<uint16_t>(yaw_rad / 6.283185307179586 * 36000.0);
+  const auto gpi = MavlinkCodec::global_position_int(1, 1, static_cast<uint32_t>(time_ms), lat_e7, lon_e7, alt_mm,
+                                                     rel_alt_mm, vx_cm_s, vy_cm_s, vz_cm_s, hdg_cdeg, seq_);
   const auto gps_raw = MavlinkCodec::gps_raw_int(1, 1, lat_e7, lon_e7, alt_mm, gps.fix_type, seq_);
+  const float groundspeed = static_cast<float>(std::hypot(pos.vx, pos.vy));
+  const int16_t heading_deg = static_cast<int16_t>(hdg_cdeg / 100);
+  const uint16_t throttle_pct =
+      static_cast<uint16_t>(VRP_Math::clamp(static_cast<double>(groundspeed) * 20.0, 0.0, 100.0));
+  const auto hud = MavlinkCodec::vfr_hud(1, 1, groundspeed, groundspeed, heading_deg, throttle_pct,
+                                         static_cast<float>(gps.alt_m), static_cast<float>(pos.vz), seq_);
 
-  size_t sent = 0;
-  size_t bytes = 0;
-  std::vector<std::vector<uint8_t>> frames = {hb, att, stat, gpi, gps_raw};
+  std::vector<std::vector<uint8_t>> frames = {hb, att, stat, gpi, gps_raw, hud};
   if (mission_seq != 0xFFFF) {
     frames.push_back(MavlinkCodec::mission_current(1, 1, mission_seq, seq_));
   }
@@ -89,11 +116,18 @@ std::string VRP_GCS_MAVLink::transmit(bool armed, const std::string &mode, const
       mission_oss << " home=1";
     }
   }
+  if (wind != nullptr && wind->valid) {
+    const float dir_deg =
+        static_cast<float>(std::fmod(wind->direction_rad / 6.283185307179586 * 360.0 + 360.0, 360.0));
+    frames.push_back(MavlinkCodec::wind(1, 1, dir_deg, static_cast<float>(wind->speed_m_s), 0.0F, seq_));
+  }
   if (mission_oss.str() == "MISSION_TX") {
     mission_oss << " idle";
   }
   last_mission_tx_ = mission_oss.str();
 
+  size_t sent = 0;
+  size_t bytes = 0;
   for (const auto &frame : frames) {
     bytes += frame.size();
     if (g_udp.send(frame)) {

@@ -38,7 +38,7 @@ bool SafetyCore::init(const std::string &vehicle, VRPParamStore &params) {
   open_drone_id_.init();
 
   std::vector<Waypoint> wps;
-  if (vehicle == "boat") {
+  if (is_ar_surface_vehicle(vehicle)) {
     wps.push_back(Waypoint{5.0, 0.0, 0.0});
     wps.push_back(Waypoint{10.0, 2.0, 0.0});
   } else {
@@ -169,6 +169,8 @@ void SafetyCore::update(double dt_s, uint64_t time_ms, const FDMState &fdm, UORB
   if (!arming_.is_armed()) {
     mode_ = "Disarmed";
     rtl_active_ = false;
+  } else if (mode_ == "Disarmed" || mode_ == "Stabilize") {
+    mode_ = is_ar_surface_vehicle(vehicle_) ? "Manual" : "Loiter";
   } else if (failsafe_.should_rtl()) {
     if (!rtl_active_) {
       enter_rtl(failsafe_.reason());
@@ -178,14 +180,15 @@ void SafetyCore::update(double dt_s, uint64_t time_ms, const FDMState &fdm, UORB
       enter_rtl("fence");
     }
   } else if (!mission_rtl_disabled_ && mission_state.find("complete") != std::string::npos) {
-    if (!rtl_active_) {
+    if (is_ar_surface_vehicle(vehicle_)) {
+      rtl_active_ = false;
+      mode_ = "Loiter";
+    } else if (!rtl_active_) {
       enter_rtl("mission");
     }
   } else {
     rtl_active_ = false;
-    if (vehicle_ == "boat") {
-      mode_ = "Auto";
-    } else {
+    if (!is_ar_surface_vehicle(vehicle_)) {
       mode_ = "Loiter";
     }
   }

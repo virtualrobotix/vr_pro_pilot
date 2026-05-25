@@ -16,7 +16,7 @@ bool VehicleCore::init(const std::string &vehicle, VRPParamStore &params) {
   landing_.init();
   gear_.init();
   rssi_.init();
-  mode_ = vehicle == "vtol" ? "QStabilize" : "Stabilize";
+  mode_ = vehicle == "vtol" ? "QStabilize" : (is_ar_surface_vehicle(vehicle) ? "Manual" : "Stabilize");
   vtol_phase_ = "MC";
   return true;
 }
@@ -62,14 +62,39 @@ void VehicleCore::build_setpoints(const LocalPosition &pos, const WpNavOutput &n
   }
 
   if (mode_ == "RTL") {
+    setpoints_.hold_position = false;
+    setpoints_.manual_boat = false;
+    if (is_ar_surface_vehicle(vehicle_) && nav.valid) {
+      setpoints_.desired_speed_m_s = VRP_Math::clamp(nav.target_speed_m_s, 0.0, 2.0);
+      setpoints_.desired_turn_rate_rad_s = nav.turn_rate_rad_s;
+    } else {
+      setpoints_.attitude.thrust_base = 0.45;
+      setpoints_.boat_forward = 0.2F;
+    }
+    return;
+  }
+
+  if (mode_ == "Loiter" && is_ar_surface_vehicle(vehicle_)) {
     setpoints_.hold_position = true;
-    setpoints_.attitude.thrust_base = 0.45;
-    setpoints_.boat_forward = 0.2F;
+    setpoints_.manual_boat = false;
+    if (nav.valid) {
+      setpoints_.desired_speed_m_s = nav.target_speed_m_s;
+      setpoints_.desired_turn_rate_rad_s = nav.turn_rate_rad_s;
+    }
     return;
   }
 
   if (mode_ == "Auto") {
     setpoints_.hold_position = false;
+    setpoints_.manual_boat = false;
+    if (is_ar_surface_vehicle(vehicle_) && nav.valid) {
+      setpoints_.desired_speed_m_s = nav.target_speed_m_s;
+      setpoints_.desired_turn_rate_rad_s = nav.turn_rate_rad_s;
+      setpoints_.nav_active = true;
+      setpoints_.nav_bearing_rad = nav.bearing_rad;
+      setpoints_.nav_speed_m_s = nav.target_speed_m_s;
+      return;
+    }
     if (nav.valid) {
       setpoints_.boat_forward =
           static_cast<float>(VRP_Math::clamp(nav.target_speed_m_s / 6.0, 0.25, 0.85));
@@ -102,7 +127,8 @@ void VehicleCore::build_setpoints(const LocalPosition &pos, const WpNavOutput &n
     setpoints_.attitude.thrust_base = 0.6;
   }
 
-  if (mode_ == "Manual" && vehicle_ == "boat") {
+  if (mode_ == "Manual" && is_ar_surface_vehicle(vehicle_)) {
+    setpoints_.manual_boat = true;
     setpoints_.boat_forward = rc_.throttle;
     setpoints_.boat_turn = rc_.yaw;
   }
@@ -127,7 +153,7 @@ void VehicleCore::update(uint64_t tick, bool armed, const std::string &safety_mo
   last_rssi_sample_ = rssi_.update(tick, gcs_link);
   last_rssi_ = format_rssi(last_rssi_sample_);
 
-  if (!armed || safety_mode == "Disarmed") {
+  if (!armed) {
     mode_ = "Disarmed";
   } else if (mavlink_mode_active_ && mavlink_mode_ == "Land") {
     mode_ = "Land";
@@ -148,6 +174,8 @@ void VehicleCore::update(uint64_t tick, bool armed, const std::string &safety_mo
         vtol_phase_ = "MC";
       }
     }
+  } else if (safety_mode == "Loiter") {
+    mode_ = "Loiter";
   } else if (vehicle_ == "vtol") {
     update_vtol_phase(tick);
   } else {

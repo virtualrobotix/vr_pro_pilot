@@ -20,6 +20,8 @@
 
 namespace vrp {
 
+struct WindSample;
+
 struct MavlinkRxAction {
   bool arm{false};
   bool disarm{false};
@@ -73,9 +75,10 @@ class VRP_GCS_MAVLink {
 public:
   bool init();
   void shutdown();
-  std::string transmit(bool armed, const std::string &mode, const Attitude &attitude, const GpsSample &gps,
-                       const BatteryStatus &battery, uint64_t time_ms, uint16_t mission_seq = 0xFFFF,
-                       const MavlinkTxBundle *tx = nullptr);
+  std::string transmit(const std::string &vehicle, bool armed, const std::string &mode, const Attitude &attitude,
+                       const LocalPosition &pos, const GpsSample &gps, const BatteryStatus &battery, uint64_t time_ms,
+                       uint16_t mission_seq = 0xFFFF, const MavlinkTxBundle *tx = nullptr,
+                       const WindSample *wind = nullptr);
   std::string last_mission_tx_summary() const { return last_mission_tx_; }
   std::string poll(MavlinkRxAction &action);
   bool inject_frame_for_test(const std::vector<uint8_t> &frame, MavlinkRxAction &action);

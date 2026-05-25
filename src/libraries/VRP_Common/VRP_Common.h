@@ -13,6 +13,7 @@
  * @parity  ArduPilot AP_Common — clean-room BSD rewrite
  */
 #include <cstdint>
+#include <cstdint>
 #include <string>
 
 namespace vrp {
@@ -131,6 +132,9 @@ struct VehicleSetpoints {
   float boat_turn{0.0F};
   float subsea_thrust{0.0F};
   float subsea_yaw{0.0F};
+  double desired_speed_m_s{0.0};
+  double desired_turn_rate_rad_s{0.0};
+  bool manual_boat{false};
   bool hold_position{true};
   bool use_tecs{false};
   bool use_apm{false};
@@ -143,7 +147,11 @@ struct WpNavOutput {
   double bearing_rad{0.0};
   double distance_m{0.0};
   double target_speed_m_s{0.0};
+  double turn_rate_rad_s{0.0};
+  double cross_track_m{0.0};
   double alt_error_m{0.0};
+  uint16_t wp_index{0};
+  bool reached{false};
   bool valid{false};
 };
 
@@ -169,5 +177,8 @@ std::string format_gps(const GpsSample &g);
 std::string format_baro(const BaroSample &b);
 std::string format_compass(const CompassSample &c);
 std::string format_rc(const RcChannels &rc);
+
+bool is_ar_surface_vehicle(const std::string &vehicle);
+uint8_t mavlink_type_for_vehicle(const std::string &vehicle);
 
 } // namespace vrp

@@ -36,10 +36,18 @@ struct FDMNavInput {
   double speed_scale{1.0};
 };
 
+struct FDMBoatInput {
+  bool valid{false};
+  float left{0.0F};
+  float right{0.0F};
+  double max_speed_m_s{2.0};
+};
+
 class FDM {
 public:
   explicit FDM(std::string model) : model_(std::move(model)) {}
-  void step(const std::string &vehicle, double dt_s, FDMState &state, const FDMNavInput *nav = nullptr) const;
+  void step(const std::string &vehicle, double dt_s, FDMState &state, const FDMNavInput *nav = nullptr,
+            const FDMBoatInput *boat = nullptr) const;
 
 private:
   std::string model_;

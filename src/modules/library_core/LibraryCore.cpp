@@ -70,8 +70,8 @@ bool LibraryCore::init() {
   ext_ahrs_.init();
   nav_ekf_.init();
   internal_err_.init();
-  ar_motors_.init();
-  ar_wpnav_.init();
+  ar_motors_.init(ArFrameClass::Boat, true);
+  ar_wpnav_.init(2.0, 2.0);
   hal_linux_.init();
   hal_empty_.init();
   cust_ctl_.init();
@@ -185,7 +185,8 @@ std::string LibraryCore::tick(uint64_t tick, const LocalPosition &pos, const Gps
   const auto ekf = nav_ekf_.update(pos, armed, tick);
   const auto ierr = internal_err_.update(armed, tick);
   const auto armot = ar_motors_.update(throttle, rc.yaw, armed);
-  const auto arwp = ar_wpnav_.update(mode, pos, tick);
+  const auto arwp = ar_wpnav_.update(pos, att, Waypoint{50.0, 0.0, 0.0}, Waypoint{}, mode,
+                                      mode == "Auto" || mode == "Loiter" || mode == "RTL");
   const auto hallx = hal_linux_.status();
   const auto halempty = hal_empty_.status();
   const auto cust = cust_ctl_.update(armed, rc.roll, rc.pitch);

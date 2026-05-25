@@ -5,6 +5,8 @@
 
 #include "vehicles/boat/Boat.h"
 #include "vehicles/quad/Quad.h"
+#include "vehicles/rover/Rover.h"
+#include "vehicles/sailboat/Sailboat.h"
 #include "vehicles/subsea/Subsea.h"
 #include "vehicles/vtol/VTOL.h"
 
@@ -19,6 +21,12 @@ std::unique_ptr<Vehicle> make_vehicle(const std::string &kind, UORB &uorb, VRPPa
   }
   if (kind == "boat") {
     return std::make_unique<Boat>(uorb, params);
+  }
+  if (kind == "rover") {
+    return std::make_unique<Rover>(uorb, params);
+  }
+  if (kind == "sailboat") {
+    return std::make_unique<Sailboat>(uorb, params);
   }
   if (kind == "vtol") {
     return std::make_unique<VTOL>(uorb, params);

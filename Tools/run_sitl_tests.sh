@@ -9,6 +9,8 @@ cmake --build build/sitl
 
 quad_out="$(./build/sitl/vrp_sitl --vehicle quad --model vrp_iris --once)"
 boat_out="$(./build/sitl/vrp_sitl --vehicle boat --model vrp_boat --once)"
+rover_out="$(./build/sitl/vrp_sitl --vehicle rover --model vrp_rover --once)"
+sailboat_out="$(./build/sitl/vrp_sitl --vehicle sailboat --model vrp_boat --once)"
 mavlink_rx_out="$(./build/sitl/vrp_sitl --vehicle quad --once --test-mavlink-rx)"
 mavlink_mode_out="$(./build/sitl/vrp_sitl --vehicle quad --once --test-mavlink-mode)"
 mission_out="$(./build/sitl/vrp_sitl --vehicle quad --once --test-mavlink-mission)"
@@ -167,6 +169,31 @@ assert "SAFETY_CORE" in s
 assert "armed=1" in s
 assert "MAVLINK_V2 sent=" in s
 assert "SENSORS GPS" in s
+assert "ARWPNAV active=" in s
+assert "ARMOT active=1" in s
+assert "ARATC active=1" in s
+assert "WPNAV brg=" in s
+assert "SRV m1=" in s
+assert "left=" in s
+'
+
+echo "${rover_out}" | python3 -c '
+import sys
+s = sys.stdin.read()
+assert "MAVLINK_HEARTBEAT vehicle=rover" in s
+assert "VRP_SELF_TEST_PASS vehicle=rover" in s
+assert "ARMOT active=1" in s
+assert "ARWPNAV active=" in s
+'
+
+echo "${sailboat_out}" | python3 -c '
+import sys
+s = sys.stdin.read()
+assert "MAVLINK_HEARTBEAT vehicle=sailboat" in s
+assert "VRP_SELF_TEST_PASS vehicle=sailboat" in s
+assert "SAIL active=1" in s
+assert "WIND spd=" in s
+assert "ARMOT active=1" in s
 '
 
 echo "${mavlink_rx_out}" | python3 -c '

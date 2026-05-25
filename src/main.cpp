@@ -10,6 +10,8 @@
 #include "libraries/VRP_CANManager/VRP_CANManager.h"
 #include "libraries/VRP_CRSF/VRP_CRSF.h"
 #include "libraries/VRP_Common/VRP_Common.h"
+#include "libraries/VRP_AR_Motors/VRP_AR_Motors.h"
+#include "libraries/VRP_AR_WPNav/VRP_AR_WPNav.h"
 #include "libraries/VRP_DroneCAN/VRP_DroneCAN.h"
 #include "libraries/VRP_GCS_MAVLink/VRP_GCS_MAVLink.h"
 #include "libraries/VRP_Frsky_Telem/VRP_Frsky_Telem.h"
@@ -23,8 +25,11 @@
 #include "middleware/params/VRP_Param.h"
 #include "middleware/uorb/UORB.h"
 #include "modules/control_core/ControlCore.h"
+#include "libraries/VRP_Sailboat/VRP_Sailboat.h"
+#include "libraries/VRP_WindVane/VRP_WindVane.h"
 #include "modules/mavlink/Heartbeat.h"
 #include "modules/mavlink/MavlinkCodec.h"
+#include "modules/mavlink/MavlinkMode.h"
 #include "modules/library_core/LibraryCore.h"
 #include "modules/nav_core/NavCore.h"
 #include "modules/safety_core/SafetyCore.h"
@@ -79,7 +84,20 @@ void apply_param_mavlink(vrp::VRPParamStore &params, const vrp::MavlinkRxAction 
 int main(int argc, char **argv) {
   std::vector<std::string> args(argv + 1, argv + argc);
   const std::string vehicle_kind = get_arg(args, "--vehicle", "quad");
-  const std::string model = get_arg(args, "--model", "vrp_iris");
+  std::string model = get_arg(args, "--model", "");
+  if (model.empty()) {
+    if (vehicle_kind == "boat" || vehicle_kind == "sailboat") {
+      model = "vrp_boat";
+    } else if (vehicle_kind == "rover") {
+      model = "vrp_rover";
+    } else if (vehicle_kind == "vtol") {
+      model = "vrp_standard_vtol";
+    } else if (vehicle_kind == "subsea") {
+      model = "vrp_bluerov";
+    } else {
+      model = "vrp_iris";
+    }
+  }
   const bool once = has_flag(args, "--once");
   const bool chibios = has_flag(args, "--chibios");
   const bool esp32 = has_flag(args, "--esp32");
@@ -130,6 +148,8 @@ int main(int argc, char **argv) {
   vrp::DdsBridge dds;
   vrp::UxrceSession uxrce;
   vrp::LibraryCore library_core;
+  vrp::VRP_WindVane wind_vane;
+  vrp::WindSample last_wind{};
   vehicle->setup();
   flash_store.init(flash_iface);
   flash_store.load(params);
@@ -137,7 +157,7 @@ int main(int argc, char **argv) {
   if (test_adsb_avoid) {
     safety.configure_adsb_test(25.0);
   }
-  nav_core.init(vehicle_kind, params.get("nav.cruise_speed", 2.0));
+  nav_core.init(vehicle_kind, params.get("nav.cruise_speed", 2.0), params.get("nav.wp_radius", 2.0));
   vehicle_core.init(vehicle_kind, params);
   control.init(vehicle_kind, params);
   mavlink.init();
@@ -156,6 +176,9 @@ int main(int argc, char **argv) {
     uxrce.init(8888);
   }
   library_core.init();
+  if (vehicle_kind == "sailboat") {
+    wind_vane.init();
+  }
 
   if (test_mavlink_rx) {
     params.set("system.auto_arm_sitl", 0.0);
@@ -166,7 +189,7 @@ int main(int argc, char **argv) {
     params.set("control.target_z", -100.0);
     safety.configure_calcio_mission_test();
     safety.init(vehicle_kind, params);
-    nav_core.init(vehicle_kind, params.get("nav.cruise_speed", 8.0));
+    nav_core.init(vehicle_kind, params.get("nav.cruise_speed", 8.0), params.get("nav.wp_radius", 2.0));
     vehicle_core.init(vehicle_kind, params);
   }
   if (gcs_mode) {
@@ -175,7 +198,7 @@ int main(int argc, char **argv) {
       safety.configure_calcio_home();
     }
     safety.init(vehicle_kind, params);
-    nav_core.init(vehicle_kind, params.get("nav.cruise_speed", 8.0));
+    nav_core.init(vehicle_kind, params.get("nav.cruise_speed", 8.0), params.get("nav.wp_radius", 2.0));
     vehicle_core.init(vehicle_kind, params);
   }
   if (test_failsafe) {
@@ -191,6 +214,7 @@ int main(int argc, char **argv) {
   int calcio_state = 0;
   bool calcio_pass = false;
   vrp::WpNavOutput last_nav_for_fdm{};
+  vrp::BoatActuators last_boat_fdm{};
   std::string vehicle_mode;
   if (gcs_mode) {
     std::cout << "GCS_MODE mavlink=udp:127.0.0.1:14550 home="
@@ -203,6 +227,13 @@ int main(int argc, char **argv) {
       vehicle->loop();
 
       vrp::FDMNavInput fdm_nav{};
+      vrp::FDMBoatInput fdm_boat{};
+      if (vrp::is_ar_surface_vehicle(vehicle_kind)) {
+        fdm_boat.valid = true;
+        fdm_boat.left = last_boat_fdm.left;
+        fdm_boat.right = last_boat_fdm.right;
+        fdm_boat.max_speed_m_s = params.get(vehicle_kind + ".max_speed_mps", 6.0);
+      }
       if (test_calcio_mission) {
         if (calcio_state == 9) {
           fdm_nav.guided_climb = true;
@@ -232,7 +263,11 @@ int main(int argc, char **argv) {
           fdm_nav.guided_target_z = 0.0;
         }
       }
-      fdm.step(vehicle_kind, kDtS, fdm_state, (test_calcio_mission || gcs_mode) ? &fdm_nav : nullptr);
+      fdm.step(vehicle_kind, kDtS, fdm_state, (test_calcio_mission || gcs_mode) ? &fdm_nav : nullptr,
+               vrp::is_ar_surface_vehicle(vehicle_kind) ? &fdm_boat : nullptr);
+      if (vehicle_kind == "sailboat") {
+        last_wind = wind_vane.update(hal.now_ms());
+      }
       safety.update(kDtS, hal.now_ms(), fdm_state, uorb);
 
       vrp::MavlinkRxAction rx_action{};
@@ -246,7 +281,7 @@ int main(int argc, char **argv) {
       }
       if (test_mavlink_mode && i == 2) {
         uint8_t seq = 0;
-        const uint32_t custom = (vehicle_kind == "vtol") ? 19U : (vehicle_kind == "boat") ? 10U : 3U;
+        const uint32_t custom = vrp::mavlink_custom_mode_from_mode(vehicle_kind, "Auto");
         const auto mode_frame = vrp::MavlinkCodec::set_mode(1, 1, 0x01, custom, seq);
         mavlink.inject_frame_for_test(mode_frame, rx_action);
         rx_line = "MAVLINK_RX msg=11 cmd=SET_MODE custom=" + std::to_string(custom);
@@ -370,16 +405,29 @@ int main(int argc, char **argv) {
       const bool auto_nav_mode = vehicle_core.mode() == "Auto" ||
                                (test_calcio_mission && calcio_state >= 11 && calcio_state < 13) ||
                                (gcs_mode && vehicle_mode == "Auto");
+      const bool boat_nav_mode = vrp::is_ar_surface_vehicle(vehicle_kind) &&
+                                 (vehicle_mode == "Auto" || vehicle_mode == "Loiter" || vehicle_mode == "RTL" ||
+                                  safety.flight_mode() == "Loiter" || safety.flight_mode() == "RTL");
       const bool nav_active = rtl_nav ||
                               (safety.mission_active() &&
                                (auto_nav_mode || vehicle_core.mode() == "FW" || safety.flight_mode() == "Auto" ||
-                                safety.flight_mode() == "RTL"));
+                                safety.flight_mode() == "RTL")) ||
+                              boat_nav_mode;
       const bool use_l1 =
           vehicle_kind == "vtol" &&
           (vehicle_core.vtol_phase() == "FW" || vehicle_core.mode() == "FW" || tick >= 5);
+      std::string nav_mode = vehicle_mode;
+      if (vrp::is_ar_surface_vehicle(vehicle_kind)) {
+        if (safety.flight_mode() == "Loiter" || safety.flight_mode() == "RTL") {
+          nav_mode = safety.flight_mode();
+        } else if (vehicle_mode == "Auto" || vehicle_mode == "Manual" || vehicle_mode == "Loiter" ||
+                   vehicle_mode == "RTL") {
+          nav_mode = vehicle_mode;
+        }
+      }
       const vrp::WpNavOutput nav =
-          nav_core.update(safety.position(), safety.nav_target(), safety.mission_prev_target(), use_l1, nav_active,
-                          uorb);
+          nav_core.update(safety.position(), safety.attitude(), safety.nav_target(), safety.mission_prev_target(),
+                          use_l1, nav_active, nav_mode, uorb);
 
       vehicle_core.update(tick, safety.is_armed(), safety.flight_mode(), safety.position(), safety.battery(), nav,
                           safety.rangefinder(), gcs_link, uorb);
@@ -402,9 +450,16 @@ int main(int argc, char **argv) {
                                 kDtS, uorb);
         throttle = (motors.m1 + motors.m2 + motors.m3 + motors.m4) / 4.0F;
         servos = srv.map_quad(motors);
-      } else if (vehicle_kind == "boat") {
-        const auto boat =
-            control.update_boat(safety.is_armed(), safety.fence_breached(), safety.position(), sp, kDtS, uorb);
+      } else if (vehicle_kind == "boat" || vehicle_kind == "rover") {
+        const auto boat = control.update_boat(safety.is_armed(), safety.fence_breached(), safety.attitude(),
+                                              safety.position(), sp, kDtS, uorb);
+        last_boat_fdm = boat;
+        throttle = boat.left;
+        servos = srv.map_boat(boat);
+      } else if (vehicle_kind == "sailboat") {
+        const auto boat = control.update_sailboat(safety.is_armed(), safety.fence_breached(), safety.attitude(),
+                                                  safety.position(), sp, last_wind, kDtS, uorb);
+        last_boat_fdm = boat;
         throttle = boat.left;
         servos = srv.map_boat(boat);
       } else if (vehicle_kind == "vtol") {
@@ -432,15 +487,22 @@ int main(int argc, char **argv) {
         tx_bundle.mission.reached_seq = static_cast<uint16_t>(reached_idx);
       }
       apply_param_mavlink(params, rx_action, tx_bundle);
+      if (gcs_mode && i == 1) {
+        tx_bundle.send_home_position = true;
+        tx_bundle.home_lat_e7 = static_cast<int32_t>(safety.gps().lat_deg * 1e7);
+        tx_bundle.home_lon_e7 = static_cast<int32_t>(safety.gps().lon_deg * 1e7);
+        tx_bundle.home_alt_mm = static_cast<int32_t>(safety.gps().alt_m * 1000.0);
+      }
       if (test_mavlink_param && i == 2) {
         tx_bundle.send_home_position = true;
         tx_bundle.home_lat_e7 = static_cast<int32_t>(safety.gps().lat_deg * 1e7);
         tx_bundle.home_lon_e7 = static_cast<int32_t>(safety.gps().lon_deg * 1e7);
         tx_bundle.home_alt_mm = static_cast<int32_t>(safety.gps().alt_m * 1000.0);
       }
+      const vrp::WindSample *wind_tx = vehicle_kind == "sailboat" ? &last_wind : nullptr;
       const std::string mavlink_v2 =
-          mavlink.transmit(safety.is_armed(), mode, safety.attitude(), safety.gps(), safety.battery(), hal.now_ms(),
-                           mission_seq, &tx_bundle);
+          mavlink.transmit(vehicle_kind, safety.is_armed(), mode, safety.attitude(), safety.position(), safety.gps(),
+                           safety.battery(), hal.now_ms(), mission_seq, &tx_bundle, wind_tx);
       if (tx_bundle.mission.send_upload_ack) {
         safety.clear_mission_upload_ack();
       }
@@ -519,6 +581,21 @@ int main(int argc, char **argv) {
                 << " pos_z=" << safety.position().z << " fence=" << (safety.fence_breached() ? 1 : 0) << "\n";
       if (vehicle_kind == "quad" || vehicle_kind == "vtol") {
         std::cout << "ATT_CTRL " << (safety.is_armed() && !safety.fence_breached() ? "active" : "idle") << "\n";
+      }
+      if (vrp::is_ar_surface_vehicle(vehicle_kind)) {
+        if (const auto ar = uorb.subscribe("control/ar_attitude")) {
+          std::cout << *ar << "\n";
+        }
+        std::cout << format_ar_motors(control.last_ar_motors()) << "\n";
+        if (nav_core.last_ar().valid) {
+          std::cout << format_ar_wpnav(nav_core.last_ar()) << "\n";
+        }
+        if (vehicle_kind == "sailboat") {
+          if (const auto sail = uorb.subscribe("control/sailboat")) {
+            std::cout << *sail << "\n";
+          }
+          std::cout << format_wind(last_wind) << "\n";
+        }
       }
       std::cout << safety.logger_summary() << "\n";
       std::cout << "SIM_STATE vehicle=" << vehicle_kind << " x=" << fdm_state.x << " y=" << fdm_state.y
