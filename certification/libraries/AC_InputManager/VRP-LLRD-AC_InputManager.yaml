@@ -1,0 +1,32 @@
+id: VRP-LLRD-AC_InputManager
+ap_equivalent: AC_InputManager
+vrp_module: libraries/VRP_AC_InputManager
+level: LLRD
+parent: VRP-HLRD-002
+dal: C
+status: partial
+phase: 19
+license: BSD-3-Clause
+implementation: clean-room
+text: >
+  VRP_AC_InputManager shall provide functional parity with ArduPilot AC_InputManager
+  via clean-room BSD implementation compatible with DO-178C objectives for DAL C.
+verify: test
+verification_methods: [test, review, analysis]
+dal_objectives:
+  - Statement coverage 100%
+  - Requirements-based tests
+  - Design review
+tests:
+  - VRP-TST-X01
+  - VRP-LIB-PHASE19
+misra: applicable_for_B_and_above
+safety_notes: >
+  Major failure — requirements + tests + review; structural coverage target 100% statement.
+parity_refs:
+  - docs/PARITY_1TO1_MATRIX.md
+  - certification/LIBRARY_REGISTRY.json
+artifacts:
+  sdd: VRP-SDD-AC_InputManager.md
+  svcp: test/libraries/VRP_AC_InputManager/
+  traceability: certification/traceability/VRP-RTM-001.md

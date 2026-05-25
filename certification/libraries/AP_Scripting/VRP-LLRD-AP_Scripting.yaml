@@ -1,0 +1,30 @@
+id: VRP-LLRD-AP_Scripting
+ap_equivalent: AP_Scripting
+vrp_module: libraries/VRP_Scripting
+level: LLRD
+parent: VRP-HLRD-002
+dal: D
+status: partial
+phase: 3
+license: BSD-3-Clause
+implementation: clean-room
+text: >
+  VRP_Scripting shall provide functional parity with ArduPilot AP_Scripting
+  via clean-room BSD implementation compatible with DO-178C objectives for DAL D.
+verify: test
+verification_methods: [test, review, analysis]
+dal_objectives:
+  - Unit tests for public API
+  - Requirements traceability
+tests:
+  - VRP-TST-V03
+misra: applicable_for_B_and_above
+safety_notes: >
+  Minor failure — requirements + unit tests.
+parity_refs:
+  - docs/PARITY_1TO1_MATRIX.md
+  - certification/LIBRARY_REGISTRY.json
+artifacts:
+  sdd: VRP-SDD-AP_Scripting.md
+  svcp: test/libraries/VRP_Scripting/
+  traceability: certification/traceability/VRP-RTM-001.md

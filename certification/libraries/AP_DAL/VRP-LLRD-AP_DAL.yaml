@@ -1,0 +1,33 @@
+id: VRP-LLRD-AP_DAL
+ap_equivalent: AP_DAL
+vrp_module: libraries/VRP_DAL
+level: LLRD
+parent: VRP-HLRD-001
+dal: B
+status: partial
+phase: 19
+license: BSD-3-Clause
+implementation: clean-room
+text: >
+  VRP_DAL shall provide functional parity with ArduPilot AP_DAL
+  via clean-room BSD implementation compatible with DO-178C objectives for DAL B.
+verify: test
+verification_methods: [test, review, analysis]
+dal_objectives:
+  - MC/DC on safety paths
+  - No dynamic heap
+  - Bounded WCET
+  - MISRA subset
+tests:
+  - VRP-TST-X02
+  - VRP-LIB-PHASE19
+misra: applicable_for_B_and_above
+safety_notes: >
+  Hazardous failure — MC/DC on safety paths, no heap, bounded WCET.
+parity_refs:
+  - docs/PARITY_1TO1_MATRIX.md
+  - certification/LIBRARY_REGISTRY.json
+artifacts:
+  sdd: VRP-SDD-AP_DAL.md
+  svcp: test/libraries/VRP_DAL/
+  traceability: certification/traceability/VRP-RTM-001.md

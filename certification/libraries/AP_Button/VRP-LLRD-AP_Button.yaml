@@ -1,0 +1,31 @@
+id: VRP-LLRD-AP_Button
+ap_equivalent: AP_Button
+vrp_module: libraries/VRP_Button
+level: LLRD
+parent: VRP-HLRD-002
+dal: D
+status: partial
+phase: 20
+license: BSD-3-Clause
+implementation: clean-room
+text: >
+  VRP_Button shall provide functional parity with ArduPilot AP_Button
+  via clean-room BSD implementation compatible with DO-178C objectives for DAL D.
+verify: test
+verification_methods: [test, review, analysis]
+dal_objectives:
+  - Unit tests for public API
+  - Requirements traceability
+tests:
+  - VRP-TST-Y01
+  - VRP-LIB-PHASE20
+misra: applicable_for_B_and_above
+safety_notes: >
+  Minor failure — requirements + unit tests.
+parity_refs:
+  - docs/PARITY_1TO1_MATRIX.md
+  - certification/LIBRARY_REGISTRY.json
+artifacts:
+  sdd: VRP-SDD-AP_Button.md
+  svcp: test/libraries/VRP_Button/
+  traceability: certification/traceability/VRP-RTM-001.md

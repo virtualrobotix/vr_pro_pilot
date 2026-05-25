@@ -1,0 +1,31 @@
+id: VRP-LLRD-AP_Menu
+ap_equivalent: AP_Menu
+vrp_module: libraries/VRP_Menu
+level: LLRD
+parent: VRP-HLRD-002
+dal: D
+status: partial
+phase: 14
+license: BSD-3-Clause
+implementation: clean-room
+text: >
+  VRP_Menu shall provide functional parity with ArduPilot AP_Menu
+  via clean-room BSD implementation compatible with DO-178C objectives for DAL D.
+verify: test
+verification_methods: [test, review, analysis]
+dal_objectives:
+  - Unit tests for public API
+  - Requirements traceability
+tests:
+  - VRP-TST-N03
+  - VRP-LIB-PHASE14
+misra: applicable_for_B_and_above
+safety_notes: >
+  Minor failure — requirements + unit tests.
+parity_refs:
+  - docs/PARITY_1TO1_MATRIX.md
+  - certification/LIBRARY_REGISTRY.json
+artifacts:
+  sdd: VRP-SDD-AP_Menu.md
+  svcp: test/libraries/VRP_Menu/
+  traceability: certification/traceability/VRP-RTM-001.md

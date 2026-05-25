@@ -1,0 +1,7 @@
+id: VRP-HLRD-001
+level: HLRD
+dal: B
+text: "The flight control shall publish heartbeat data at runtime."
+verify: test
+module: src/modules/mavlink/Heartbeat.cpp
+tests: [VRP-TST-Q01, VRP-TST-B01]

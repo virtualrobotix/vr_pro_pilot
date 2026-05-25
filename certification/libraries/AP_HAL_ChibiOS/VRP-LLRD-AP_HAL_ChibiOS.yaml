@@ -1,0 +1,34 @@
+id: VRP-LLRD-AP_HAL_ChibiOS
+ap_equivalent: AP_HAL_ChibiOS
+vrp_module: libraries/VRP_HAL_ChibiOS
+level: LLRD
+parent: VRP-HLRD-001
+dal: B
+status: present
+phase: 0
+license: BSD-3-Clause
+implementation: clean-room
+text: >
+  VRP_HAL_ChibiOS shall provide functional parity with ArduPilot AP_HAL_ChibiOS
+  via clean-room BSD implementation compatible with DO-178C objectives for DAL B.
+verify: test
+verification_methods: [test, review, analysis]
+dal_objectives:
+  - MC/DC on safety paths
+  - No dynamic heap
+  - Bounded WCET
+  - MISRA subset
+tests:
+  - VRP-TST-F03
+  - VRP-LIB-PHASE7
+  - VRP-LIB-PHASE8
+misra: applicable_for_B_and_above
+safety_notes: >
+  Hazardous failure — MC/DC on safety paths, no heap, bounded WCET.
+parity_refs:
+  - docs/PARITY_1TO1_MATRIX.md
+  - certification/LIBRARY_REGISTRY.json
+artifacts:
+  sdd: VRP-SDD-AP_HAL_ChibiOS.md
+  svcp: test/libraries/VRP_HAL_ChibiOS/
+  traceability: certification/traceability/VRP-RTM-001.md

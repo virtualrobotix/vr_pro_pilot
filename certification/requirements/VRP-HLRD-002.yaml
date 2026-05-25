@@ -1,0 +1,7 @@
+id: VRP-HLRD-002
+level: HLRD
+dal: B
+text: "The Quad and Boat SITL flows shall complete deterministic smoke tests."
+verify: test
+module: Tools/run_sitl_tests.sh
+tests: [VRP-TST-Q01, VRP-TST-Q02, VRP-TST-Q03, VRP-TST-Q04, VRP-TST-B01, VRP-TST-B02, VRP-TST-B03]

@@ -1,0 +1,29 @@
+id: VRP-LLRD-doc
+ap_equivalent: doc
+vrp_module: libraries/VRP_DOC
+level: LLRD
+parent: VRP-HLRD-002
+dal: N/A
+status: n/a
+phase: 99
+license: BSD-3-Clause
+implementation: clean-room
+text: >
+  VRP_DOC shall provide functional parity with ArduPilot doc
+  via clean-room BSD implementation compatible with DO-178C objectives for DAL N/A.
+verify: test
+verification_methods: [test, review, analysis]
+dal_objectives:
+  - Documentation review only
+tests:
+  []
+misra: applicable_for_B_and_above
+safety_notes: >
+  Documentation-only; no airborne software artifact.
+parity_refs:
+  - docs/PARITY_1TO1_MATRIX.md
+  - certification/LIBRARY_REGISTRY.json
+artifacts:
+  sdd: VRP-SDD-doc.md
+  svcp: test/libraries/VRP_DOC/
+  traceability: certification/traceability/VRP-RTM-001.md

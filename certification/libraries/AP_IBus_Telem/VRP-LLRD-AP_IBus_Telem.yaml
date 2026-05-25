@@ -1,0 +1,31 @@
+id: VRP-LLRD-AP_IBus_Telem
+ap_equivalent: AP_IBus_Telem
+vrp_module: libraries/VRP_IBus_Telem
+level: LLRD
+parent: VRP-HLRD-002
+dal: E
+status: partial
+phase: 13
+license: BSD-3-Clause
+implementation: clean-room
+text: >
+  VRP_IBus_Telem shall provide functional parity with ArduPilot AP_IBus_Telem
+  via clean-room BSD implementation compatible with DO-178C objectives for DAL E.
+verify: test
+verification_methods: [test, review, analysis]
+dal_objectives:
+  - Smoke tests
+  - Best-effort review
+tests:
+  - VRP-TST-M03
+  - VRP-LIB-PHASE13
+misra: applicable_for_B_and_above
+safety_notes: >
+  No safety effect — best-effort tests.
+parity_refs:
+  - docs/PARITY_1TO1_MATRIX.md
+  - certification/LIBRARY_REGISTRY.json
+artifacts:
+  sdd: VRP-SDD-AP_IBus_Telem.md
+  svcp: test/libraries/VRP_IBus_Telem/
+  traceability: certification/traceability/VRP-RTM-001.md

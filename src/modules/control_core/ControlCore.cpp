@@ -1,0 +1,117 @@
+#include "modules/control_core/ControlCore.h"
+
+#include <string>
+
+#include "libraries/VRP_Math/VRP_Math.h"
+
+namespace vrp {
+
+bool ControlCore::init(const std::string &vehicle, VRPParamStore &params) {
+  vehicle_ = vehicle;
+  target_z_ = params.get("control.target_z", -5.0);
+  att_ctrl_.init();
+  motors_.init();
+  apm_ctrl_.init();
+  tecs_.init(5.0, 12.0);
+  quad_out_ = MotorOutputQuad{};
+  boat_out_ = BoatActuators{};
+  return true;
+}
+
+MotorOutputQuad ControlCore::update_quad(bool armed, bool fence_breach, const Attitude &attitude,
+                                         const LocalPosition &pos, const VehicleSetpoints &sp, double dt_s,
+                                         UORB &uorb) {
+  if (!armed || fence_breach) {
+    quad_out_ = MotorOutputQuad{};
+    uorb.publish("control/attitude", "ATT_CTRL disarmed");
+    uorb.publish("actuators/quad", format_motors_quad(quad_out_));
+    return quad_out_;
+  }
+
+  AttitudeSetpoint asp = sp.attitude;
+  if (asp.thrust_base <= 0.0) {
+    asp.thrust_base = VRP_Math::clamp(0.55 + 0.15 * (target_z_ - pos.z), 0.35, 0.85);
+  }
+
+  const ControlTorque torque = att_ctrl_.update(attitude, asp, dt_s);
+  quad_out_ = motors_.mix_quad(static_cast<float>(asp.thrust_base), torque);
+
+  uorb.publish("control/attitude", "ATT_CTRL active roll=" + std::to_string(torque.roll) +
+                                        " pitch=" + std::to_string(torque.pitch));
+  uorb.publish("actuators/quad", format_motors_quad(quad_out_));
+  return quad_out_;
+}
+
+MotorOutputQuad ControlCore::update_vtol(bool armed, bool fence_breach, const Attitude &attitude,
+                                         const LocalPosition &pos, const VehicleSetpoints &sp, double airspeed_m_s,
+                                         double dt_s, UORB &uorb) {
+  if (!armed || fence_breach) {
+    quad_out_ = MotorOutputQuad{};
+    uorb.publish("control/tecs", "TECS idle");
+    uorb.publish("vtol/actuators", format_motors_quad(quad_out_));
+    return quad_out_;
+  }
+
+  AttitudeSetpoint asp = sp.attitude;
+  if (sp.use_tecs) {
+    const double tas = airspeed_m_s > 0.1 ? airspeed_m_s : std::abs(pos.vx);
+    const TecsOutput tecs = tecs_.update(-pos.z, tas, dt_s);
+    asp.pitch_rad = tecs.pitch_rad;
+    asp.thrust_base = tecs.throttle;
+    uorb.publish("control/tecs", "TECS pitch=" + std::to_string(tecs.pitch_rad) +
+                                     " thr=" + std::to_string(tecs.throttle) +
+                                     " airspd=" + std::to_string(tas));
+    if (sp.use_apm && sp.nav_active) {
+      FwNavSetpoint nav{};
+      nav.bearing_rad = sp.nav_bearing_rad;
+      nav.speed_m_s = sp.nav_speed_m_s;
+      nav.valid = true;
+      FwControlSetpoint tecs_sp{};
+      tecs_sp.pitch_rad = tecs.pitch_rad;
+      const FwControlSetpoint fw = apm_ctrl_.update(attitude, nav, tecs_sp, dt_s);
+      asp.roll_rad = fw.roll_rad;
+      asp.pitch_rad = fw.pitch_rad;
+      asp.yaw_rate_rad_s = fw.yaw_rate_rad_s;
+      uorb.publish("control/apm", "APM_CTRL roll=" + std::to_string(fw.roll_rad) +
+                                       " pitch=" + std::to_string(fw.pitch_rad));
+    }
+  }
+
+  const ControlTorque torque = att_ctrl_.update(attitude, asp, dt_s);
+  quad_out_ = motors_.mix_quad(static_cast<float>(asp.thrust_base), torque);
+  uorb.publish("control/attitude", "ATT_CTRL vtol roll=" + std::to_string(torque.roll));
+  uorb.publish("vtol/actuators", format_motors_quad(quad_out_));
+  return quad_out_;
+}
+
+BoatActuators ControlCore::update_boat(bool armed, bool fence_breach, const LocalPosition &pos,
+                                       const VehicleSetpoints &sp, double dt_s, UORB &uorb) {
+  (void)dt_s;
+  (void)pos;
+  if (!armed || fence_breach) {
+    boat_out_ = BoatActuators{};
+  } else if (sp.boat_forward > 0.0F || sp.boat_turn != 0.0F) {
+    boat_out_ = motors_.mix_boat(sp.boat_forward, sp.boat_turn);
+  } else {
+    const float forward = static_cast<float>(VRP_Math::clamp(0.5 + 0.05 * pos.x, 0.2, 0.8));
+    const float turn = static_cast<float>(VRP_Math::clamp(pos.y * 0.02, -0.2, 0.2));
+    boat_out_ = motors_.mix_boat(forward, turn);
+  }
+
+  uorb.publish("actuators/boat",
+               "left=" + std::to_string(boat_out_.left) + " right=" + std::to_string(boat_out_.right));
+  return boat_out_;
+}
+
+BoatActuators ControlCore::update_subsea(bool armed, bool fence_breach, const VehicleSetpoints &sp, UORB &uorb) {
+  if (!armed || fence_breach) {
+    boat_out_ = BoatActuators{};
+  } else {
+    boat_out_ = motors_.mix_boat(sp.subsea_thrust, sp.subsea_yaw);
+  }
+  uorb.publish("actuators/subsea",
+               "left=" + std::to_string(boat_out_.left) + " right=" + std::to_string(boat_out_.right));
+  return boat_out_;
+}
+
+} // namespace vrp

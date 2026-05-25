@@ -1,0 +1,31 @@
+id: VRP-LLRD-AP_ONVIF
+ap_equivalent: AP_ONVIF
+vrp_module: libraries/VRP_ONVIF
+level: LLRD
+parent: VRP-HLRD-002
+dal: E
+status: partial
+phase: 17
+license: BSD-3-Clause
+implementation: clean-room
+text: >
+  VRP_ONVIF shall provide functional parity with ArduPilot AP_ONVIF
+  via clean-room BSD implementation compatible with DO-178C objectives for DAL E.
+verify: test
+verification_methods: [test, review, analysis]
+dal_objectives:
+  - Smoke tests
+  - Best-effort review
+tests:
+  - VRP-TST-T02
+  - VRP-LIB-PHASE17
+misra: applicable_for_B_and_above
+safety_notes: >
+  No safety effect — best-effort tests.
+parity_refs:
+  - docs/PARITY_1TO1_MATRIX.md
+  - certification/LIBRARY_REGISTRY.json
+artifacts:
+  sdd: VRP-SDD-AP_ONVIF.md
+  svcp: test/libraries/VRP_ONVIF/
+  traceability: certification/traceability/VRP-RTM-001.md

@@ -1,0 +1,32 @@
+id: VRP-LLRD-AP_Module
+ap_equivalent: AP_Module
+vrp_module: libraries/VRP_Module
+level: LLRD
+parent: VRP-HLRD-002
+dal: C
+status: partial
+phase: 20
+license: BSD-3-Clause
+implementation: clean-room
+text: >
+  VRP_Module shall provide functional parity with ArduPilot AP_Module
+  via clean-room BSD implementation compatible with DO-178C objectives for DAL C.
+verify: test
+verification_methods: [test, review, analysis]
+dal_objectives:
+  - Statement coverage 100%
+  - Requirements-based tests
+  - Design review
+tests:
+  - VRP-TST-Y03
+  - VRP-LIB-PHASE20
+misra: applicable_for_B_and_above
+safety_notes: >
+  Major failure — requirements + tests + review; structural coverage target 100% statement.
+parity_refs:
+  - docs/PARITY_1TO1_MATRIX.md
+  - certification/LIBRARY_REGISTRY.json
+artifacts:
+  sdd: VRP-SDD-AP_Module.md
+  svcp: test/libraries/VRP_Module/
+  traceability: certification/traceability/VRP-RTM-001.md

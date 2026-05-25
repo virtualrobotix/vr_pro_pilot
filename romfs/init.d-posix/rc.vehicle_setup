@@ -1,0 +1,8 @@
+#!/bin/sh
+case "${VRP_VEHICLE}" in
+  quad) echo "load quad modules" ;;
+  boat) echo "load boat modules" ;;
+  vtol) echo "load vtol modules" ;;
+  subsea) echo "load subsea modules" ;;
+  *) echo "unknown vehicle"; exit 1 ;;
+esac

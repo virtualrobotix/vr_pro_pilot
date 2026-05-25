@@ -1,0 +1,40 @@
+id: VRP-LLRD-GCS_MAVLink
+ap_equivalent: GCS_MAVLink
+vrp_module: libraries/VRP_GCS_MAVLink
+level: LLRD
+parent: VRP-HLRD-002
+dal: C
+status: partial
+phase: 6
+license: BSD-3-Clause
+implementation: clean-room
+text: >
+  VRP_GCS_MAVLink shall provide functional parity with ArduPilot GCS_MAVLink
+  via clean-room BSD implementation compatible with DO-178C objectives for DAL C.
+verify: test
+verification_methods: [test, review, analysis]
+dal_objectives:
+  - Statement coverage 100%
+  - Requirements-based tests
+  - Design review
+tests:
+  - VRP-TST-Q01
+  - VRP-TST-C02
+  - VRP-TST-P02
+  - VRP-TST-M01
+  - VRP-TST-U01
+  - VRP-TST-F02
+  - VRP-LIB-PHASE5
+  - VRP-LIB-PHASE6
+  - VRP-TST-I05
+  - VRP-LIB-PHASE9
+misra: applicable_for_B_and_above
+safety_notes: >
+  Major failure — requirements + tests + review; structural coverage target 100% statement.
+parity_refs:
+  - docs/PARITY_1TO1_MATRIX.md
+  - certification/LIBRARY_REGISTRY.json
+artifacts:
+  sdd: VRP-SDD-GCS_MAVLink.md
+  svcp: test/libraries/VRP_GCS_MAVLink/
+  traceability: certification/traceability/VRP-RTM-001.md

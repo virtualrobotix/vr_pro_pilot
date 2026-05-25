@@ -1,0 +1,9 @@
+publications:
+  - /vrp/out/vehicle_status
+  - /vrp/out/vehicle_attitude
+  - /vrp/out/vehicle_local_position
+  - /vrp/out/sensor_combined
+subscriptions:
+  - /vrp/in/vehicle_command
+  - /vrp/in/trajectory_setpoint
+  - /vrp/in/offboard_control_mode

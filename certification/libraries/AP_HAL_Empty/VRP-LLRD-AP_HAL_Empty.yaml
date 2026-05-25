@@ -1,0 +1,31 @@
+id: VRP-LLRD-AP_HAL_Empty
+ap_equivalent: AP_HAL_Empty
+vrp_module: libraries/VRP_HAL_Empty
+level: LLRD
+parent: VRP-HLRD-002
+dal: E
+status: partial
+phase: 18
+license: BSD-3-Clause
+implementation: clean-room
+text: >
+  VRP_HAL_Empty shall provide functional parity with ArduPilot AP_HAL_Empty
+  via clean-room BSD implementation compatible with DO-178C objectives for DAL E.
+verify: test
+verification_methods: [test, review, analysis]
+dal_objectives:
+  - Smoke tests
+  - Best-effort review
+tests:
+  - VRP-TST-W02
+  - VRP-LIB-PHASE18
+misra: applicable_for_B_and_above
+safety_notes: >
+  No safety effect — best-effort tests.
+parity_refs:
+  - docs/PARITY_1TO1_MATRIX.md
+  - certification/LIBRARY_REGISTRY.json
+artifacts:
+  sdd: VRP-SDD-AP_HAL_Empty.md
+  svcp: test/libraries/VRP_HAL_Empty/
+  traceability: certification/traceability/VRP-RTM-001.md

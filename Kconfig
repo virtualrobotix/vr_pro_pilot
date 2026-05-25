@@ -1,0 +1,21 @@
+mainmenu "VR-Pilot-PRO"
+
+config VRP_WITH_ROS2
+    bool "Enable ROS2 DDS bridge"
+    default y
+
+config VRP_ENABLE_VTOL
+    bool "Enable VTOL vehicle"
+    default y
+
+config VRP_ENABLE_SUBSEA
+    bool "Enable Subsea vehicle"
+    default y
+
+config VRP_MINIMIZE_FEATURES
+    bool "Minimize features for 1MB boards"
+    default n
+
+config VRP_BUILD_ID
+    string "Build identifier"
+    default "dev"

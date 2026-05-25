@@ -1,0 +1,3 @@
+# Common VR-Pilot-PRO board DSL
+USB_VENDOR 0x27AC
+USB_MANUFACTURER "Laser Navigation"

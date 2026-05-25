@@ -1,0 +1,216 @@
+#pragma once
+
+#include <string>
+
+#include "libraries/VRP_ADC/VRP_ADC.h"
+#include "libraries/VRP_AC_CustomControl/VRP_AC_CustomControl.h"
+#include "libraries/VRP_AC_Autorotation/VRP_AC_Autorotation.h"
+#include "libraries/VRP_AC_AutoTune/VRP_AC_AutoTune.h"
+#include "libraries/VRP_AC_InputManager/VRP_AC_InputManager.h"
+#include "libraries/VRP_AC_PID/VRP_AC_PID.h"
+#include "libraries/VRP_AC_PrecLand/VRP_AC_PrecLand.h"
+#include "libraries/VRP_AC_Sprayer/VRP_AC_Sprayer.h"
+#include "libraries/VRP_AccelCal/VRP_AccelCal.h"
+#include "libraries/VRP_AR_Motors/VRP_AR_Motors.h"
+#include "libraries/VRP_AR_WPNav/VRP_AR_WPNav.h"
+#include "libraries/VRP_AIS/VRP_AIS.h"
+#include "libraries/VRP_Avoidance/VRP_Avoidance.h"
+#include "libraries/VRP_Beacon/VRP_Beacon.h"
+#include "libraries/VRP_BoardConfig/VRP_BoardConfig.h"
+#include "libraries/VRP_Button/VRP_Button.h"
+#include "libraries/VRP_BLHeli/VRP_BLHeli.h"
+#include "libraries/VRP_Camera/VRP_Camera.h"
+#include "libraries/VRP_Common/VRP_Common.h"
+#include "libraries/VRP_CSVReader/VRP_CSVReader.h"
+#include "libraries/VRP_CustomRotations/VRP_CustomRotations.h"
+#include "libraries/VRP_Devo_Telem/VRP_Devo_Telem.h"
+#include "libraries/VRP_ESC_Telem/VRP_ESC_Telem.h"
+#include "libraries/VRP_CheckFirmware/VRP_CheckFirmware.h"
+#include "libraries/VRP_DAC/VRP_DAC.h"
+#include "libraries/VRP_DAL/VRP_DAL.h"
+#include "libraries/VRP_Declination/VRP_Declination.h"
+#include "libraries/VRP_EFI/VRP_EFI.h"
+#include "libraries/VRP_ExternalAHRS/VRP_ExternalAHRS.h"
+#include "libraries/VRP_ExternalControl/VRP_ExternalControl.h"
+#include "libraries/VRP_FETtecOneWire/VRP_FETtecOneWire.h"
+#include "libraries/VRP_Filesystem/VRP_Filesystem.h"
+#include "libraries/VRP_Follow/VRP_Follow.h"
+#include "libraries/VRP_Generator/VRP_Generator.h"
+#include "libraries/VRP_Gripper/VRP_Gripper.h"
+#include "libraries/VRP_GSOF/VRP_GSOF.h"
+#include "libraries/VRP_ICEngine/VRP_ICEngine.h"
+#include "libraries/VRP_GyroFFT/VRP_GyroFFT.h"
+#include "libraries/VRP_HAL_Empty/VRP_HAL_Empty.h"
+#include "libraries/VRP_HAL_ESP32/VRP_HAL_ESP32.h"
+#include "libraries/VRP_HAL_Linux/VRP_HAL_Linux.h"
+#include "libraries/VRP_HAL_QURT/VRP_HAL_QURT.h"
+#include "libraries/VRP_IBus_Telem/VRP_IBus_Telem.h"
+#include "libraries/VRP_IOMCU/VRP_IOMCU.h"
+#include "libraries/VRP_InertialNav/VRP_InertialNav.h"
+#include "libraries/VRP_InternalError/VRP_InternalError.h"
+#include "libraries/VRP_IRLock/VRP_IRLock.h"
+#include "libraries/VRP_JSButton/VRP_JSButton.h"
+#include "libraries/VRP_JSON/VRP_JSON.h"
+#include "libraries/VRP_KDECAN/VRP_KDECAN.h"
+#include "libraries/VRP_LeakDetector/VRP_LeakDetector.h"
+#include "libraries/VRP_LightWareSerial/VRP_LightWareSerial.h"
+#include "libraries/VRP_Menu/VRP_Menu.h"
+#include "libraries/VRP_Module/VRP_Module.h"
+#include "libraries/VRP_Mount/VRP_Mount.h"
+#include "libraries/VRP_MultiHeap/VRP_MultiHeap.h"
+#include "libraries/VRP_NavEKF/VRP_NavEKF.h"
+#include "libraries/VRP_Navigation/VRP_Navigation.h"
+#include "libraries/VRP_Networking/VRP_Networking.h"
+#include "libraries/VRP_NMEA_Output/VRP_NMEA_Output.h"
+#include "libraries/VRP_Notify/VRP_Notify.h"
+#include "libraries/VRP_OLC/VRP_OLC.h"
+#include "libraries/VRP_ONVIF/VRP_ONVIF.h"
+#include "libraries/VRP_Parachute/VRP_Parachute.h"
+#include "libraries/VRP_PiccoloCAN/VRP_PiccoloCAN.h"
+#include "libraries/VRP_Quicktune/VRP_Quicktune.h"
+#include "libraries/VRP_RAMTRON/VRP_RAMTRON.h"
+#include "libraries/VRP_Radio/VRP_Radio.h"
+#include "libraries/VRP_Rally/VRP_Rally.h"
+#include "libraries/VRP_RangeFinder/VRP_RangeFinder.h"
+#include "libraries/VRP_RCMapper/VRP_RCMapper.h"
+#include "libraries/VRP_RCTelemetry/VRP_RCTelemetry.h"
+#include "libraries/VRP_Relay/VRP_Relay.h"
+#include "libraries/VRP_RobotisServo/VRP_RobotisServo.h"
+#include "libraries/VRP_ROMFS/VRP_ROMFS.h"
+#include "libraries/VRP_RPM/VRP_RPM.h"
+#include "libraries/VRP_RTC/VRP_RTC.h"
+#include "libraries/VRP_RSSI/VRP_RSSI.h"
+#include "libraries/VRP_SBusOut/VRP_SBusOut.h"
+#include "libraries/VRP_SerialLED/VRP_SerialLED.h"
+#include "libraries/VRP_SerialManager/VRP_SerialManager.h"
+#include "libraries/VRP_ServoRelayEvents/VRP_ServoRelayEvents.h"
+#include "libraries/VRP_Servo_Telem/VRP_Servo_Telem.h"
+#include "libraries/VRP_Soaring/VRP_Soaring.h"
+#include "libraries/VRP_StorageManager/VRP_StorageManager.h"
+#include "libraries/VRP_SurfaceDistance/VRP_SurfaceDistance.h"
+#include "libraries/VRP_TempCalibration/VRP_TempCalibration.h"
+#include "libraries/VRP_TemperatureSensor/VRP_TemperatureSensor.h"
+#include "libraries/VRP_Terrain/VRP_Terrain.h"
+#include "libraries/VRP_Torqeedo/VRP_Torqeedo.h"
+#include "libraries/VRP_Tuning/VRP_Tuning.h"
+#include "libraries/VRP_VideoTX/VRP_VideoTX.h"
+#include "libraries/VRP_VisualOdom/VRP_VisualOdom.h"
+#include "libraries/VRP_Volz_Protocol/VRP_Volz_Protocol.h"
+#include "libraries/VRP_WheelEncoder/VRP_WheelEncoder.h"
+#include "libraries/VRP_Winch/VRP_Winch.h"
+#include "libraries/VRP_WindVane/VRP_WindVane.h"
+#include "middleware/uorb/UORB.h"
+
+namespace vrp {
+
+class LibraryCore {
+public:
+  bool init();
+  std::string tick(uint64_t tick, const LocalPosition &pos, const GpsSample &gps, const Attitude &att,
+                   const RangeFinderSample &rng, const RcChannels &rc, const RssiSample &rssi,
+                   const BatteryStatus &battery, float throttle, bool armed, const std::string &mode,
+                   bool rtl_active, bool gcs_link, uint64_t time_ms, UORB &uorb);
+
+private:
+  VRP_Soaring soaring_{};
+  VRP_RPM rpm_{};
+  VRP_WindVane wind_{};
+  VRP_Terrain terrain_{};
+  VRP_Rally rally_{};
+  VRP_AIS ais_{};
+  VRP_SurfaceDistance surface_{};
+  VRP_Beacon beacon_{};
+  VRP_RCTelemetry rc_telem_{};
+  VRP_ESC_Telem esc_telem_{};
+  VRP_Mount mount_{};
+  VRP_Gripper gripper_{};
+  VRP_Parachute parachute_{};
+  VRP_Relay relay_{};
+  VRP_Winch winch_{};
+  VRP_IBus_Telem ibus_{};
+  VRP_Devo_Telem devo_{};
+  VRP_Servo_Telem servo_telem_{};
+  VRP_Notify notify_{};
+  VRP_RTC rtc_{};
+  VRP_Camera camera_{};
+  VRP_Networking networking_{};
+  VRP_Generator generator_{};
+  VRP_VideoTX vtx_{};
+  VRP_VisualOdom viso_{};
+  VRP_TemperatureSensor temp_{};
+  VRP_SerialManager serial_{};
+  VRP_Filesystem filesystem_{};
+  VRP_Menu menu_{};
+  VRP_OLC olc_{};
+  VRP_PiccoloCAN piccolo_{};
+  VRP_BLHeli blheli_{};
+  VRP_NMEA_Output nmea_{};
+  VRP_Follow follow_{};
+  VRP_LeakDetector leak_{};
+  VRP_WheelEncoder wheel_{};
+  VRP_Quicktune quicktune_{};
+  VRP_Tuning tuning_{};
+  VRP_Torqeedo torqeedo_{};
+  VRP_ROMFS romfs_{};
+  VRP_KDECAN kde_can_{};
+  VRP_FETtecOneWire fettec_{};
+  VRP_Radio radio_{};
+  VRP_SBusOut sbus_out_{};
+  VRP_SerialLED serial_led_{};
+  VRP_ServoRelayEvents srv_evt_{};
+  VRP_RCMapper rc_map_{};
+  VRP_StorageManager storage_{};
+  VRP_TempCalibration temp_cal_{};
+  VRP_AC_AutoTune autotune_{};
+  VRP_AC_PrecLand precland_{};
+  VRP_Volz_Protocol volz_{};
+  VRP_RobotisServo robotis_{};
+  VRP_ONVIF onvif_{};
+  VRP_IRLock irlock_{};
+  VRP_ICEngine icengine_{};
+  VRP_RAMTRON ramtron_{};
+  VRP_LightWareSerial lightware_{};
+  VRP_BoardConfig board_cfg_{};
+  VRP_AC_Autorotation autorot_{};
+  VRP_Navigation navigation_{};
+  VRP_InertialNav inertial_nav_{};
+  VRP_ExternalAHRS ext_ahrs_{};
+  VRP_NavEKF nav_ekf_{};
+  VRP_InternalError internal_err_{};
+  VRP_AR_Motors ar_motors_{};
+  VRP_AR_WPNav ar_wpnav_{};
+  VRP_HAL_Linux hal_linux_{};
+  VRP_HAL_Empty hal_empty_{};
+  VRP_AC_CustomControl cust_ctl_{};
+  VRP_AC_InputManager input_mgr_{};
+  VRP_AC_PID ac_pid_{};
+  VRP_AC_Sprayer sprayer_{};
+  VRP_Avoidance ap_avoid_{};
+  VRP_DAL dal_{};
+  VRP_GyroFFT gyro_fft_{};
+  VRP_CheckFirmware fw_chk_{};
+  VRP_IOMCU iomcu_{};
+  VRP_AccelCal accel_cal_{};
+  VRP_ADC adc_{};
+  VRP_Button button_{};
+  VRP_CSVReader csv_{};
+  VRP_CustomRotations crot_{};
+  VRP_DAC dac_{};
+  VRP_Declination decl_{};
+  VRP_EFI efi_{};
+  VRP_ExternalControl ext_ctl_{};
+  VRP_GSOF gsof_{};
+  VRP_HAL_ESP32 hal_esp32_{};
+  VRP_HAL_QURT hal_qurt_{};
+  VRP_JSButton jsbtn_{};
+  VRP_JSON json_{};
+  VRP_Module module_{};
+  VRP_MultiHeap multi_heap_{};
+  double prev_z_{0.0};
+  double prev_x_{0.0};
+  double prev_y_{0.0};
+  bool have_prev_z_{false};
+  bool have_prev_xy_{false};
+};
+
+} // namespace vrp

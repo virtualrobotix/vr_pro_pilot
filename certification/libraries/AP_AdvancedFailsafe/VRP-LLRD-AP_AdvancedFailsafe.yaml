@@ -1,0 +1,33 @@
+id: VRP-LLRD-AP_AdvancedFailsafe
+ap_equivalent: AP_AdvancedFailsafe
+vrp_module: libraries/VRP_AdvancedFailsafe
+level: LLRD
+parent: VRP-HLRD-001
+dal: B
+status: partial
+phase: 7
+license: BSD-3-Clause
+implementation: clean-room
+text: >
+  VRP_AdvancedFailsafe shall provide functional parity with ArduPilot AP_AdvancedFailsafe
+  via clean-room BSD implementation compatible with DO-178C objectives for DAL B.
+verify: test
+verification_methods: [test, review, analysis]
+dal_objectives:
+  - MC/DC on safety paths
+  - No dynamic heap
+  - Bounded WCET
+  - MISRA subset
+tests:
+  - VRP-TST-F01
+  - VRP-LIB-PHASE7
+misra: applicable_for_B_and_above
+safety_notes: >
+  Hazardous failure — MC/DC on safety paths, no heap, bounded WCET.
+parity_refs:
+  - docs/PARITY_1TO1_MATRIX.md
+  - certification/LIBRARY_REGISTRY.json
+artifacts:
+  sdd: VRP-SDD-AP_AdvancedFailsafe.md
+  svcp: test/libraries/VRP_AdvancedFailsafe/
+  traceability: certification/traceability/VRP-RTM-001.md
