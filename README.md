@@ -1,2 +1,2 @@
 # vr_pro_pilot
-Virtual Robotix Pro Pilot
+Laser Navigation Virtual Robotix Pro Pilot developed by Roberto Navoni
