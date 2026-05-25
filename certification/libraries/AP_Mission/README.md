@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Mission.yaml`](VRP-LLRD-AP_Mission.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Mission.md`](VRP-SDD-AP_Mission.md) | template |
-| SVCP tests | `test/libraries/VRP_Mission/` | planned |
+| SDD | [`VRP-SDD-AP_Mission.md`](VRP-SDD-AP_Mission.md) | **wired** |
+| SVCP tests | `test/libraries/VRP_Mission/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B
@@ -32,10 +32,10 @@ Hazardous failure — MC/DC on safety paths, no heap, bounded WCET.
 
 ## Checklist verifica
 
-- [ ] API surface documentata vs requisiti LLRD
+- [x] API surface documentata vs requisiti LLRD
 - [ ] Unit test interfaccia pubblica (`test/libraries/VRP_Mission/`)
 - [ ] Regressione SITL/HIL dove applicabile
-- [ ] Riga traceability in `VRP-RTM-001.md`
+- [x] Riga traceability in `VRP-RTM-001.md`
 - [ ] Static analysis / MISRA pulito per scope DAL
 - [ ] Evidence MC/DC (DAL A/B) o statement coverage (DAL C)
 

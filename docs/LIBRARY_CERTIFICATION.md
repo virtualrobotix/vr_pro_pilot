@@ -40,21 +40,30 @@ Mapping completo: [`PARITY_1TO1_MATRIX.md`](PARITY_1TO1_MATRIX.md) e [`certifica
 | High-level | HLRD | `certification/requirements/VRP-HLRD-*.yaml` |
 | Low-level | LLRD (153) | `certification/libraries/*/VRP-LLRD-*.yaml` |
 | Design | SDD | `certification/libraries/*/VRP-SDD-*.md` |
+| Module design | SDD/MLRD | `certification/modules/CopterCore/` |
+| Test cases | VRP-TC | `certification/test_cases/` |
 | Traceability | RTM | `certification/traceability/VRP-RTM-001.md` |
+| Accomplishment | SAS | `certification/verification/VRP-SAS-001.md` |
+| MC/DC | VRP-MCDC | `certification/verification/VRP-MCDC-001.md` |
 
 Parent HLRD:
 
-- **VRP-HLRD-001** — requisiti flight-critical (librerie DAL A/B)
-- **VRP-HLRD-002** — requisiti major/minor (librerie DAL C–E)
+- **VRP-HLRD-001** — heartbeat + attitude control (DAL B)
+- **VRP-HLRD-002** — major/minor aux libraries (DAL C–E)
+- **VRP-HLRD-003** — multicopter modes via CopterCore (DAL B)
+- **VRP-HLRD-004** — safety / failsafe / avoidance (DAL B)
+- **VRP-HLRD-005** — navigation / mission (DAL B)
+
+SRS standard: [`VRP-SRS-001.md`](../certification/requirements/VRP-SRS-001.md)
 
 ## Workflow implementazione certificabile
 
-1. **Baseline** — rigenerare matrice e pack: `python3 Tools/cert/gen_parity_and_libraries.py`
-2. **Design** — completare `VRP-SDD-*.md` prima del codice (DAL B/C)
+1. **Baseline** — `python3 Tools/cert/gen_parity_and_libraries.py` + `gen_cert_complete.py`
+2. **Design** — SDD wired libs complete; review before DAL B code changes
 3. **Implementazione** — clean-room in `src/libraries/`, header con `@req VRP-LLRD-*`
-4. **Verifica** — test in `test/libraries/VRP_*/`, aggiornare campo `tests:` nel LLRD
+4. **Verifica** — SVCP `test/libraries/VRP_*/test_api.py` + SITL (`run_copter_sitl_tests.sh`)
 5. **Traceability** — `python3 Tools/cert/gen_traceability.py` → RTM aggiornata
-6. **Review** — checklist in `certification/libraries/*/README.md`
+6. **Gate** — `./Tools/run_cert_checks.sh` → `VRP-CERT-CHECKS PASS`
 
 ## Tooling CI
 

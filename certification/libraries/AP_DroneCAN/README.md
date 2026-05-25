@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_DroneCAN.yaml`](VRP-LLRD-AP_DroneCAN.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_DroneCAN.md`](VRP-SDD-AP_DroneCAN.md) | template |
-| SVCP tests | `test/libraries/VRP_DroneCAN/` | planned |
+| SDD | [`VRP-SDD-AP_DroneCAN.md`](VRP-SDD-AP_DroneCAN.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_DroneCAN/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

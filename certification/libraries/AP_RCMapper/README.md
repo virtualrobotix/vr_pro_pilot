@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_RCMapper.yaml`](VRP-LLRD-AP_RCMapper.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_RCMapper.md`](VRP-SDD-AP_RCMapper.md) | template |
-| SVCP tests | `test/libraries/VRP_RCMapper/` | planned |
+| SDD | [`VRP-SDD-AP_RCMapper.md`](VRP-SDD-AP_RCMapper.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_RCMapper/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

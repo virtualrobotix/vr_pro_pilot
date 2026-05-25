@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Scripting.yaml`](VRP-LLRD-AP_Scripting.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Scripting.md`](VRP-SDD-AP_Scripting.md) | template |
-| SVCP tests | `test/libraries/VRP_Scripting/` | planned |
+| SDD | [`VRP-SDD-AP_Scripting.md`](VRP-SDD-AP_Scripting.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Scripting/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL D

@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Airspeed.yaml`](VRP-LLRD-AP_Airspeed.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Airspeed.md`](VRP-SDD-AP_Airspeed.md) | template |
-| SVCP tests | `test/libraries/VRP_Airspeed/` | planned |
+| SDD | [`VRP-SDD-AP_Airspeed.md`](VRP-SDD-AP_Airspeed.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Airspeed/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

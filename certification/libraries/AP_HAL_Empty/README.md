@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_HAL_Empty.yaml`](VRP-LLRD-AP_HAL_Empty.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_HAL_Empty.md`](VRP-SDD-AP_HAL_Empty.md) | template |
-| SVCP tests | `test/libraries/VRP_HAL_Empty/` | planned |
+| SDD | [`VRP-SDD-AP_HAL_Empty.md`](VRP-SDD-AP_HAL_Empty.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_HAL_Empty/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL E

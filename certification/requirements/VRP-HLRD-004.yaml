@@ -1,0 +1,9 @@
+id: VRP-HLRD-004
+level: HLRD
+dal: B
+text: >
+  Safety functions (arming, geofence, failsafe RTL, SmartRTL, rally fallback, ADSB avoidance)
+  shall transition to safe mode without unbounded actuator output.
+verify: test
+module: src/modules/safety_core/SafetyCore.cpp
+tests: [VRP-TST-S01, VRP-TST-C03, VRP-TST-F01, VRP-TST-J01, VRP-COPTER-T04]

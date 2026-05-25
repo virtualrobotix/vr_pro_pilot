@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_KDECAN.yaml`](VRP-LLRD-AP_KDECAN.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_KDECAN.md`](VRP-SDD-AP_KDECAN.md) | template |
-| SVCP tests | `test/libraries/VRP_KDECAN/` | planned |
+| SDD | [`VRP-SDD-AP_KDECAN.md`](VRP-SDD-AP_KDECAN.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_KDECAN/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

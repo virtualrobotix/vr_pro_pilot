@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_CRSF.yaml`](VRP-LLRD-AP_CRSF.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_CRSF.md`](VRP-SDD-AP_CRSF.md) | template |
-| SVCP tests | `test/libraries/VRP_CRSF/` | planned |
+| SDD | [`VRP-SDD-AP_CRSF.md`](VRP-SDD-AP_CRSF.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_CRSF/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL E

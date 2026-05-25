@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "libraries/VRP_AC_AttitudeControl/VRP_AC_AttitudeControl.h"
 #include "libraries/VRP_Math/VRP_Math.h"
 
 namespace vrp {
@@ -9,8 +10,9 @@ namespace vrp {
 bool ControlCore::init(const std::string &vehicle, VRPParamStore &params) {
   vehicle_ = vehicle;
   target_z_ = params.get("control.target_z", -5.0);
-  att_ctrl_.init();
-  motors_.init();
+  att_ctrl_.init(params.get("quad.max_tilt_deg", 35.0));
+  att_ctrl_.set_hover_throttle(static_cast<float>(params.get("motors.hover_throttle", 0.55)));
+  motors_.init(params.get("quad.max_tilt_deg", 35.0));
   apm_ctrl_.init();
   tecs_.init(5.0, 12.0);
   if (is_ar_surface_vehicle(vehicle)) {
@@ -35,7 +37,7 @@ bool ControlCore::init(const std::string &vehicle, VRPParamStore &params) {
 
 MotorOutputQuad ControlCore::update_quad(bool armed, bool fence_breach, const Attitude &attitude,
                                          const LocalPosition &pos, const VehicleSetpoints &sp, double dt_s,
-                                         UORB &uorb) {
+                                         UORB &uorb, float autotune_scale, float motor_spool) {
   if (!armed || fence_breach) {
     quad_out_ = MotorOutputQuad{};
     uorb.publish("control/attitude", "ATT_CTRL disarmed");
@@ -43,13 +45,26 @@ MotorOutputQuad ControlCore::update_quad(bool armed, bool fence_breach, const At
     return quad_out_;
   }
 
+  att_ctrl_.apply_autotune_scale(autotune_scale);
   AttitudeSetpoint asp = sp.attitude;
-  if (asp.thrust_base <= 0.0) {
+  if (sp.nav_active && pos.valid) {
+    WpNavOutput nav{};
+    nav.valid = true;
+    nav.bearing_rad = sp.nav_bearing_rad;
+    nav.target_speed_m_s = sp.nav_speed_m_s;
+    nav.turn_rate_rad_s = sp.desired_turn_rate_rad_s;
+    const auto pos_sp = att_ctrl_.update_pos(pos, nav, target_z_, 0.61, true);
+    asp.roll_rad = pos_sp.roll_rad;
+    asp.pitch_rad = pos_sp.pitch_rad;
+    asp.yaw_rate_rad_s = pos_sp.yaw_rate_rad_s;
+    asp.thrust_base = pos_sp.thrust_base;
+    uorb.publish("control/pos", format_pos_control(pos_sp));
+  } else if (asp.thrust_base <= 0.0) {
     asp.thrust_base = VRP_Math::clamp(0.55 + 0.15 * (target_z_ - pos.z), 0.35, 0.85);
   }
 
   const ControlTorque torque = att_ctrl_.update(attitude, asp, dt_s);
-  quad_out_ = motors_.mix_quad(static_cast<float>(asp.thrust_base), torque);
+  quad_out_ = motors_.mix_quad(static_cast<float>(asp.thrust_base), torque, motor_spool, 0.18F);
 
   uorb.publish("control/attitude", "ATT_CTRL active roll=" + std::to_string(torque.roll) +
                                         " pitch=" + std::to_string(torque.pitch));

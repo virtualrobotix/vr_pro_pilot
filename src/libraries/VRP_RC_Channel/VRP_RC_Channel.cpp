@@ -16,6 +16,12 @@ std::string VRP_RC_Channel::mode_from_rc(const std::string &vehicle, const RcCha
   if (aux_high(rc.aux2)) {
     return vehicle == "boat" ? "Auto" : "Auto";
   }
+  if (aux_high(rc.aux3)) {
+    return vehicle == "quad" ? "Acro" : "Manual";
+  }
+  if (rc.throttle < -0.5F && vehicle == "quad") {
+    return "Land";
+  }
   if (vehicle == "vtol") {
     return "QStabilize";
   }

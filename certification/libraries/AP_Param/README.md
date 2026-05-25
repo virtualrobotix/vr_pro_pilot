@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Param.yaml`](VRP-LLRD-AP_Param.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Param.md`](VRP-SDD-AP_Param.md) | template |
-| SVCP tests | `test/libraries/VRP_Param/` | planned |
+| SDD | [`VRP-SDD-AP_Param.md`](VRP-SDD-AP_Param.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Param/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

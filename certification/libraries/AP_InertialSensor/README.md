@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_InertialSensor.yaml`](VRP-LLRD-AP_InertialSensor.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_InertialSensor.md`](VRP-SDD-AP_InertialSensor.md) | template |
-| SVCP tests | `test/libraries/VRP_InertialSensor/` | planned |
+| SDD | [`VRP-SDD-AP_InertialSensor.md`](VRP-SDD-AP_InertialSensor.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_InertialSensor/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

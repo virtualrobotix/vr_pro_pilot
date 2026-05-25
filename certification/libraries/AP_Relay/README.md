@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Relay.yaml`](VRP-LLRD-AP_Relay.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Relay.md`](VRP-SDD-AP_Relay.md) | template |
-| SVCP tests | `test/libraries/VRP_Relay/` | planned |
+| SDD | [`VRP-SDD-AP_Relay.md`](VRP-SDD-AP_Relay.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Relay/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

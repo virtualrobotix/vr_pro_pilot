@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_InternalError.yaml`](VRP-LLRD-AP_InternalError.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_InternalError.md`](VRP-SDD-AP_InternalError.md) | template |
-| SVCP tests | `test/libraries/VRP_InternalError/` | planned |
+| SDD | [`VRP-SDD-AP_InternalError.md`](VRP-SDD-AP_InternalError.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_InternalError/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

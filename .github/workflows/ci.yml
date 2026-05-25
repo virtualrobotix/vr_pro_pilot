@@ -28,9 +28,14 @@ jobs:
       - uses: actions/checkout@v4
       - name: Generate library parity and cert packs
         run: python3 Tools/cert/gen_parity_and_libraries.py
+      - name: Complete certification artifacts
+        run: python3 Tools/cert/gen_cert_complete.py
       - name: Generate RTM
         run: python3 Tools/cert/gen_traceability.py
       - name: Verify library registry count
-        run: test "$(python3 -c 'import json; print(len(json.load(open(\"certification/LIBRARY_REGISTRY.json\"))))')" -eq 153
+        run: python3 -c "import json; assert len(json.load(open('certification/LIBRARY_REGISTRY.json')))==153"
       - name: Verify no planned libraries
-        run: test "$(python3 -c 'import json; print(sum(1 for r in json.load(open(\"certification/LIBRARY_REGISTRY.json\")) if r[\"status\"]==\"planned\"))')" -eq 0
+        run: python3 -c "import json; assert sum(1 for r in json.load(open('certification/LIBRARY_REGISTRY.json')) if r['status']=='planned')==0"
+      - name: Verify SDD templates removed
+        run: |
+          if rg -l '_TBD during implementation' certification/libraries --glob 'VRP-SDD-*.md'; then exit 1; fi

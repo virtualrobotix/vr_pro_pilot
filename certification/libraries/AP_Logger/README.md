@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Logger.yaml`](VRP-LLRD-AP_Logger.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Logger.md`](VRP-SDD-AP_Logger.md) | template |
-| SVCP tests | `test/libraries/VRP_Logger/` | planned |
+| SDD | [`VRP-SDD-AP_Logger.md`](VRP-SDD-AP_Logger.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Logger/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

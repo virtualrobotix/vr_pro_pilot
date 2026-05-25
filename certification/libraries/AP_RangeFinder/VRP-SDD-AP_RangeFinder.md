@@ -5,19 +5,24 @@
 | Module | `VRP_RangeFinder` |
 | LLRD | [`VRP-LLRD-AP_RangeFinder.yaml`](VRP-LLRD-AP_RangeFinder.yaml) |
 | DAL | C |
-| Status | planned |
+| Status | **wired** |
+| Integration | `SafetyCore sensors → Landing/PrecLand/Surface` |
+| Phase | 8 |
 
 ## 1. Purpose
 
-Clean-room BSD design for `VRP_RangeFinder`, functional parity with ArduPilot `AP_RangeFinder`.
+Clean-room BSD implementation of `VRP_RangeFinder` with functional parity to ArduPilot `AP_RangeFinder`.
+**Wired** in the multicopter flight loop (see `docs/ARDUCOPTER_PARITY.md`).
 
 ## 2. Architecture
 
-_TBD during implementation phase 3._
+Rangefinder sample for AGL and precision land.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+HAL/sim → RangeFinderSample → Landing, PrecLand, SurfaceDistance.
+
+uORB topics: `sensors/rng`
 
 ## 4. Safety constraints (DAL C)
 
@@ -29,9 +34,17 @@ _TBD — uORB topics / HAL interfaces._
 
 | API | Description |
 |---|---|
-| `VRP_RangeFinder::init()` | Module initialization |
-| `VRP_RangeFinder::update()` | Periodic update |
+| `VRP_RangeFinder::init()` | Init |
+| `VRP_RangeFinder::update(sim_rng)` | Range sample |
+
+Source: `src/libraries/VRP_RangeFinder/VRP_RangeFinder.h`
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_RangeFinder/` and LLRD test list.
+| Test Case | Type |
+|---|---|
+| `VRP-TST-H01` | SVCP / SITL |
+| `VRP-TC-COPTER-18` | SVCP / SITL |
+
+SVCP: `test/libraries/VRP_RangeFinder/`
+Traceability: `certification/traceability/VRP-RTM-001.md`

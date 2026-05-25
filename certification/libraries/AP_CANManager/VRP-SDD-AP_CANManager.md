@@ -5,7 +5,8 @@
 | Module | `VRP_CANManager` |
 | LLRD | [`VRP-LLRD-AP_CANManager.yaml`](VRP-LLRD-AP_CANManager.yaml) |
 | DAL | C |
-| Status | planned |
+| Status | partial |
+| Phase | 2 |
 
 ## 1. Purpose
 
@@ -13,11 +14,12 @@ Clean-room BSD design for `VRP_CANManager`, functional parity with ArduPilot `AP
 
 ## 2. Architecture
 
-_TBD during implementation phase 3._
+Baseline implementation present; integrated via `LibraryCore::tick()`. Roadmap phase **2** per `docs/CERTIFICATION_ROADMAP.md`.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+Integrated through `LibraryCore` uORB `aux/*` telemetry unless promoted to vehicle core.
+HAL boundary: `src/hal/` for board-specific I/O.
 
 ## 4. Safety constraints (DAL C)
 
@@ -25,13 +27,16 @@ _TBD — uORB topics / HAL interfaces._
 - Requirements-based tests
 - Design review
 
+Major failure — requirements + tests + review; structural coverage target 100% statement.
+
 ## 5. Interface summary
 
 | API | Description |
 |---|---|
-| `VRP_CANManager::init()` | Module initialization |
-| `VRP_CANManager::update()` | Periodic update |
+| `VRP_CANManager::init()` | Public API |
+| `VRP_CANManager::send_frame(uint32_t can_id, const uint8_t *data, uint8_t dlc)` | Public API |
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_CANManager/` and LLRD test list.
+Tests: see LLRD `tests:` field and phase runner `test/libraries/run_phase2_tests.py`.
+SVCP target: `test/libraries/VRP_CANManager/`

@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_BLHeli.yaml`](VRP-LLRD-AP_BLHeli.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_BLHeli.md`](VRP-SDD-AP_BLHeli.md) | template |
-| SVCP tests | `test/libraries/VRP_BLHeli/` | planned |
+| SDD | [`VRP-SDD-AP_BLHeli.md`](VRP-SDD-AP_BLHeli.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_BLHeli/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

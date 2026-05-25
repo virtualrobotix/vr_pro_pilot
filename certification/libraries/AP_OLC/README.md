@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_OLC.yaml`](VRP-LLRD-AP_OLC.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_OLC.md`](VRP-SDD-AP_OLC.md) | template |
-| SVCP tests | `test/libraries/VRP_OLC/` | planned |
+| SDD | [`VRP-SDD-AP_OLC.md`](VRP-SDD-AP_OLC.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_OLC/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_ROMFS.yaml`](VRP-LLRD-AP_ROMFS.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_ROMFS.md`](VRP-SDD-AP_ROMFS.md) | template |
-| SVCP tests | `test/libraries/VRP_ROMFS/` | planned |
+| SDD | [`VRP-SDD-AP_ROMFS.md`](VRP-SDD-AP_ROMFS.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_ROMFS/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

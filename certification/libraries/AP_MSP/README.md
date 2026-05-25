@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_MSP.yaml`](VRP-LLRD-AP_MSP.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_MSP.md`](VRP-SDD-AP_MSP.md) | template |
-| SVCP tests | `test/libraries/VRP_MSP/` | planned |
+| SDD | [`VRP-SDD-AP_MSP.md`](VRP-SDD-AP_MSP.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_MSP/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL E

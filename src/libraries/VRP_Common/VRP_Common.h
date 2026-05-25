@@ -70,7 +70,10 @@ struct AttitudeSetpoint {
   double roll_rad{0.0};
   double pitch_rad{0.0};
   double yaw_rate_rad_s{0.0};
+  double yaw_target_rad{0.0};
   double thrust_base{0.55};
+  bool heading_hold{false};
+  bool acro_rate{false};
 };
 
 struct ControlTorque {

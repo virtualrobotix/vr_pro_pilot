@@ -1,0 +1,16 @@
+id: VRP-MLRD-CopterCore
+level: MLRD
+parent: VRP-HLRD-003
+dal: B
+module: src/modules/copter_core/
+text: >
+  CopterCore shall orchestrate multicopter modes and integrate AC_* / AP_* libraries
+  to produce VehicleSetpoints for ControlCore with motor spool and avoidance overlay.
+verify: test
+tests:
+  - VRP-COPTER-T01
+  - VRP-COPTER-T02
+  - VRP-COPTER-T03
+  - VRP-COPTER-T04
+  - VRP-COPTER-T05
+  - VRP-TC-COPTER-01

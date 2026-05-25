@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Terrain.yaml`](VRP-LLRD-AP_Terrain.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Terrain.md`](VRP-SDD-AP_Terrain.md) | template |
-| SVCP tests | `test/libraries/VRP_Terrain/` | planned |
+| SDD | [`VRP-SDD-AP_Terrain.md`](VRP-SDD-AP_Terrain.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Terrain/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

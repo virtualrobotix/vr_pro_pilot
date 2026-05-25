@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_RobotisServo.yaml`](VRP-LLRD-AP_RobotisServo.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_RobotisServo.md`](VRP-SDD-AP_RobotisServo.md) | template |
-| SVCP tests | `test/libraries/VRP_RobotisServo/` | planned |
+| SDD | [`VRP-SDD-AP_RobotisServo.md`](VRP-SDD-AP_RobotisServo.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_RobotisServo/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

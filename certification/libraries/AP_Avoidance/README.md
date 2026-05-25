@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Avoidance.yaml`](VRP-LLRD-AP_Avoidance.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Avoidance.md`](VRP-SDD-AP_Avoidance.md) | template |
-| SVCP tests | `test/libraries/VRP_Avoidance/` | planned |
+| SDD | [`VRP-SDD-AP_Avoidance.md`](VRP-SDD-AP_Avoidance.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Avoidance/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

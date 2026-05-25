@@ -40,15 +40,21 @@ FDM (simulation)
 
 All **153** ArduPilot libraries are mapped in [`PARITY_1TO1_MATRIX.md`](PARITY_1TO1_MATRIX.md):
 
-- **149** `partial` — real logic integrated via `LibraryCore::tick()`
+- **149** `partial` — real logic integrated via `LibraryCore::tick()` or vehicle cores
+- **21** `wired` — flight-critical copter loop (SDD complete, see RTM)
 - **3** `present` — HAL runtime backends in `src/hal/` (SITL, ChibiOS, ESP32)
 - **0** `planned`
 - **1** `n/a` — documentation only (`doc`)
+
+Certification baseline: [`certification/VRP-CERT-STATUS.md`](../certification/VRP-CERT-STATUS.md)
 
 Regenerate matrix and cert packs:
 
 ```bash
 python3 Tools/cert/gen_parity_and_libraries.py
+python3 Tools/cert/gen_cert_complete.py
+python3 Tools/cert/gen_traceability.py
+./Tools/run_cert_checks.sh
 ```
 
 Run full library test suite:

@@ -1,3 +1,4 @@
+#include "libraries/VRP_Baro/VRP_Baro.h"
 #include "modules/safety_core/SafetyCore.h"
 
 namespace vrp {
@@ -32,6 +33,8 @@ bool SafetyCore::init(const std::string &vehicle, VRPParamStore &params) {
   logger_.init();
   fence_.init(0.0, 0.0, 50.0, -20.0, 2.0);
   smart_rtl_.init(64, 0.5);
+  rally_.init();
+  terrain_.init();
   failsafe_.init(params);
   avoidance_.init();
   stats_.init();
@@ -100,9 +103,9 @@ void SafetyCore::apply_mavlink_action(const MavlinkRxAction &action) {
 void SafetyCore::note_gcs_link(uint64_t tick) { failsafe_.note_gcs_link(tick); }
 
 void SafetyCore::enter_rtl(const std::string &reason) {
-  mode_ = "RTL";
-  rtl_active_ = true;
   smart_rtl_state_ = smart_rtl_.activate();
+  mode_ = (smart_rtl_state_.active && smart_rtl_state_.path_points > 0) ? "SmartRTL" : "RTL";
+  rtl_active_ = true;
   const std::string log_msg = "rtl_" + reason;
   logger_.write(tick_, log_msg.c_str());
 }
@@ -113,6 +116,7 @@ void SafetyCore::update(double dt_s, uint64_t time_ms, const FDMState &fdm, UORB
 
   const SensorSnapshot snap = sensors_.update(fdm, time_us, tick_);
   gps_ = snap.gps;
+  terrain_sample_ = terrain_.height_at(gps_.lat_deg, gps_.lon_deg);
   uorb.publish("sensor/gps", format_gps(snap.gps));
   uorb.publish("sensor/baro", format_baro(snap.baro));
   uorb.publish("sensor/compass", format_compass(snap.compass));
@@ -126,7 +130,19 @@ void SafetyCore::update(double dt_s, uint64_t time_ms, const FDMState &fdm, UORB
   uorb.publish("vehicle/attitude", format_attitude(attitude_));
 
   position_ = ekf3_.update(snap.measurement, dt_s);
+  if (snap.optical_flow.valid && snap.optical_flow.quality > 40) {
+    position_.vx = position_.vx * 0.6 - snap.optical_flow.flow_x_rad_s * 0.15;
+    position_.vy = position_.vy * 0.6 - snap.optical_flow.flow_y_rad_s * 0.15;
+  }
   uorb.publish("estimator/local_position", format_local_position(position_));
+  if (ekf3_.gps_glitch()) {
+    uorb.publish("estimator/ekf", "EKF gps_glitch=1");
+  }
+  {
+    VRP_Baro baro_lib{};
+    const double agl = snap.rangefinder.valid ? snap.rangefinder.distance_m : -position_.z;
+    baro_ground_corr_ = snap.baro.valid ? baro_lib.ground_effect_correction(agl) : 0.0;
+  }
 
   battery_ = batt_.update(tick_);
   uorb.publish("sensor/battery", format_battery(battery_));
@@ -193,6 +209,8 @@ void SafetyCore::update(double dt_s, uint64_t time_ms, const FDMState &fdm, UORB
     }
   }
 
+  rally_status_ = rally_.nearest(position_);
+  uorb.publish("rally/status", format_rally(rally_status_));
   avoidance_out_ = avoidance_.update(sensors_.adsb(), sensors_.proximity());
   uorb.publish("avoidance/status", format_avoidance(avoidance_out_));
   stats_.update(tick_, arming_.is_armed(), position_, dt_s);
@@ -277,8 +295,14 @@ const OpticalFlowSample &SafetyCore::optical_flow() const { return sensors_.opti
 Waypoint SafetyCore::mission_target() const { return mission_.active_target(); }
 
 Waypoint SafetyCore::nav_target() const {
-  if (rtl_active_ && smart_rtl_state_.active) {
-    return smart_rtl_state_.target;
+  if (rtl_active_) {
+    if (smart_rtl_state_.active) {
+      return smart_rtl_state_.target;
+    }
+    if (rally_status_.valid) {
+      return rally_.target_at(rally_status_.nearest_index);
+    }
+    return Waypoint{0.0, 0.0, 0.0};
   }
   return mission_.active_target();
 }

@@ -1,7 +1,9 @@
 id: VRP-HLRD-002
 level: HLRD
-dal: B
-text: "The Quad and Boat SITL flows shall complete deterministic smoke tests."
+dal: C
+text: >
+  Major and minor software functions (sensors, comms, aux libraries) shall publish
+  deterministic telemetry and pass phase library regression tests.
 verify: test
-module: Tools/run_sitl_tests.sh
-tests: [VRP-TST-Q01, VRP-TST-Q02, VRP-TST-Q03, VRP-TST-Q04, VRP-TST-B01, VRP-TST-B02, VRP-TST-B03]
+module: src/modules/library_core/LibraryCore.cpp
+tests: [VRP-LIB-COMPLETE, VRP-LIB-PHASE1, VRP-LIB-PHASE20]

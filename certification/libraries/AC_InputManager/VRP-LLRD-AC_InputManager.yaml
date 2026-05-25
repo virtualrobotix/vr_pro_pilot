@@ -4,7 +4,7 @@ vrp_module: libraries/VRP_AC_InputManager
 level: LLRD
 parent: VRP-HLRD-002
 dal: C
-status: partial
+status: wired
 phase: 19
 license: BSD-3-Clause
 implementation: clean-room
@@ -12,6 +12,8 @@ text: >
   VRP_AC_InputManager shall provide functional parity with ArduPilot AC_InputManager
   via clean-room BSD implementation compatible with DO-178C objectives for DAL C.
 verify: test
+wired: true
+integration: CopterCore_or_control_path
 verification_methods: [test, review, analysis]
 dal_objectives:
   - Statement coverage 100%
@@ -30,3 +32,7 @@ artifacts:
   sdd: VRP-SDD-AC_InputManager.md
   svcp: test/libraries/VRP_AC_InputManager/
   traceability: certification/traceability/VRP-RTM-001.md
+  - VRP-COPTER-T01
+  - VRP-TC-COPTER-03
+  - VRP-COPTER-T01
+  - VRP-COPTER-ALL

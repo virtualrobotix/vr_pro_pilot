@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_HAL_ESP32.yaml`](VRP-LLRD-AP_HAL_ESP32.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_HAL_ESP32.md`](VRP-SDD-AP_HAL_ESP32.md) | template |
-| SVCP tests | `test/libraries/VRP_HAL_ESP32/` | planned |
+| SDD | [`VRP-SDD-AP_HAL_ESP32.md`](VRP-SDD-AP_HAL_ESP32.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_HAL_ESP32/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL E

@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Proximity.yaml`](VRP-LLRD-AP_Proximity.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Proximity.md`](VRP-SDD-AP_Proximity.md) | template |
-| SVCP tests | `test/libraries/VRP_Proximity/` | planned |
+| SDD | [`VRP-SDD-AP_Proximity.md`](VRP-SDD-AP_Proximity.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Proximity/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AC_Autorotation.yaml`](VRP-LLRD-AC_Autorotation.yaml) | baseline |
-| SDD | [`VRP-SDD-AC_Autorotation.md`](VRP-SDD-AC_Autorotation.md) | template |
-| SVCP tests | `test/libraries/VRP_AC_Autorotation/` | planned |
+| SDD | [`VRP-SDD-AC_Autorotation.md`](VRP-SDD-AC_Autorotation.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_AC_Autorotation/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

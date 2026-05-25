@@ -20,7 +20,8 @@ class ControlCore {
 public:
   bool init(const std::string &vehicle, VRPParamStore &params);
   MotorOutputQuad update_quad(bool armed, bool fence_breach, const Attitude &attitude, const LocalPosition &pos,
-                              const VehicleSetpoints &sp, double dt_s, UORB &uorb);
+                              const VehicleSetpoints &sp, double dt_s, UORB &uorb, float autotune_scale = 1.0F,
+                              float motor_spool = 1.0F);
   MotorOutputQuad update_vtol(bool armed, bool fence_breach, const Attitude &attitude, const LocalPosition &pos,
                               const VehicleSetpoints &sp, double airspeed_m_s, double dt_s, UORB &uorb);
   BoatActuators update_boat(bool armed, bool fence_breach, const Attitude &attitude, const LocalPosition &pos,

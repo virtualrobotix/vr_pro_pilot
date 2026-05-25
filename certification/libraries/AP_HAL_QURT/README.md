@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_HAL_QURT.yaml`](VRP-LLRD-AP_HAL_QURT.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_HAL_QURT.md`](VRP-SDD-AP_HAL_QURT.md) | template |
-| SVCP tests | `test/libraries/VRP_HAL_QURT/` | planned |
+| SDD | [`VRP-SDD-AP_HAL_QURT.md`](VRP-SDD-AP_HAL_QURT.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_HAL_QURT/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL E

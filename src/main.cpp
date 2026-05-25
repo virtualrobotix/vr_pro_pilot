@@ -10,6 +10,15 @@
 #include "libraries/VRP_CANManager/VRP_CANManager.h"
 #include "libraries/VRP_CRSF/VRP_CRSF.h"
 #include "libraries/VRP_Common/VRP_Common.h"
+#include "libraries/VRP_AC_AutoTune/VRP_AC_AutoTune.h"
+#include "libraries/VRP_AC_CustomControl/VRP_AC_CustomControl.h"
+#include "libraries/VRP_AC_PID/VRP_AC_PID.h"
+#include "libraries/VRP_AC_PrecLand/VRP_AC_PrecLand.h"
+#include "libraries/VRP_AC_Sprayer/VRP_AC_Sprayer.h"
+#include "libraries/VRP_Follow/VRP_Follow.h"
+#include "libraries/VRP_InertialNav/VRP_InertialNav.h"
+#include "libraries/VRP_Takeoff/VRP_Takeoff.h"
+#include "libraries/VRP_Terrain/VRP_Terrain.h"
 #include "libraries/VRP_AR_Motors/VRP_AR_Motors.h"
 #include "libraries/VRP_AR_WPNav/VRP_AR_WPNav.h"
 #include "libraries/VRP_DroneCAN/VRP_DroneCAN.h"
@@ -408,11 +417,18 @@ int main(int argc, char **argv) {
       const bool boat_nav_mode = vrp::is_ar_surface_vehicle(vehicle_kind) &&
                                  (vehicle_mode == "Auto" || vehicle_mode == "Loiter" || vehicle_mode == "RTL" ||
                                   safety.flight_mode() == "Loiter" || safety.flight_mode() == "RTL");
+      const bool copter_nav_mode =
+          vehicle_kind == "quad" &&
+          (vehicle_mode == "Auto" || vehicle_mode == "Loiter" || vehicle_mode == "RTL" ||
+           vehicle_mode == "SmartRTL" || vehicle_mode == "AltHold" || vehicle_mode == "PosHold" ||
+           vehicle_mode == "Guided" || vehicle_mode == "Follow" || vehicle_mode == "FlowHold" ||
+           vehicle_mode == "Brake" || rtl_nav || safety.flight_mode() == "RTL" ||
+           safety.flight_mode() == "SmartRTL");
       const bool nav_active = rtl_nav ||
                               (safety.mission_active() &&
                                (auto_nav_mode || vehicle_core.mode() == "FW" || safety.flight_mode() == "Auto" ||
                                 safety.flight_mode() == "RTL")) ||
-                              boat_nav_mode;
+                              boat_nav_mode || copter_nav_mode;
       const bool use_l1 =
           vehicle_kind == "vtol" &&
           (vehicle_core.vtol_phase() == "FW" || vehicle_core.mode() == "FW" || tick >= 5);
@@ -424,13 +440,28 @@ int main(int argc, char **argv) {
                    vehicle_mode == "RTL") {
           nav_mode = vehicle_mode;
         }
+      } else if (vehicle_kind == "quad") {
+        if (safety.flight_mode() == "RTL" || vehicle_mode == "RTL") {
+          nav_mode = "RTL";
+        } else if (vehicle_mode == "Loiter" || vehicle_mode == "AltHold" || vehicle_mode == "Auto" ||
+                   vehicle_mode == "Guided") {
+          nav_mode = vehicle_mode;
+        }
       }
       const vrp::WpNavOutput nav =
           nav_core.update(safety.position(), safety.attitude(), safety.nav_target(), safety.mission_prev_target(),
                           use_l1, nav_active, nav_mode, uorb);
 
       vehicle_core.update(tick, safety.is_armed(), safety.flight_mode(), safety.position(), safety.battery(), nav,
-                          safety.rangefinder(), gcs_link, uorb);
+                          safety.rangefinder(), safety.avoidance(), safety.optical_flow(), safety.rally_status(),
+                          safety.smart_rtl_state(),
+                          safety.terrain_sample().valid ? safety.terrain_sample().height_amsl_m : 0.0,
+                          safety.terrain_sample().valid, safety.baro_ground_correction(), gcs_link, uorb);
+      if (vehicle_core.request_disarm()) {
+        vrp::MavlinkRxAction disarm{};
+        disarm.disarm = true;
+        safety.apply_mavlink_action(disarm);
+      }
       const auto &sp = vehicle_core.setpoints();
       const std::string &mode = vehicle_core.mode();
       vehicle_mode = mode;
@@ -447,7 +478,8 @@ int main(int argc, char **argv) {
       if (vehicle_kind == "quad") {
         const auto motors =
             control.update_quad(safety.is_armed(), safety.fence_breached(), safety.attitude(), safety.position(), sp,
-                                kDtS, uorb);
+                                kDtS, uorb, vehicle_core.copter().autotune_scale(),
+                                vehicle_core.copter().motor_spool());
         throttle = (motors.m1 + motors.m2 + motors.m3 + motors.m4) / 4.0F;
         servos = srv.map_quad(motors);
       } else if (vehicle_kind == "boat" || vehicle_kind == "rover") {
@@ -581,6 +613,26 @@ int main(int argc, char **argv) {
                 << " pos_z=" << safety.position().z << " fence=" << (safety.fence_breached() ? 1 : 0) << "\n";
       if (vehicle_kind == "quad" || vehicle_kind == "vtol") {
         std::cout << "ATT_CTRL " << (safety.is_armed() && !safety.fence_breached() ? "active" : "idle") << "\n";
+      }
+      if (vehicle_kind == "quad") {
+        if (const auto acwp = uorb.subscribe("nav/ac_wp")) {
+          std::cout << *acwp << "\n";
+        }
+        if (const auto posctl = uorb.subscribe("control/pos")) {
+          std::cout << *posctl << "\n";
+        }
+        std::cout << format_prec_land(vehicle_core.copter().prec_land()) << "\n";
+        std::cout << format_autotune(vehicle_core.copter().autotune()) << "\n";
+        std::cout << format_sprayer(vehicle_core.copter().sprayer()) << "\n";
+        std::cout << format_custom_control(vehicle_core.copter().custom_control()) << "\n";
+        std::cout << format_ac_pid(vehicle_core.copter().ac_pid()) << "\n";
+        std::cout << format_inertial_nav(vehicle_core.copter().inertial_nav()) << "\n";
+        std::cout << format_surface_distance(vehicle_core.copter().surface()) << "\n";
+        std::cout << format_follow(vehicle_core.copter().follow()) << "\n";
+        std::cout << format_takeoff(vehicle_core.copter().takeoff()) << "\n";
+        if (safety.terrain_sample().valid) {
+          std::cout << format_terrain(safety.terrain_sample()) << "\n";
+        }
       }
       if (vrp::is_ar_surface_vehicle(vehicle_kind)) {
         if (const auto ar = uorb.subscribe("control/ar_attitude")) {

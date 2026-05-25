@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Winch.yaml`](VRP-LLRD-AP_Winch.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Winch.md`](VRP-SDD-AP_Winch.md) | template |
-| SVCP tests | `test/libraries/VRP_Winch/` | planned |
+| SDD | [`VRP-SDD-AP_Winch.md`](VRP-SDD-AP_Winch.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Winch/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

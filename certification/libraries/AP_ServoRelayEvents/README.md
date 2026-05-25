@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_ServoRelayEvents.yaml`](VRP-LLRD-AP_ServoRelayEvents.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_ServoRelayEvents.md`](VRP-SDD-AP_ServoRelayEvents.md) | template |
-| SVCP tests | `test/libraries/VRP_ServoRelayEvents/` | planned |
+| SDD | [`VRP-SDD-AP_ServoRelayEvents.md`](VRP-SDD-AP_ServoRelayEvents.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_ServoRelayEvents/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

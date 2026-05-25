@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_IRLock.yaml`](VRP-LLRD-AP_IRLock.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_IRLock.md`](VRP-SDD-AP_IRLock.md) | template |
-| SVCP tests | `test/libraries/VRP_IRLock/` | planned |
+| SDD | [`VRP-SDD-AP_IRLock.md`](VRP-SDD-AP_IRLock.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_IRLock/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

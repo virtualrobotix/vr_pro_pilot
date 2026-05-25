@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_NavEKF2.yaml`](VRP-LLRD-AP_NavEKF2.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_NavEKF2.md`](VRP-SDD-AP_NavEKF2.md) | template |
-| SVCP tests | `test/libraries/VRP_NavEKF2/` | planned |
+| SDD | [`VRP-SDD-AP_NavEKF2.md`](VRP-SDD-AP_NavEKF2.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_NavEKF2/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

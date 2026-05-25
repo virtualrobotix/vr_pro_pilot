@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_FlashIface.yaml`](VRP-LLRD-AP_FlashIface.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_FlashIface.md`](VRP-SDD-AP_FlashIface.md) | template |
-| SVCP tests | `test/libraries/VRP_FlashIface/` | planned |
+| SDD | [`VRP-SDD-AP_FlashIface.md`](VRP-SDD-AP_FlashIface.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_FlashIface/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

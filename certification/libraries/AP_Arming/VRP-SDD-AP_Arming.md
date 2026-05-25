@@ -5,19 +5,24 @@
 | Module | `VRP_Arming` |
 | LLRD | [`VRP-LLRD-AP_Arming.yaml`](VRP-LLRD-AP_Arming.yaml) |
 | DAL | B |
-| Status | planned |
+| Status | **wired** |
+| Integration | `SafetyCore` |
+| Phase | 1 |
 
 ## 1. Purpose
 
-Clean-room BSD design for `VRP_Arming`, functional parity with ArduPilot `AP_Arming`.
+Clean-room BSD implementation of `VRP_Arming` with functional parity to ArduPilot `AP_Arming`.
+**Wired** in the multicopter flight loop (see `docs/ARDUCOPTER_PARITY.md`).
 
 ## 2. Architecture
 
-_TBD during implementation phase 3._
+Pre-arm checks; arm/disarm state machine.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+sensor checks → armed flag → ControlCore gate.
+
+uORB topics: `safety/arming`
 
 ## 4. Safety constraints (DAL B)
 
@@ -30,9 +35,17 @@ _TBD — uORB topics / HAL interfaces._
 
 | API | Description |
 |---|---|
-| `VRP_Arming::init()` | Module initialization |
-| `VRP_Arming::update()` | Periodic update |
+| `VRP_Arming::init()` | Init |
+| `VRP_Arming::update(checks)` | Arming state |
+
+Source: `src/libraries/VRP_Arming/VRP_Arming.h`
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_Arming/` and LLRD test list.
+| Test Case | Type |
+|---|---|
+| `VRP-TST-S01` | SVCP / SITL |
+| `VRP-TC-SAFETY-01` | SVCP / SITL |
+
+SVCP: `test/libraries/VRP_Arming/`
+Traceability: `certification/traceability/VRP-RTM-001.md`

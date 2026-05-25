@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Quicktune.yaml`](VRP-LLRD-AP_Quicktune.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Quicktune.md`](VRP-SDD-AP_Quicktune.md) | template |
-| SVCP tests | `test/libraries/VRP_Quicktune/` | planned |
+| SDD | [`VRP-SDD-AP_Quicktune.md`](VRP-SDD-AP_Quicktune.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Quicktune/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL D

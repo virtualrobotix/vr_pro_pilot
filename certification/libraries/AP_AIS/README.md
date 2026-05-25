@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_AIS.yaml`](VRP-LLRD-AP_AIS.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_AIS.md`](VRP-SDD-AP_AIS.md) | template |
-| SVCP tests | `test/libraries/VRP_AIS/` | planned |
+| SDD | [`VRP-SDD-AP_AIS.md`](VRP-SDD-AP_AIS.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_AIS/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

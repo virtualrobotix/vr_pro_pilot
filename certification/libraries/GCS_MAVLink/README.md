@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-GCS_MAVLink.yaml`](VRP-LLRD-GCS_MAVLink.yaml) | baseline |
-| SDD | [`VRP-SDD-GCS_MAVLink.md`](VRP-SDD-GCS_MAVLink.md) | template |
-| SVCP tests | `test/libraries/VRP_GCS_MAVLink/` | planned |
+| SDD | [`VRP-SDD-GCS_MAVLink.md`](VRP-SDD-GCS_MAVLink.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_GCS_MAVLink/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

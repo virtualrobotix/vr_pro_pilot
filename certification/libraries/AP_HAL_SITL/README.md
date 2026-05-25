@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_HAL_SITL.yaml`](VRP-LLRD-AP_HAL_SITL.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_HAL_SITL.md`](VRP-SDD-AP_HAL_SITL.md) | template |
-| SVCP tests | `test/libraries/VRP_HAL_SITL/` | planned |
+| SDD | [`VRP-SDD-AP_HAL_SITL.md`](VRP-SDD-AP_HAL_SITL.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_HAL_SITL/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

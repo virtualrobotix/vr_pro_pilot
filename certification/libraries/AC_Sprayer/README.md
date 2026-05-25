@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AC_Sprayer.yaml`](VRP-LLRD-AC_Sprayer.yaml) | baseline |
-| SDD | [`VRP-SDD-AC_Sprayer.md`](VRP-SDD-AC_Sprayer.md) | template |
-| SVCP tests | `test/libraries/VRP_AC_Sprayer/` | planned |
+| SDD | [`VRP-SDD-AC_Sprayer.md`](VRP-SDD-AC_Sprayer.md) | **wired** |
+| SVCP tests | `test/libraries/VRP_AC_Sprayer/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C
@@ -31,10 +31,10 @@ Major failure — requirements + tests + review; structural coverage target 100%
 
 ## Checklist verifica
 
-- [ ] API surface documentata vs requisiti LLRD
+- [x] API surface documentata vs requisiti LLRD
 - [ ] Unit test interfaccia pubblica (`test/libraries/VRP_AC_Sprayer/`)
 - [ ] Regressione SITL/HIL dove applicabile
-- [ ] Riga traceability in `VRP-RTM-001.md`
+- [x] Riga traceability in `VRP-RTM-001.md`
 - [ ] Static analysis / MISRA pulito per scope DAL
 - [ ] Evidence MC/DC (DAL A/B) o statement coverage (DAL C)
 

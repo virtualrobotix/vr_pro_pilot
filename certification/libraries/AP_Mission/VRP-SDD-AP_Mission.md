@@ -5,19 +5,24 @@
 | Module | `VRP_Mission` |
 | LLRD | [`VRP-LLRD-AP_Mission.yaml`](VRP-LLRD-AP_Mission.yaml) |
 | DAL | B |
-| Status | planned |
+| Status | **wired** |
+| Integration | `SafetyCore mission engine` |
+| Phase | 1 |
 
 ## 1. Purpose
 
-Clean-room BSD design for `VRP_Mission`, functional parity with ArduPilot `AP_Mission`.
+Clean-room BSD implementation of `VRP_Mission` with functional parity to ArduPilot `AP_Mission`.
+**Wired** in the multicopter flight loop (see `docs/ARDUCOPTER_PARITY.md`).
 
 ## 2. Architecture
 
-_TBD during implementation phase 3._
+Mission item sequencer; WP commands for Auto mode.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+mission items → active WP → NavCore target.
+
+uORB topics: `nav/mission`
 
 ## 4. Safety constraints (DAL B)
 
@@ -30,9 +35,18 @@ _TBD — uORB topics / HAL interfaces._
 
 | API | Description |
 |---|---|
-| `VRP_Mission::init()` | Module initialization |
-| `VRP_Mission::update()` | Periodic update |
+| `VRP_Mission::init()` | Init |
+| `VRP_Mission::advance(pos)` | Mission progression |
+
+Source: `src/libraries/VRP_Mission/VRP_Mission.h`
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_Mission/` and LLRD test list.
+| Test Case | Type |
+|---|---|
+| `VRP-TST-B01` | SVCP / SITL |
+| `VRP-TST-N01` | SVCP / SITL |
+| `VRP-TC-MISSION-01` | SVCP / SITL |
+
+SVCP: `test/libraries/VRP_Mission/`
+Traceability: `certification/traceability/VRP-RTM-001.md`

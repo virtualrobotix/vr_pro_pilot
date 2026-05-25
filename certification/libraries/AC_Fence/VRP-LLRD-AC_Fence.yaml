@@ -4,7 +4,7 @@ vrp_module: libraries/VRP_AC_Fence
 level: LLRD
 parent: VRP-HLRD-001
 dal: B
-status: partial
+status: wired
 phase: 1
 license: BSD-3-Clause
 implementation: clean-room
@@ -12,6 +12,8 @@ text: >
   VRP_AC_Fence shall provide functional parity with ArduPilot AC_Fence
   via clean-room BSD implementation compatible with DO-178C objectives for DAL B.
 verify: test
+wired: true
+integration: CopterCore_or_control_path
 verification_methods: [test, review, analysis]
 dal_objectives:
   - MC/DC on safety paths
@@ -30,3 +32,6 @@ artifacts:
   sdd: VRP-SDD-AC_Fence.md
   svcp: test/libraries/VRP_AC_Fence/
   traceability: certification/traceability/VRP-RTM-001.md
+  - VRP-TC-COPTER-10
+  - VRP-COPTER-T01
+  - VRP-COPTER-ALL

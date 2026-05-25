@@ -5,19 +5,24 @@
 | Module | `VRP_SmartRTL` |
 | LLRD | [`VRP-LLRD-AP_SmartRTL.yaml`](VRP-LLRD-AP_SmartRTL.yaml) |
 | DAL | B |
-| Status | planned |
+| Status | **wired** |
+| Integration | `SafetyCore nav_target` |
+| Phase | 7 |
 
 ## 1. Purpose
 
-Clean-room BSD design for `VRP_SmartRTL`, functional parity with ArduPilot `AP_SmartRTL`.
+Clean-room BSD implementation of `VRP_SmartRTL` with functional parity to ArduPilot `AP_SmartRTL`.
+**Wired** in the multicopter flight loop (see `docs/ARDUCOPTER_PARITY.md`).
 
 ## 2. Architecture
 
-_TBD during implementation phase 3._
+Breadcrumb RTL path; preferred over direct home when active.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+position history → SmartRTL target → SafetyCore RTL nav.
+
+uORB topics: `safety/smartrtl`
 
 ## 4. Safety constraints (DAL B)
 
@@ -30,9 +35,17 @@ _TBD — uORB topics / HAL interfaces._
 
 | API | Description |
 |---|---|
-| `VRP_SmartRTL::init()` | Module initialization |
-| `VRP_SmartRTL::update()` | Periodic update |
+| `VRP_SmartRTL::init()` | Init |
+| `VRP_SmartRTL::update(pos, rtl_active)` | Breadcrumb target |
+
+Source: `src/libraries/VRP_SmartRTL/VRP_SmartRTL.h`
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_SmartRTL/` and LLRD test list.
+| Test Case | Type |
+|---|---|
+| `VRP-TST-F01` | SVCP / SITL |
+| `VRP-TC-COPTER-19` | SVCP / SITL |
+
+SVCP: `test/libraries/VRP_SmartRTL/`
+Traceability: `certification/traceability/VRP-RTM-001.md`

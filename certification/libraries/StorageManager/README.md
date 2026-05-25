@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-StorageManager.yaml`](VRP-LLRD-StorageManager.yaml) | baseline |
-| SDD | [`VRP-SDD-StorageManager.md`](VRP-SDD-StorageManager.md) | template |
-| SVCP tests | `test/libraries/VRP_StorageManager/` | planned |
+| SDD | [`VRP-SDD-StorageManager.md`](VRP-SDD-StorageManager.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_StorageManager/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

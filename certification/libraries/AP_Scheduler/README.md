@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Scheduler.yaml`](VRP-LLRD-AP_Scheduler.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Scheduler.md`](VRP-SDD-AP_Scheduler.md) | template |
-| SVCP tests | `test/libraries/VRP_Scheduler/` | planned |
+| SDD | [`VRP-SDD-AP_Scheduler.md`](VRP-SDD-AP_Scheduler.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Scheduler/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

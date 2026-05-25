@@ -5,7 +5,8 @@
 | Module | `VRP_Relay` |
 | LLRD | [`VRP-LLRD-AP_Relay.yaml`](VRP-LLRD-AP_Relay.yaml) |
 | DAL | C |
-| Status | planned |
+| Status | partial |
+| Phase | 13 |
 
 ## 1. Purpose
 
@@ -13,11 +14,12 @@ Clean-room BSD design for `VRP_Relay`, functional parity with ArduPilot `AP_Rela
 
 ## 2. Architecture
 
-_TBD during implementation phase 3._
+Baseline implementation present; integrated via `LibraryCore::tick()`. Roadmap phase **13** per `docs/CERTIFICATION_ROADMAP.md`.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+Integrated through `LibraryCore` uORB `aux/*` telemetry unless promoted to vehicle core.
+HAL boundary: `src/hal/` for board-specific I/O.
 
 ## 4. Safety constraints (DAL C)
 
@@ -25,13 +27,16 @@ _TBD — uORB topics / HAL interfaces._
 - Requirements-based tests
 - Design review
 
+Major failure — requirements + tests + review; structural coverage target 100% statement.
+
 ## 5. Interface summary
 
 | API | Description |
 |---|---|
-| `VRP_Relay::init()` | Module initialization |
-| `VRP_Relay::update()` | Periodic update |
+| `VRP_Relay::init()` | Public API |
+| `VRP_Relay::format_relay(const std::array<uint8_t, 4> &channels)` | Public API |
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_Relay/` and LLRD test list.
+Tests: see LLRD `tests:` field and phase runner `test/libraries/run_phase13_tests.py`.
+SVCP target: `test/libraries/VRP_Relay/`

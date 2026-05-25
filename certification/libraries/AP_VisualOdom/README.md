@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_VisualOdom.yaml`](VRP-LLRD-AP_VisualOdom.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_VisualOdom.md`](VRP-SDD-AP_VisualOdom.md) | template |
-| SVCP tests | `test/libraries/VRP_VisualOdom/` | planned |
+| SDD | [`VRP-SDD-AP_VisualOdom.md`](VRP-SDD-AP_VisualOdom.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_VisualOdom/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

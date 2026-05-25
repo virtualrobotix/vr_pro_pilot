@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Devo_Telem.yaml`](VRP-LLRD-AP_Devo_Telem.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Devo_Telem.md`](VRP-SDD-AP_Devo_Telem.md) | template |
-| SVCP tests | `test/libraries/VRP_Devo_Telem/` | planned |
+| SDD | [`VRP-SDD-AP_Devo_Telem.md`](VRP-SDD-AP_Devo_Telem.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Devo_Telem/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL E

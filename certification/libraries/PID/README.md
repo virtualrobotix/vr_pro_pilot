@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-PID.yaml`](VRP-LLRD-PID.yaml) | baseline |
-| SDD | [`VRP-SDD-PID.md`](VRP-SDD-PID.md) | template |
-| SVCP tests | `test/libraries/VRP_PID/` | planned |
+| SDD | [`VRP-SDD-PID.md`](VRP-SDD-PID.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_PID/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

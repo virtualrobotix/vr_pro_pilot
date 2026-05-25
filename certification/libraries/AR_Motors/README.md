@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AR_Motors.yaml`](VRP-LLRD-AR_Motors.yaml) | baseline |
-| SDD | [`VRP-SDD-AR_Motors.md`](VRP-SDD-AR_Motors.md) | template |
-| SVCP tests | `test/libraries/VRP_AR_Motors/` | planned |
+| SDD | [`VRP-SDD-AR_Motors.md`](VRP-SDD-AR_Motors.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_AR_Motors/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

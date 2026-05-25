@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_LightWareSerial.yaml`](VRP-LLRD-AP_LightWareSerial.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_LightWareSerial.md`](VRP-SDD-AP_LightWareSerial.md) | template |
-| SVCP tests | `test/libraries/VRP_LightWareSerial/` | planned |
+| SDD | [`VRP-SDD-AP_LightWareSerial.md`](VRP-SDD-AP_LightWareSerial.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_LightWareSerial/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

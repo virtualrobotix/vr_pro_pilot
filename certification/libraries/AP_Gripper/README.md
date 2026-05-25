@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Gripper.yaml`](VRP-LLRD-AP_Gripper.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Gripper.md`](VRP-SDD-AP_Gripper.md) | template |
-| SVCP tests | `test/libraries/VRP_Gripper/` | planned |
+| SDD | [`VRP-SDD-AP_Gripper.md`](VRP-SDD-AP_Gripper.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Gripper/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

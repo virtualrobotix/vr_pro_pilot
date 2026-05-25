@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Baro.yaml`](VRP-LLRD-AP_Baro.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Baro.md`](VRP-SDD-AP_Baro.md) | template |
-| SVCP tests | `test/libraries/VRP_Baro/` | planned |
+| SDD | [`VRP-SDD-AP_Baro.md`](VRP-SDD-AP_Baro.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Baro/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

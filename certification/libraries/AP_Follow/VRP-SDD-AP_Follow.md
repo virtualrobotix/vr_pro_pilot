@@ -5,19 +5,24 @@
 | Module | `VRP_Follow` |
 | LLRD | [`VRP-LLRD-AP_Follow.yaml`](VRP-LLRD-AP_Follow.yaml) |
 | DAL | C |
-| Status | planned |
+| Status | **wired** |
+| Integration | `CopterCore Guided + LibraryCore` |
+| Phase | 15 |
 
 ## 1. Purpose
 
-Clean-room BSD design for `VRP_Follow`, functional parity with ArduPilot `AP_Follow`.
+Clean-room BSD implementation of `VRP_Follow` with functional parity to ArduPilot `AP_Follow`.
+**Wired** in the multicopter flight loop (see `docs/ARDUCOPTER_PARITY.md`).
 
 ## 2. Architecture
 
-_TBD during implementation phase 3._
+Bearing to follow target; active in Loiter/Auto/Guided.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+target XY + pos → FollowState → Guided lean override.
+
+uORB topics: _none (inline struct pass-through)_
 
 ## 4. Safety constraints (DAL C)
 
@@ -29,9 +34,18 @@ _TBD — uORB topics / HAL interfaces._
 
 | API | Description |
 |---|---|
-| `VRP_Follow::init()` | Module initialization |
-| `VRP_Follow::update()` | Periodic update |
+| `VRP_Follow::init()` | Init |
+| `VRP_Follow::update(mode, tx, ty, x, y)` | Follow bearing |
+
+Source: `src/libraries/VRP_Follow/VRP_Follow.h`
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_Follow/` and LLRD test list.
+| Test Case | Type |
+|---|---|
+| `VRP-TST-O02` | SVCP / SITL |
+| `VRP-COPTER-T04` | SVCP / SITL |
+| `VRP-TC-COPTER-14` | SVCP / SITL |
+
+SVCP: `test/libraries/VRP_Follow/`
+Traceability: `certification/traceability/VRP-RTM-001.md`

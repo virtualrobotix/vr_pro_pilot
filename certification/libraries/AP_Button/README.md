@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Button.yaml`](VRP-LLRD-AP_Button.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Button.md`](VRP-SDD-AP_Button.md) | template |
-| SVCP tests | `test/libraries/VRP_Button/` | planned |
+| SDD | [`VRP-SDD-AP_Button.md`](VRP-SDD-AP_Button.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Button/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL D

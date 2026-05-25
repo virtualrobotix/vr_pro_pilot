@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_SerialManager.yaml`](VRP-LLRD-AP_SerialManager.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_SerialManager.md`](VRP-SDD-AP_SerialManager.md) | template |
-| SVCP tests | `test/libraries/VRP_SerialManager/` | planned |
+| SDD | [`VRP-SDD-AP_SerialManager.md`](VRP-SDD-AP_SerialManager.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_SerialManager/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

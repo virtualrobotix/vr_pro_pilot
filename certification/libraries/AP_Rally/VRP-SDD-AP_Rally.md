@@ -5,19 +5,24 @@
 | Module | `VRP_Rally` |
 | LLRD | [`VRP-LLRD-AP_Rally.yaml`](VRP-LLRD-AP_Rally.yaml) |
 | DAL | C |
-| Status | planned |
+| Status | **wired** |
+| Integration | `SafetyCore RTL fallback` |
+| Phase | 12 |
 
 ## 1. Purpose
 
-Clean-room BSD design for `VRP_Rally`, functional parity with ArduPilot `AP_Rally`.
+Clean-room BSD implementation of `VRP_Rally` with functional parity to ArduPilot `AP_Rally`.
+**Wired** in the multicopter flight loop (see `docs/ARDUCOPTER_PARITY.md`).
 
 ## 2. Architecture
 
-_TBD during implementation phase 3._
+Rally point list; SmartRTL → Rally → home nav chain.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+RallyStatus → SafetyCore nav_target → CopterCore RTL rally nav.
+
+uORB topics: `safety/rally`
 
 ## 4. Safety constraints (DAL C)
 
@@ -29,9 +34,19 @@ _TBD — uORB topics / HAL interfaces._
 
 | API | Description |
 |---|---|
-| `VRP_Rally::init()` | Module initialization |
-| `VRP_Rally::update()` | Periodic update |
+| `VRP_Rally::init()` | Init default rally |
+| `VRP_Rally::target_at(index)` | Rally point coordinates |
+| `VRP_Rally::nearest_index(x,y)` | Nearest rally index |
+
+Source: `src/libraries/VRP_Rally/VRP_Rally.h`
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_Rally/` and LLRD test list.
+| Test Case | Type |
+|---|---|
+| `VRP-TST-L02` | SVCP / SITL |
+| `VRP-COPTER-T04` | SVCP / SITL |
+| `VRP-TC-COPTER-15` | SVCP / SITL |
+
+SVCP: `test/libraries/VRP_Rally/`
+Traceability: `certification/traceability/VRP-RTM-001.md`

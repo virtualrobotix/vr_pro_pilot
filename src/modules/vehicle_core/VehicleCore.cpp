@@ -16,6 +16,9 @@ bool VehicleCore::init(const std::string &vehicle, VRPParamStore &params) {
   landing_.init();
   gear_.init();
   rssi_.init();
+  if (vehicle == "quad") {
+    copter_.init(params);
+  }
   mode_ = vehicle == "vtol" ? "QStabilize" : (is_ar_surface_vehicle(vehicle) ? "Manual" : "Stabilize");
   vtol_phase_ = "MC";
   return true;
@@ -38,7 +41,23 @@ void VehicleCore::update_vtol_phase(uint64_t tick) {
 }
 
 void VehicleCore::build_setpoints(const LocalPosition &pos, const WpNavOutput &nav, const RangeFinderSample &rng,
-                                  double dt_s) {
+                                  const AvoidanceOutput &avoidance, const OpticalFlowSample &flow,
+                                  const RallyStatus &rally, const SmartRtlState &smart_rtl, double terrain_amsl,
+                                  bool terrain_valid, double baro_corr, double dt_s) {
+  if (vehicle_ == "quad") {
+    vrp::CopterAuxInputs aux{};
+    aux.flow = &flow;
+    aux.rally = &rally;
+    aux.smart_rtl = &smart_rtl;
+    aux.follow_enabled = mode_ == "Guided" || mode_ == "Follow";
+    aux.flow_fusion = flow.valid && flow.quality > 40;
+    aux.terrain_amsl_m = terrain_amsl;
+    aux.terrain_valid = terrain_valid;
+    aux.baro_ground_corr = baro_corr;
+    setpoints_ = copter_.build_setpoints(mode_, pos, nav, rc_, avoidance, rng, landing_sp_, target_z_, dt_s, aux);
+    return;
+  }
+
   setpoints_ = VehicleSetpoints{};
   setpoints_.attitude.roll_rad = 0.0;
   setpoints_.attitude.pitch_rad = 0.0;
@@ -147,6 +166,8 @@ void VehicleCore::apply_mavlink(const MavlinkRxAction &action) {
 
 void VehicleCore::update(uint64_t tick, bool armed, const std::string &safety_mode, const LocalPosition &pos,
                          const BatteryStatus &battery, const WpNavOutput &nav, const RangeFinderSample &rng,
+                         const AvoidanceOutput &avoidance, const OpticalFlowSample &flow, const RallyStatus &rally,
+                         const SmartRtlState &smart_rtl, double terrain_amsl, bool terrain_valid, double baro_corr,
                          bool gcs_link, UORB &uorb) {
   tick_ = tick;
   rc_ = rc_proto_.update(tick);
@@ -158,8 +179,8 @@ void VehicleCore::update(uint64_t tick, bool armed, const std::string &safety_mo
   } else if (mavlink_mode_active_ && mavlink_mode_ == "Land") {
     mode_ = "Land";
     landing_.reset();
-  } else if (safety_mode == "RTL") {
-    mode_ = "RTL";
+  } else if (safety_mode == "RTL" || safety_mode == "SmartRTL") {
+    mode_ = safety_mode;
   } else if (mavlink_mode_active_) {
     mode_ = mavlink_mode_;
     if (mode_ == "Land" && vehicle_ == "quad") {
@@ -185,13 +206,17 @@ void VehicleCore::update(uint64_t tick, bool armed, const std::string &safety_mo
     }
   }
 
+  if (vehicle_ == "vtol" && vtol_phase_ == "FW" && mode_ != "RTL" && mode_ != "Land") {
+    mode_ = "FW";
+  }
+
   script_line_ = scripting_.update(tick, mode_);
   if (!mavlink_mode_active_ && script_line_.find("mode_hint:Auto") != std::string::npos && armed &&
       safety_mode != "RTL") {
     mode_ = "Auto";
   }
 
-  build_setpoints(pos, nav, rng, 0.02);
+  build_setpoints(pos, nav, rng, avoidance, flow, rally, smart_rtl, terrain_amsl, terrain_valid, baro_corr, 0.02);
   gear_.update(armed, mode_ == "Land");
 
   last_osd_ = osd_.render(mode_, pos, battery, armed);

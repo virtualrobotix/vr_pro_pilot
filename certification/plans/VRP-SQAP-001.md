@@ -1,7 +1,16 @@
-# VRP-SQAP-001
+# VRP-SQAP-001 — Software Quality Assurance Plan
 
-Software Quality Assurance Plan aligned with AS9100 quality objectives.
+AS9100-oriented QA for DO-178C lifecycle.
 
-- Change control through pull request reviews.
-- Release baselines signed and archived.
-- Internal quality checks on coding rules and traceability.
+## QA activities
+
+- Code review on all DAL B/C merges
+- CI: build + SITL + library phase tests + cert traceability
+- Problem reporting: GitHub Issues with requirement ID
+- Configuration audits before release tags
+
+## Records
+
+- `certification/verification/VRP-SITL-REPORT-v1.md`
+- `certification/verification/VRP-SAS-001.md`
+- CI workflow `.github/workflows/ci.yml`

@@ -18,7 +18,7 @@ VR Pro Pilot (`VR-Pilot-PRO`) è un rewrite clean-room BSD che mira alla parità
 
 Stack modulare: HAL → SafetyCore → NavCore → VehicleCore → ControlCore → LibraryCore, con bus uORB-like e heartbeat MAVLink.
 
-Documentazione di dettaglio: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+Documentazione di dettaglio: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) · Parità ArduCopter: [`docs/ARDUCOPTER_PARITY.md`](docs/ARDUCOPTER_PARITY.md)
 
 ## Build rapida (SITL)
 
@@ -134,14 +134,22 @@ Roadmap e milestone: [`docs/CERTIFICATION_ROADMAP.md`](docs/CERTIFICATION_ROADMA
 
 | Livello | Documento | Percorso |
 |---|---|---|
-| High-level (HLRD) | VRP-HLRD-001 / 002 | [`certification/requirements/`](certification/requirements/) |
+| High-level (HLRD) | VRP-HLRD-001 … 005 + SRS | [`certification/requirements/`](certification/requirements/) |
+| Module (MLRD) | CopterCore | [`certification/modules/CopterCore/`](certification/modules/CopterCore/) |
 | Low-level (LLRD) | 153 pack libreria | [`certification/libraries/*/VRP-LLRD-*.yaml`](certification/libraries/) |
-| Design (SDD) | Template per modulo | [`certification/libraries/*/VRP-SDD-*.md`](certification/libraries/) |
-| Traceability (RTM) | Matrice HLRD → LLRD → test | [`certification/traceability/VRP-RTM-001.md`](certification/traceability/VRP-RTM-001.md) |
+| Design (SDD) | 153 complete (21 wired copter) | [`certification/libraries/*/VRP-SDD-*.md`](certification/libraries/) |
+| Test cases | VRP-TC copter suite | [`certification/test_cases/`](certification/test_cases/) |
+| Traceability (RTM) | HLRD → LLRD → MLRD → TC | [`certification/traceability/VRP-RTM-001.md`](certification/traceability/VRP-RTM-001.md) |
+| Status | Dashboard cert | [`certification/VRP-CERT-STATUS.md`](certification/VRP-CERT-STATUS.md) |
 | Registry | Indice machine-readable | [`certification/LIBRARY_REGISTRY.json`](certification/LIBRARY_REGISTRY.json) |
+| SAS / MC/DC | Accomplishment + analysis | [`certification/verification/`](certification/verification/) |
+| SAIL IV / SORA | DVR + operational risk | [`certification/regulatory/`](certification/regulatory/) |
 
-- **VRP-HLRD-001** — requisiti flight-critical (librerie DAL A/B)
-- **VRP-HLRD-002** — requisiti major/minor (librerie DAL C–E)
+- **VRP-HLRD-001** — heartbeat + attitude control (DAL B)
+- **VRP-HLRD-002** — aux libraries (DAL C–E)
+- **VRP-HLRD-003** — multicopter modes / CopterCore (DAL B)
+- **VRP-HLRD-004** — safety / failsafe / avoidance (DAL B)
+- **VRP-HLRD-005** — navigation / mission (DAL B)
 
 Indice di tutte le 153 librerie: [`certification/libraries/INDEX.md`](certification/libraries/INDEX.md). Ogni cartella contiene `README.md` (checklist DAL), LLRD e SDD.
 
@@ -149,13 +157,15 @@ Guida operativa completa: [`docs/LIBRARY_CERTIFICATION.md`](docs/LIBRARY_CERTIFI
 
 ### Workflow certificazione
 
-1. Rigenerare baseline: `python3 Tools/cert/gen_parity_and_libraries.py`
-2. Completare SDD e implementazione clean-room in `src/libraries/`
-3. Scrivere test SVCP in `test/libraries/VRP_*/` e aggiornare LLRD
-4. Aggiornare RTM: `python3 Tools/cert/gen_traceability.py`
-5. Eseguire regressione SITL: `./Tools/run_sitl_tests.sh`
+```bash
+python3 Tools/cert/gen_parity_and_libraries.py
+python3 Tools/cert/gen_cert_complete.py
+python3 Tools/cert/gen_traceability.py
+./Tools/run_cert_checks.sh    # → VRP-CERT-CHECKS PASS
+./Tools/run_copter_sitl_tests.sh  # → VRP-COPTER-ALL PASS
+```
 
-La CI (`.github/workflows/ci.yml`) include job di build SITL, traceability cert e parity librerie.
+La CI include job `cert-traceability` (generazione + verifica SDD) e build SITL.
 
 ## Script e tooling
 
@@ -164,7 +174,9 @@ La CI (`.github/workflows/ci.yml`) include job di build SITL, traceability cert 
 ./Tools/run_sitl_tests.sh
 python3 test/libraries/run_all_library_tests.py
 python3 Tools/cert/gen_parity_and_libraries.py
+python3 Tools/cert/gen_cert_complete.py
 python3 Tools/cert/gen_traceability.py
+./Tools/run_cert_checks.sh
 ```
 
 ## Struttura del repository

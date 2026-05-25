@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_TECS.yaml`](VRP-LLRD-AP_TECS.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_TECS.md`](VRP-SDD-AP_TECS.md) | template |
-| SVCP tests | `test/libraries/VRP_TECS/` | planned |
+| SDD | [`VRP-SDD-AP_TECS.md`](VRP-SDD-AP_TECS.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_TECS/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

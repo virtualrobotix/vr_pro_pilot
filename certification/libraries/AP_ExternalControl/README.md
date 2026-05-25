@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_ExternalControl.yaml`](VRP-LLRD-AP_ExternalControl.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_ExternalControl.md`](VRP-SDD-AP_ExternalControl.md) | template |
-| SVCP tests | `test/libraries/VRP_ExternalControl/` | planned |
+| SDD | [`VRP-SDD-AP_ExternalControl.md`](VRP-SDD-AP_ExternalControl.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_ExternalControl/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

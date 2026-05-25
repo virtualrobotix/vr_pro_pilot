@@ -5,7 +5,8 @@
 | Module | `VRP_RC_Channel` |
 | LLRD | [`VRP-LLRD-RC_Channel.yaml`](VRP-LLRD-RC_Channel.yaml) |
 | DAL | B |
-| Status | planned |
+| Status | partial |
+| Phase | 1 |
 
 ## 1. Purpose
 
@@ -13,11 +14,12 @@ Clean-room BSD design for `VRP_RC_Channel`, functional parity with ArduPilot `RC
 
 ## 2. Architecture
 
-_TBD during implementation phase 3._
+Baseline implementation present; integrated via `LibraryCore::tick()`. Roadmap phase **1** per `docs/CERTIFICATION_ROADMAP.md`.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+Integrated through `LibraryCore` uORB `aux/*` telemetry unless promoted to vehicle core.
+HAL boundary: `src/hal/` for board-specific I/O.
 
 ## 4. Safety constraints (DAL B)
 
@@ -26,13 +28,16 @@ _TBD — uORB topics / HAL interfaces._
 - Bounded WCET
 - MISRA subset
 
+Hazardous failure — MC/DC on safety paths, no heap, bounded WCET.
+
 ## 5. Interface summary
 
 | API | Description |
 |---|---|
-| `VRP_RC_Channel::init()` | Module initialization |
-| `VRP_RC_Channel::update()` | Periodic update |
+| `VRP_RC_Channel::init()` | Public API |
+| `VRP_RC_Channel::aux_high(float v)` | Public API |
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_RC_Channel/` and LLRD test list.
+Tests: see LLRD `tests:` field and phase runner `test/libraries/run_phase1_tests.py`.
+SVCP target: `test/libraries/VRP_RC_Channel/`

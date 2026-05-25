@@ -19,6 +19,7 @@ class VRP_Baro {
 public:
   bool init();
   BaroSample update(double alt_m, uint64_t time_us);
+  double ground_effect_correction(double agl_m) const;
 
 private:
   static constexpr double kSeaLevelPa = 101325.0;

@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_ExternalAHRS.yaml`](VRP-LLRD-AP_ExternalAHRS.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_ExternalAHRS.md`](VRP-SDD-AP_ExternalAHRS.md) | template |
-| SVCP tests | `test/libraries/VRP_ExternalAHRS/` | planned |
+| SDD | [`VRP-SDD-AP_ExternalAHRS.md`](VRP-SDD-AP_ExternalAHRS.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_ExternalAHRS/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

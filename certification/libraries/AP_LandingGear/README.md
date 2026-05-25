@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_LandingGear.yaml`](VRP-LLRD-AP_LandingGear.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_LandingGear.md`](VRP-SDD-AP_LandingGear.md) | template |
-| SVCP tests | `test/libraries/VRP_LandingGear/` | planned |
+| SDD | [`VRP-SDD-AP_LandingGear.md`](VRP-SDD-AP_LandingGear.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_LandingGear/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

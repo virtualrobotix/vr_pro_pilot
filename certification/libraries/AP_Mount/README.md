@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Mount.yaml`](VRP-LLRD-AP_Mount.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Mount.md`](VRP-SDD-AP_Mount.md) | template |
-| SVCP tests | `test/libraries/VRP_Mount/` | planned |
+| SDD | [`VRP-SDD-AP_Mount.md`](VRP-SDD-AP_Mount.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Mount/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

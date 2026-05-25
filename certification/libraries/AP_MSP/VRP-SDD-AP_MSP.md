@@ -4,8 +4,9 @@
 |---|---|
 | Module | `VRP_MSP` |
 | LLRD | [`VRP-LLRD-AP_MSP.yaml`](VRP-LLRD-AP_MSP.yaml) |
-| DAL | C |
-| Status | planned |
+| DAL | E |
+| Status | partial |
+| Phase | 9 |
 
 ## 1. Purpose
 
@@ -13,25 +14,28 @@ Clean-room BSD design for `VRP_MSP`, functional parity with ArduPilot `AP_MSP`.
 
 ## 2. Architecture
 
-_TBD during implementation phase 3._
+Baseline implementation present; integrated via `LibraryCore::tick()`. Roadmap phase **9** per `docs/CERTIFICATION_ROADMAP.md`.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+Integrated through `LibraryCore` uORB `aux/*` telemetry unless promoted to vehicle core.
+HAL boundary: `src/hal/` for board-specific I/O.
 
-## 4. Safety constraints (DAL C)
+## 4. Safety constraints (DAL E)
 
-- Statement coverage 100%
-- Requirements-based tests
-- Design review
+- Smoke tests
+- Best-effort review
+
+No safety effect — best-effort tests.
 
 ## 5. Interface summary
 
 | API | Description |
 |---|---|
-| `VRP_MSP::init()` | Module initialization |
-| `VRP_MSP::update()` | Periodic update |
+| `VRP_MSP::init()` | Public API |
+| `VRP_MSP::update(const Attitude &att, const LocalPosition &pos, const BatteryStatus &batt, uint64_t time_ms)` | Public API |
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_MSP/` and LLRD test list.
+Tests: see LLRD `tests:` field and phase runner `test/libraries/run_phase9_tests.py`.
+SVCP target: `test/libraries/VRP_MSP/`

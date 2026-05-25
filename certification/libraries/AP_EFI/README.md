@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_EFI.yaml`](VRP-LLRD-AP_EFI.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_EFI.md`](VRP-SDD-AP_EFI.md) | template |
-| SVCP tests | `test/libraries/VRP_EFI/` | planned |
+| SDD | [`VRP-SDD-AP_EFI.md`](VRP-SDD-AP_EFI.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_EFI/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

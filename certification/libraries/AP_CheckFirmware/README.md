@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_CheckFirmware.yaml`](VRP-LLRD-AP_CheckFirmware.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_CheckFirmware.md`](VRP-SDD-AP_CheckFirmware.md) | template |
-| SVCP tests | `test/libraries/VRP_CheckFirmware/` | planned |
+| SDD | [`VRP-SDD-AP_CheckFirmware.md`](VRP-SDD-AP_CheckFirmware.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_CheckFirmware/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

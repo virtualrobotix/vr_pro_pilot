@@ -1,0 +1,9 @@
+id: VRP-HLRD-005
+level: HLRD
+dal: B
+text: >
+  Navigation and mission execution shall drive WPNav targets for Auto/Loiter/RTL with
+  waypoint acceptance radius and mission item progression.
+verify: test
+module: src/modules/nav_core/NavCore.cpp
+tests: [VRP-TST-N01, VRP-TST-B01, VRP-COPTER-T02, VRP-TC-COPTER-02]

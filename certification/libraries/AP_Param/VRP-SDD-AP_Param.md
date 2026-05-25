@@ -6,6 +6,7 @@
 | LLRD | [`VRP-LLRD-AP_Param.yaml`](VRP-LLRD-AP_Param.yaml) |
 | DAL | B |
 | Status | partial |
+| Phase | 0 |
 
 ## 1. Purpose
 
@@ -13,11 +14,12 @@ Clean-room BSD design for `VRP_Param`, functional parity with ArduPilot `AP_Para
 
 ## 2. Architecture
 
-_TBD during implementation phase 0._
+Baseline implementation present; integrated via `LibraryCore::tick()`. Roadmap phase **0** per `docs/CERTIFICATION_ROADMAP.md`.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+Integrated through `LibraryCore` uORB `aux/*` telemetry unless promoted to vehicle core.
+HAL boundary: `src/hal/` for board-specific I/O.
 
 ## 4. Safety constraints (DAL B)
 
@@ -26,13 +28,17 @@ _TBD — uORB topics / HAL interfaces._
 - Bounded WCET
 - MISRA subset
 
+Hazardous failure — MC/DC on safety paths, no heap, bounded WCET.
+
 ## 5. Interface summary
 
 | API | Description |
 |---|---|
-| `VRP_Param::init()` | Module initialization |
-| `VRP_Param::update()` | Periodic update |
+| `VRP_Param::seed_defaults()` | Public API |
+| `VRP_Param::set(const std::string &key, double value)` | Public API |
+| `VRP_Param::set_by_name(const std::string &name, double value)` | Public API |
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_Param/` and LLRD test list.
+Tests: see LLRD `tests:` field and phase runner `test/libraries/run_phase0_tests.py`.
+SVCP target: `test/libraries/VRP_Param/`

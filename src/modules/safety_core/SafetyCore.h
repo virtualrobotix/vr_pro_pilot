@@ -15,7 +15,9 @@
 #include "libraries/VRP_Mission/VRP_Mission.h"
 #include "libraries/VRP_NavEKF3/VRP_NavEKF3.h"
 #include "libraries/VRP_OpenDroneID/VRP_OpenDroneID.h"
+#include "libraries/VRP_Rally/VRP_Rally.h"
 #include "libraries/VRP_SmartRTL/VRP_SmartRTL.h"
+#include "libraries/VRP_Terrain/VRP_Terrain.h"
 #include "libraries/VRP_Stats/VRP_Stats.h"
 #include "middleware/params/VRP_Param.h"
 #include "middleware/uorb/UORB.h"
@@ -46,6 +48,7 @@ public:
   std::string failsafe_summary() const;
   std::string smart_rtl_summary() const;
   std::string avoidance_summary() const;
+  const AvoidanceOutput &avoidance() const { return avoidance_out_; }
   std::string stats_summary() const;
   std::string open_drone_id_line() const;
   bool mission_active() const;
@@ -63,6 +66,11 @@ public:
   const AdsbVehicle &adsb() const;
   const AirspeedSample &airspeed() const;
   const OpticalFlowSample &optical_flow() const;
+  const RallyStatus &rally_status() const { return rally_status_; }
+  const SmartRtlState &smart_rtl_state() const { return smart_rtl_state_; }
+  bool ekf_gps_glitch() const { return ekf3_.gps_glitch(); }
+  TerrainSample terrain_sample() const { return terrain_sample_; }
+  double baro_ground_correction() const { return baro_ground_corr_; }
   Waypoint mission_target() const;
   Waypoint nav_target() const;
   bool rtl_nav_active() const;
@@ -84,6 +92,8 @@ private:
   VRP_AC_Fence fence_{};
   VRP_Logger logger_{};
   VRP_SmartRTL smart_rtl_{};
+  VRP_Rally rally_{};
+  VRP_Terrain terrain_{};
   VRP_AdvancedFailsafe failsafe_{};
   VRP_AC_Avoidance avoidance_{};
   VRP_Stats stats_{};
@@ -100,6 +110,9 @@ private:
   bool mission_upload_ack_pending_{false};
   bool mission_rtl_disabled_{false};
   AvoidanceOutput avoidance_out_{};
+  RallyStatus rally_status_{};
+  TerrainSample terrain_sample_{};
+  double baro_ground_corr_{0.0};
   std::string open_drone_line_{"OPEN_DRONE_ID idle"};
 };
 

@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_WheelEncoder.yaml`](VRP-LLRD-AP_WheelEncoder.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_WheelEncoder.md`](VRP-SDD-AP_WheelEncoder.md) | template |
-| SVCP tests | `test/libraries/VRP_WheelEncoder/` | planned |
+| SDD | [`VRP-SDD-AP_WheelEncoder.md`](VRP-SDD-AP_WheelEncoder.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_WheelEncoder/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

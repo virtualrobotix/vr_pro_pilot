@@ -29,6 +29,7 @@ class VRP_Rally {
 public:
   bool init();
   RallyStatus nearest(const LocalPosition &pos) const;
+  Waypoint target_at(size_t index) const;
 
 private:
   std::vector<RallyPoint> points_{};

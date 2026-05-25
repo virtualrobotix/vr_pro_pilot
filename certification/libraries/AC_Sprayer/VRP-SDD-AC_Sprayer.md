@@ -5,19 +5,24 @@
 | Module | `VRP_AC_Sprayer` |
 | LLRD | [`VRP-LLRD-AC_Sprayer.yaml`](VRP-LLRD-AC_Sprayer.yaml) |
 | DAL | C |
-| Status | planned |
+| Status | **wired** |
+| Integration | `CopterCore Auto mode` |
+| Phase | 19 |
 
 ## 1. Purpose
 
-Clean-room BSD design for `VRP_AC_Sprayer`, functional parity with ArduPilot `AC_Sprayer`.
+Clean-room BSD implementation of `VRP_AC_Sprayer` with functional parity to ArduPilot `AC_Sprayer`.
+**Wired** in the multicopter flight loop (see `docs/ARDUCOPTER_PARITY.md`).
 
 ## 2. Architecture
 
-_TBD during implementation phase 3._
+Sprayer pump state from aux2 in Auto mode.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+mode Auto + aux2 → SprayerState → telemetry.
+
+uORB topics: _none (inline struct pass-through)_
 
 ## 4. Safety constraints (DAL C)
 
@@ -29,9 +34,18 @@ _TBD — uORB topics / HAL interfaces._
 
 | API | Description |
 |---|---|
-| `VRP_AC_Sprayer::init()` | Module initialization |
-| `VRP_AC_Sprayer::update()` | Periodic update |
+| `VRP_AC_Sprayer::init()` | Init |
+| `VRP_AC_Sprayer::update(auto, aux2)` | Sprayer on/off state |
+
+Source: `src/libraries/VRP_AC_Sprayer/VRP_AC_Sprayer.h`
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_AC_Sprayer/` and LLRD test list.
+| Test Case | Type |
+|---|---|
+| `VRP-TST-X02` | SVCP / SITL |
+| `VRP-COPTER-T03` | SVCP / SITL |
+| `VRP-TC-COPTER-09` | SVCP / SITL |
+
+SVCP: `test/libraries/VRP_AC_Sprayer/`
+Traceability: `certification/traceability/VRP-RTM-001.md`

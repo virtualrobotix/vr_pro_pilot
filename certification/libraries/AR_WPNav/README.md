@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AR_WPNav.yaml`](VRP-LLRD-AR_WPNav.yaml) | baseline |
-| SDD | [`VRP-SDD-AR_WPNav.md`](VRP-SDD-AR_WPNav.md) | template |
-| SVCP tests | `test/libraries/VRP_AR_WPNav/` | planned |
+| SDD | [`VRP-SDD-AR_WPNav.md`](VRP-SDD-AR_WPNav.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_AR_WPNav/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

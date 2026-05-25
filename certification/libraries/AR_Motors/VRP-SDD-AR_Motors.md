@@ -5,7 +5,8 @@
 | Module | `VRP_AR_Motors` |
 | LLRD | [`VRP-LLRD-AR_Motors.yaml`](VRP-LLRD-AR_Motors.yaml) |
 | DAL | B |
-| Status | planned |
+| Status | partial |
+| Phase | 18 |
 
 ## 1. Purpose
 
@@ -13,11 +14,12 @@ Clean-room BSD design for `VRP_AR_Motors`, functional parity with ArduPilot `AR_
 
 ## 2. Architecture
 
-_TBD during implementation phase 3._
+Baseline implementation present; integrated via `LibraryCore::tick()`. Roadmap phase **18** per `docs/CERTIFICATION_ROADMAP.md`.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+Integrated through `LibraryCore` uORB `aux/*` telemetry unless promoted to vehicle core.
+HAL boundary: `src/hal/` for board-specific I/O.
 
 ## 4. Safety constraints (DAL B)
 
@@ -26,13 +28,17 @@ _TBD — uORB topics / HAL interfaces._
 - Bounded WCET
 - MISRA subset
 
+Hazardous failure — MC/DC on safety paths, no heap, bounded WCET.
+
 ## 5. Interface summary
 
 | API | Description |
 |---|---|
-| `VRP_AR_Motors::init()` | Module initialization |
-| `VRP_AR_Motors::update()` | Periodic update |
+| `VRP_AR_Motors::init(ArFrameClass frame = ArFrameClass::Boat, bool skid_steering = true)` | Public API |
+| `VRP_AR_Motors::update(float throttle, float steering, bool armed)` | Public API |
+| `VRP_AR_Motors::format_ar_motors(const ArMotorsState &s)` | Public API |
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_AR_Motors/` and LLRD test list.
+Tests: see LLRD `tests:` field and phase runner `test/libraries/run_phase18_tests.py`.
+SVCP target: `test/libraries/VRP_AR_Motors/`

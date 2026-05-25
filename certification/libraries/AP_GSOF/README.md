@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_GSOF.yaml`](VRP-LLRD-AP_GSOF.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_GSOF.md`](VRP-SDD-AP_GSOF.md) | template |
-| SVCP tests | `test/libraries/VRP_GSOF/` | planned |
+| SDD | [`VRP-SDD-AP_GSOF.md`](VRP-SDD-AP_GSOF.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_GSOF/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

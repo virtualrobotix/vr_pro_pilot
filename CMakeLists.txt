@@ -39,6 +39,7 @@ add_library(vrp_core
   src/modules/ekf2/EKF2.cpp
   src/modules/control_allocator/ControlAllocator.cpp
   src/modules/control_core/ControlCore.cpp
+  src/modules/copter_core/CopterCore.cpp
   src/modules/vehicle_core/VehicleCore.cpp
   src/modules/nav_core/NavCore.cpp
   src/modules/safety_core/SafetyCore.cpp

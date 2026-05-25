@@ -1,7 +1,9 @@
 id: VRP-HLRD-001
 level: HLRD
 dal: B
-text: "The flight control shall publish heartbeat data at runtime."
+text: >
+  The flight software shall maintain a valid MAVLink HEARTBEAT and attitude control
+  output when armed in SITL, with bounded actuator commands.
 verify: test
-module: src/modules/mavlink/Heartbeat.cpp
-tests: [VRP-TST-Q01, VRP-TST-B01]
+module: src/main.cpp
+tests: [VRP-TST-Q01, VRP-TST-C01, VRP-COPTER-T01, VRP-TC-COPTER-01]

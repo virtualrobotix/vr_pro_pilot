@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Soaring.yaml`](VRP-LLRD-AP_Soaring.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Soaring.md`](VRP-SDD-AP_Soaring.md) | template |
-| SVCP tests | `test/libraries/VRP_Soaring/` | planned |
+| SDD | [`VRP-SDD-AP_Soaring.md`](VRP-SDD-AP_Soaring.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Soaring/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_RSSI.yaml`](VRP-LLRD-AP_RSSI.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_RSSI.md`](VRP-SDD-AP_RSSI.md) | template |
-| SVCP tests | `test/libraries/VRP_RSSI/` | planned |
+| SDD | [`VRP-SDD-AP_RSSI.md`](VRP-SDD-AP_RSSI.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_RSSI/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL E

@@ -5,7 +5,8 @@
 | Module | `VRP_Common` |
 | LLRD | [`VRP-LLRD-AP_Common.yaml`](VRP-LLRD-AP_Common.yaml) |
 | DAL | B |
-| Status | planned |
+| Status | partial |
+| Phase | 1 |
 
 ## 1. Purpose
 
@@ -13,11 +14,12 @@ Clean-room BSD design for `VRP_Common`, functional parity with ArduPilot `AP_Com
 
 ## 2. Architecture
 
-_TBD during implementation phase 3._
+Baseline implementation present; integrated via `LibraryCore::tick()`. Roadmap phase **1** per `docs/CERTIFICATION_ROADMAP.md`.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+Integrated through `LibraryCore` uORB `aux/*` telemetry unless promoted to vehicle core.
+HAL boundary: `src/hal/` for board-specific I/O.
 
 ## 4. Safety constraints (DAL B)
 
@@ -26,13 +28,18 @@ _TBD — uORB topics / HAL interfaces._
 - Bounded WCET
 - MISRA subset
 
+Hazardous failure — MC/DC on safety paths, no heap, bounded WCET.
+
 ## 5. Interface summary
 
 | API | Description |
 |---|---|
-| `VRP_Common::init()` | Module initialization |
-| `VRP_Common::update()` | Periodic update |
+| `VRP_Common::format_wpnav(const WpNavOutput &n)` | Public API |
+| `VRP_Common::format_motors_quad(const MotorOutputQuad &m)` | Public API |
+| `VRP_Common::format_imu(const ImuSample &s)` | Public API |
+| `VRP_Common::is_ar_surface_vehicle(const std::string &vehicle)` | Public API |
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_Common/` and LLRD test list.
+Tests: see LLRD `tests:` field and phase runner `test/libraries/run_phase1_tests.py`.
+SVCP target: `test/libraries/VRP_Common/`

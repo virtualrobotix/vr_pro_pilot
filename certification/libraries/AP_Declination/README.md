@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Declination.yaml`](VRP-LLRD-AP_Declination.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Declination.md`](VRP-SDD-AP_Declination.md) | template |
-| SVCP tests | `test/libraries/VRP_Declination/` | planned |
+| SDD | [`VRP-SDD-AP_Declination.md`](VRP-SDD-AP_Declination.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Declination/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

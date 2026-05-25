@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Parachute.yaml`](VRP-LLRD-AP_Parachute.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Parachute.md`](VRP-SDD-AP_Parachute.md) | template |
-| SVCP tests | `test/libraries/VRP_Parachute/` | planned |
+| SDD | [`VRP-SDD-AP_Parachute.md`](VRP-SDD-AP_Parachute.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Parachute/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

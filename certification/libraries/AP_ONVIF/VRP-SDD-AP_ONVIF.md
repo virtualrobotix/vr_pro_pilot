@@ -5,7 +5,8 @@
 | Module | `VRP_ONVIF` |
 | LLRD | [`VRP-LLRD-AP_ONVIF.yaml`](VRP-LLRD-AP_ONVIF.yaml) |
 | DAL | E |
-| Status | planned |
+| Status | partial |
+| Phase | 17 |
 
 ## 1. Purpose
 
@@ -13,24 +14,29 @@ Clean-room BSD design for `VRP_ONVIF`, functional parity with ArduPilot `AP_ONVI
 
 ## 2. Architecture
 
-_TBD during implementation phase 3._
+Baseline implementation present; integrated via `LibraryCore::tick()`. Roadmap phase **17** per `docs/CERTIFICATION_ROADMAP.md`.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+Integrated through `LibraryCore` uORB `aux/*` telemetry unless promoted to vehicle core.
+HAL boundary: `src/hal/` for board-specific I/O.
 
 ## 4. Safety constraints (DAL E)
 
 - Smoke tests
 - Best-effort review
 
+No safety effect — best-effort tests.
+
 ## 5. Interface summary
 
 | API | Description |
 |---|---|
-| `VRP_ONVIF::init()` | Module initialization |
-| `VRP_ONVIF::update()` | Periodic update |
+| `VRP_ONVIF::init()` | Public API |
+| `VRP_ONVIF::update(bool armed, bool gcs_link, uint64_t tick)` | Public API |
+| `VRP_ONVIF::format_onvif(const OnvifState &s)` | Public API |
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_ONVIF/` and LLRD test list.
+Tests: see LLRD `tests:` field and phase runner `test/libraries/run_phase17_tests.py`.
+SVCP target: `test/libraries/VRP_ONVIF/`

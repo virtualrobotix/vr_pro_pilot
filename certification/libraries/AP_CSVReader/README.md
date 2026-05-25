@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_CSVReader.yaml`](VRP-LLRD-AP_CSVReader.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_CSVReader.md`](VRP-SDD-AP_CSVReader.md) | template |
-| SVCP tests | `test/libraries/VRP_CSVReader/` | planned |
+| SDD | [`VRP-SDD-AP_CSVReader.md`](VRP-SDD-AP_CSVReader.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_CSVReader/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_JSButton.yaml`](VRP-LLRD-AP_JSButton.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_JSButton.md`](VRP-SDD-AP_JSButton.md) | template |
-| SVCP tests | `test/libraries/VRP_JSButton/` | planned |
+| SDD | [`VRP-SDD-AP_JSButton.md`](VRP-SDD-AP_JSButton.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_JSButton/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

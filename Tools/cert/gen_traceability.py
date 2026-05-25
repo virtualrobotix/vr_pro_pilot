@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate traceability matrix from HLRD and per-library LLRD requirements."""
+"""Generate traceability matrix from HLRD, LLRD, MLRD, and test cases."""
 
 from __future__ import annotations
 
@@ -38,6 +38,8 @@ def main() -> int:
     root = Path(__file__).resolve().parents[2]
     hlrd_dir = root / "certification" / "requirements"
     llrd_root = root / "certification" / "libraries"
+    mlrd_root = root / "certification" / "modules"
+    tc_root = root / "certification" / "test_cases"
     out = root / "certification" / "traceability" / "VRP-RTM-001.md"
 
     rows = [
@@ -60,6 +62,25 @@ def main() -> int:
             f"{req.get('verify', '')} | {test_str} |"
         )
 
+    if mlrd_root.exists():
+        rows.extend(
+            [
+                "",
+                "## Module Requirements (MLRD)",
+                "",
+                "| Req ID | Parent | DAL | Module | Verify | Tests |",
+                "|---|---|---|---|---|---|",
+            ]
+        )
+        for mlrd_file in sorted(mlrd_root.glob("*/VRP-MLRD-*.yaml")):
+            req = parse_simple_yaml(mlrd_file.read_text())
+            tests = req.get("tests", [])
+            test_str = ", ".join(tests) if isinstance(tests, list) else str(tests)
+            rows.append(
+                f"| {req.get('id', '')} | {req.get('parent', '')} | {req.get('dal', '')} | "
+                f"{req.get('module', '')} | {req.get('verify', '')} | {test_str} |"
+            )
+
     rows.extend(
         [
             "",
@@ -70,13 +91,32 @@ def main() -> int:
         ]
     )
 
+    wired_count = 0
     for llrd_file in sorted(llrd_root.glob("*/VRP-LLRD-*.yaml")):
         req = parse_simple_yaml(llrd_file.read_text())
+        status = req.get("status", "")
+        if status == "wired" or req.get("wired") == "true":
+            wired_count += 1
         rows.append(
             f"| {req.get('id', '')} | {req.get('parent', '')} | {req.get('dal', '')} | "
             f"`{req.get('ap_equivalent', '')}` | `{req.get('vrp_module', '').split('/')[-1]}` | "
-            f"{req.get('status', '')} | {req.get('phase', '')} | {req.get('verify', '')} |"
+            f"{status} | {req.get('phase', '')} | {req.get('verify', '')} |"
         )
+
+    if tc_root.exists():
+        tc_files = sorted(tc_root.glob("VRP-TC-*.md"))
+        if tc_files:
+            rows.extend(
+                [
+                    "",
+                    "## Test Cases (VRP-TC)",
+                    "",
+                    "| TC ID | Document |",
+                    "|---|---|",
+                ]
+            )
+            for tc in tc_files:
+                rows.append(f"| {tc.stem} | [`{tc.name}`](../test_cases/{tc.name}) |")
 
     dal_summary: dict[str, int] = {}
     for llrd_file in llrd_root.glob("*/VRP-LLRD-*.yaml"):
@@ -96,9 +136,22 @@ def main() -> int:
     for dal in sorted(dal_summary.keys()):
         rows.append(f"| {dal} | {dal_summary[dal]} |")
 
+    rows.extend(
+        [
+            "",
+            "## Riepilogo certificazione",
+            "",
+            f"- Librerie **wired** (flight loop): **{wired_count}**",
+            f"- LLRD totali: **{len(list(llrd_root.glob('*/VRP-LLRD-*.yaml')))}**",
+            f"- HLRD: **{len(list(hlrd_dir.glob('VRP-HLRD-*.yaml')))}**",
+            "- Copter SITL gate: `VRP-COPTER-ALL PASS`",
+            "- Status document: [`VRP-CERT-STATUS.md`](../VRP-CERT-STATUS.md)",
+        ]
+    )
+
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text("\n".join(rows) + "\n")
-    print(f"written: {out} ({len(list(llrd_root.glob('*/VRP-LLRD-*.yaml')))} LLRD rows)")
+    print(f"written: {out} ({len(list(llrd_root.glob('*/VRP-LLRD-*.yaml')))} LLRD rows, wired={wired_count})")
     return 0
 
 

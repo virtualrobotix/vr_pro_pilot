@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-Filter.yaml`](VRP-LLRD-Filter.yaml) | baseline |
-| SDD | [`VRP-SDD-Filter.md`](VRP-SDD-Filter.md) | template |
-| SVCP tests | `test/libraries/VRP_Filter/` | planned |
+| SDD | [`VRP-SDD-Filter.md`](VRP-SDD-Filter.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Filter/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

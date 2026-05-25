@@ -5,7 +5,8 @@
 | Module | `VRP_AdvancedFailsafe` |
 | LLRD | [`VRP-LLRD-AP_AdvancedFailsafe.yaml`](VRP-LLRD-AP_AdvancedFailsafe.yaml) |
 | DAL | B |
-| Status | planned |
+| Status | partial |
+| Phase | 7 |
 
 ## 1. Purpose
 
@@ -13,11 +14,12 @@ Clean-room BSD design for `VRP_AdvancedFailsafe`, functional parity with ArduPil
 
 ## 2. Architecture
 
-_TBD during implementation phase 3._
+Baseline implementation present; integrated via `LibraryCore::tick()`. Roadmap phase **7** per `docs/CERTIFICATION_ROADMAP.md`.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+Integrated through `LibraryCore` uORB `aux/*` telemetry unless promoted to vehicle core.
+HAL boundary: `src/hal/` for board-specific I/O.
 
 ## 4. Safety constraints (DAL B)
 
@@ -26,13 +28,17 @@ _TBD — uORB topics / HAL interfaces._
 - Bounded WCET
 - MISRA subset
 
+Hazardous failure — MC/DC on safety paths, no heap, bounded WCET.
+
 ## 5. Interface summary
 
 | API | Description |
 |---|---|
-| `VRP_AdvancedFailsafe::init()` | Module initialization |
-| `VRP_AdvancedFailsafe::update()` | Periodic update |
+| `VRP_AdvancedFailsafe::init(VRPParamStore &params)` | Public API |
+| `VRP_AdvancedFailsafe::note_gcs_link(uint64_t tick)` | Public API |
+| `VRP_AdvancedFailsafe::update(uint64_t tick, const BatteryStatus &battery, bool armed)` | Public API |
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_AdvancedFailsafe/` and LLRD test list.
+Tests: see LLRD `tests:` field and phase runner `test/libraries/run_phase7_tests.py`.
+SVCP target: `test/libraries/VRP_AdvancedFailsafe/`

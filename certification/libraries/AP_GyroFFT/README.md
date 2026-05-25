@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_GyroFFT.yaml`](VRP-LLRD-AP_GyroFFT.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_GyroFFT.md`](VRP-SDD-AP_GyroFFT.md) | template |
-| SVCP tests | `test/libraries/VRP_GyroFFT/` | planned |
+| SDD | [`VRP-SDD-AP_GyroFFT.md`](VRP-SDD-AP_GyroFFT.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_GyroFFT/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

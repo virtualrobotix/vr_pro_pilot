@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_VideoTX.yaml`](VRP-LLRD-AP_VideoTX.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_VideoTX.md`](VRP-SDD-AP_VideoTX.md) | template |
-| SVCP tests | `test/libraries/VRP_VideoTX/` | planned |
+| SDD | [`VRP-SDD-AP_VideoTX.md`](VRP-SDD-AP_VideoTX.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_VideoTX/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL E

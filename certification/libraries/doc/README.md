@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-doc.yaml`](VRP-LLRD-doc.yaml) | baseline |
-| SDD | [`VRP-SDD-doc.md`](VRP-SDD-doc.md) | template |
-| SVCP tests | `test/libraries/VRP_DOC/` | planned |
+| SDD | [`VRP-SDD-doc.md`](VRP-SDD-doc.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_DOC/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL N/A

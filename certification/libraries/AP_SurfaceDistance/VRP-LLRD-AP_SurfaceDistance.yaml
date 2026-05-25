@@ -4,7 +4,7 @@ vrp_module: libraries/VRP_SurfaceDistance
 level: LLRD
 parent: VRP-HLRD-002
 dal: C
-status: partial
+status: wired
 phase: 12
 license: BSD-3-Clause
 implementation: clean-room
@@ -12,6 +12,8 @@ text: >
   VRP_SurfaceDistance shall provide functional parity with ArduPilot AP_SurfaceDistance
   via clean-room BSD implementation compatible with DO-178C objectives for DAL C.
 verify: test
+wired: true
+integration: CopterCore_or_control_path
 verification_methods: [test, review, analysis]
 dal_objectives:
   - Statement coverage 100%
@@ -30,3 +32,7 @@ artifacts:
   sdd: VRP-SDD-AP_SurfaceDistance.md
   svcp: test/libraries/VRP_SurfaceDistance/
   traceability: certification/traceability/VRP-RTM-001.md
+  - VRP-COPTER-T01
+  - VRP-TC-COPTER-13
+  - VRP-COPTER-T01
+  - VRP-COPTER-ALL

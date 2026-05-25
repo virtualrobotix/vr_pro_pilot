@@ -6,6 +6,7 @@
 | LLRD | [`VRP-LLRD-doc.yaml`](VRP-LLRD-doc.yaml) |
 | DAL | N/A |
 | Status | n/a |
+| Phase | 99 |
 
 ## 1. Purpose
 
@@ -13,15 +14,18 @@ Clean-room BSD design for `VRP_DOC`, functional parity with ArduPilot `doc`.
 
 ## 2. Architecture
 
-_TBD during implementation phase 99._
+Scaffold for future phase. Roadmap phase **99** per `docs/CERTIFICATION_ROADMAP.md`.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+Integrated through `LibraryCore` uORB `aux/*` telemetry unless promoted to vehicle core.
+HAL boundary: `src/hal/` for board-specific I/O.
 
 ## 4. Safety constraints (DAL N/A)
 
 - Documentation review only
+
+Documentation-only; no airborne software artifact.
 
 ## 5. Interface summary
 
@@ -32,4 +36,5 @@ _TBD — uORB topics / HAL interfaces._
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_DOC/` and LLRD test list.
+Tests: see LLRD `tests:` field and phase runner `test/libraries/run_phase99_tests.py`.
+SVCP target: `test/libraries/VRP_DOC/`

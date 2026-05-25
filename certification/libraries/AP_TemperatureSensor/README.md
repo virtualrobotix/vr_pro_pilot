@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_TemperatureSensor.yaml`](VRP-LLRD-AP_TemperatureSensor.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_TemperatureSensor.md`](VRP-SDD-AP_TemperatureSensor.md) | template |
-| SVCP tests | `test/libraries/VRP_TemperatureSensor/` | planned |
+| SDD | [`VRP-SDD-AP_TemperatureSensor.md`](VRP-SDD-AP_TemperatureSensor.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_TemperatureSensor/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

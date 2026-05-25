@@ -46,18 +46,32 @@ std::string mavlink_mode_from_custom(const std::string &vehicle, uint32_t custom
     }
   }
   switch (custom_mode) {
+  case 1:
+    return "Acro";
+  case 2:
+    return "AltHold";
   case 3:
     return "Auto";
+  case 4:
+    return "Guided";
   case 5:
     return "Loiter";
   case 6:
     return "RTL";
-  case 2:
-    return "AltHold";
-  case 4:
-    return "Guided";
+  case 7:
+    return "PosHold";
+  case 8:
+    return "Brake";
   case 9:
     return "Land";
+  case 10:
+    return "SmartRTL";
+  case 11:
+    return "Follow";
+  case 12:
+    return "FlowHold";
+  case 13:
+    return "Sport";
   default:
     return "Loiter";
   }
@@ -103,8 +117,17 @@ uint32_t mavlink_custom_mode_from_mode(const std::string &vehicle, const std::st
     }
     return 4U;
   }
+  if (mode == "Acro") {
+    return 1U;
+  }
+  if (mode == "AltHold") {
+    return 2U;
+  }
   if (mode == "Auto") {
     return 3U;
+  }
+  if (mode == "Guided") {
+    return 4U;
   }
   if (mode == "Loiter") {
     return 5U;
@@ -112,14 +135,26 @@ uint32_t mavlink_custom_mode_from_mode(const std::string &vehicle, const std::st
   if (mode == "RTL") {
     return 6U;
   }
+  if (mode == "PosHold") {
+    return 7U;
+  }
+  if (mode == "Brake") {
+    return 8U;
+  }
   if (mode == "Land") {
     return 9U;
   }
-  if (mode == "Guided") {
-    return 4U;
+  if (mode == "SmartRTL") {
+    return 10U;
   }
-  if (mode == "AltHold") {
-    return 2U;
+  if (mode == "Follow") {
+    return 11U;
+  }
+  if (mode == "FlowHold") {
+    return 12U;
+  }
+  if (mode == "Sport") {
+    return 13U;
   }
   return 5U;
 }

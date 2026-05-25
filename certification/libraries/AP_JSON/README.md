@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_JSON.yaml`](VRP-LLRD-AP_JSON.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_JSON.md`](VRP-SDD-AP_JSON.md) | template |
-| SVCP tests | `test/libraries/VRP_JSON/` | planned |
+| SDD | [`VRP-SDD-AP_JSON.md`](VRP-SDD-AP_JSON.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_JSON/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

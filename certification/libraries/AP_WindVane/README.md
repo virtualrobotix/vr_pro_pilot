@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_WindVane.yaml`](VRP-LLRD-AP_WindVane.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_WindVane.md`](VRP-SDD-AP_WindVane.md) | template |
-| SVCP tests | `test/libraries/VRP_WindVane/` | planned |
+| SDD | [`VRP-SDD-AP_WindVane.md`](VRP-SDD-AP_WindVane.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_WindVane/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_OpenDroneID.yaml`](VRP-LLRD-AP_OpenDroneID.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_OpenDroneID.md`](VRP-SDD-AP_OpenDroneID.md) | template |
-| SVCP tests | `test/libraries/VRP_OpenDroneID/` | planned |
+| SDD | [`VRP-SDD-AP_OpenDroneID.md`](VRP-SDD-AP_OpenDroneID.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_OpenDroneID/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

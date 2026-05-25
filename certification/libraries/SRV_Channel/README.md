@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-SRV_Channel.yaml`](VRP-LLRD-SRV_Channel.yaml) | baseline |
-| SDD | [`VRP-SDD-SRV_Channel.md`](VRP-SDD-SRV_Channel.md) | template |
-| SVCP tests | `test/libraries/VRP_SRV_Channel/` | planned |
+| SDD | [`VRP-SDD-SRV_Channel.md`](VRP-SDD-SRV_Channel.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_SRV_Channel/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

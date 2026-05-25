@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Camera.yaml`](VRP-LLRD-AP_Camera.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Camera.md`](VRP-SDD-AP_Camera.md) | template |
-| SVCP tests | `test/libraries/VRP_Camera/` | planned |
+| SDD | [`VRP-SDD-AP_Camera.md`](VRP-SDD-AP_Camera.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Camera/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

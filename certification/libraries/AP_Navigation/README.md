@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Navigation.yaml`](VRP-LLRD-AP_Navigation.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Navigation.md`](VRP-SDD-AP_Navigation.md) | template |
-| SVCP tests | `test/libraries/VRP_Navigation/` | planned |
+| SDD | [`VRP-SDD-AP_Navigation.md`](VRP-SDD-AP_Navigation.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Navigation/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

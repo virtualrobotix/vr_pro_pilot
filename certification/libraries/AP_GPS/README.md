@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_GPS.yaml`](VRP-LLRD-AP_GPS.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_GPS.md`](VRP-SDD-AP_GPS.md) | template |
-| SVCP tests | `test/libraries/VRP_GPS/` | planned |
+| SDD | [`VRP-SDD-AP_GPS.md`](VRP-SDD-AP_GPS.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_GPS/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Torqeedo.yaml`](VRP-LLRD-AP_Torqeedo.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Torqeedo.md`](VRP-SDD-AP_Torqeedo.md) | template |
-| SVCP tests | `test/libraries/VRP_Torqeedo/` | planned |
+| SDD | [`VRP-SDD-AP_Torqeedo.md`](VRP-SDD-AP_Torqeedo.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Torqeedo/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

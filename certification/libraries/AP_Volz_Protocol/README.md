@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Volz_Protocol.yaml`](VRP-LLRD-AP_Volz_Protocol.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Volz_Protocol.md`](VRP-SDD-AP_Volz_Protocol.md) | template |
-| SVCP tests | `test/libraries/VRP_Volz_Protocol/` | planned |
+| SDD | [`VRP-SDD-AP_Volz_Protocol.md`](VRP-SDD-AP_Volz_Protocol.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Volz_Protocol/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_MultiHeap.yaml`](VRP-LLRD-AP_MultiHeap.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_MultiHeap.md`](VRP-SDD-AP_MultiHeap.md) | template |
-| SVCP tests | `test/libraries/VRP_MultiHeap/` | planned |
+| SDD | [`VRP-SDD-AP_MultiHeap.md`](VRP-SDD-AP_MultiHeap.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_MultiHeap/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

@@ -6,6 +6,7 @@
 | LLRD | [`VRP-LLRD-AP_NavEKF2.yaml`](VRP-LLRD-AP_NavEKF2.yaml) |
 | DAL | B |
 | Status | partial |
+| Phase | 1 |
 
 ## 1. Purpose
 
@@ -13,11 +14,12 @@ Clean-room BSD design for `VRP_NavEKF2`, functional parity with ArduPilot `AP_Na
 
 ## 2. Architecture
 
-_TBD during implementation phase 1._
+Baseline implementation present; integrated via `LibraryCore::tick()`. Roadmap phase **1** per `docs/CERTIFICATION_ROADMAP.md`.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+Integrated through `LibraryCore` uORB `aux/*` telemetry unless promoted to vehicle core.
+HAL boundary: `src/hal/` for board-specific I/O.
 
 ## 4. Safety constraints (DAL B)
 
@@ -25,6 +27,8 @@ _TBD — uORB topics / HAL interfaces._
 - No dynamic heap
 - Bounded WCET
 - MISRA subset
+
+Hazardous failure — MC/DC on safety paths, no heap, bounded WCET.
 
 ## 5. Interface summary
 
@@ -35,4 +39,5 @@ _TBD — uORB topics / HAL interfaces._
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_NavEKF2/` and LLRD test list.
+Tests: see LLRD `tests:` field and phase runner `test/libraries/run_phase1_tests.py`.
+SVCP target: `test/libraries/VRP_NavEKF2/`

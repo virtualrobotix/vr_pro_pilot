@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_BattMonitor.yaml`](VRP-LLRD-AP_BattMonitor.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_BattMonitor.md`](VRP-SDD-AP_BattMonitor.md) | template |
-| SVCP tests | `test/libraries/VRP_BattMonitor/` | planned |
+| SDD | [`VRP-SDD-AP_BattMonitor.md`](VRP-SDD-AP_BattMonitor.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_BattMonitor/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

@@ -1,0 +1,9 @@
+id: VRP-HLRD-003
+level: HLRD
+dal: B
+text: >
+  Multicopter flight modes (Stabilize, Sport, AltHold, Loiter, Auto, RTL, Land, Guided)
+  shall produce bounded VehicleSetpoints via CopterCore integrated with AC_* libraries.
+verify: test
+module: src/modules/copter_core/CopterCore.cpp
+tests: [VRP-COPTER-ALL, VRP-TC-COPTER-01, VRP-TC-COPTER-02, VRP-TC-COPTER-03]

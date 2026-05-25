@@ -17,7 +17,7 @@ Autotest aggregato: `run_all_library_tests.py` → `VRP-LIB-COMPLETE PASS`.
 
 | Vehicle | Status | SITL model | Modes | Nav / Control |
 |---|---|---|---|---|
-| Quad | Phase 20 partial | `vrp_iris` | Loiter, Auto, Land, RTL | ADC + JSON + MultiHeap |
+| Quad | Phase 20 partial | `vrp_iris` | Stabilize, Sport, AltHold, Loiter, Auto, RTL, Land, Guided | CopterCore + AC_AttitudeControl + AC_WPNav |
 | Boat | Phase 18 partial | `vrp_boat` | Manual, Auto, Loiter, RTL | AR_Motors + AR_WPNav |
 | Rover | Phase 18 partial | `vrp_rover` | Manual, Auto, Loiter, RTL | AR stack skid-steer |
 | Sailboat | Phase 18 partial | `vrp_boat` | Manual, Auto, Loiter, RTL | VRP_Sailboat + WindVane |

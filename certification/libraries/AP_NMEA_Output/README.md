@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_NMEA_Output.yaml`](VRP-LLRD-AP_NMEA_Output.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_NMEA_Output.md`](VRP-SDD-AP_NMEA_Output.md) | template |
-| SVCP tests | `test/libraries/VRP_NMEA_Output/` | planned |
+| SDD | [`VRP-SDD-AP_NMEA_Output.md`](VRP-SDD-AP_NMEA_Output.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_NMEA_Output/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

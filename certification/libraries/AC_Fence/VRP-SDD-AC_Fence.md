@@ -5,19 +5,24 @@
 | Module | `VRP_AC_Fence` |
 | LLRD | [`VRP-LLRD-AC_Fence.yaml`](VRP-LLRD-AC_Fence.yaml) |
 | DAL | B |
-| Status | planned |
+| Status | **wired** |
+| Integration | `SafetyCore fence breach` |
+| Phase | 1 |
 
 ## 1. Purpose
 
-Clean-room BSD design for `VRP_AC_Fence`, functional parity with ArduPilot `AC_Fence`.
+Clean-room BSD implementation of `VRP_AC_Fence` with functional parity to ArduPilot `AC_Fence`.
+**Wired** in the multicopter flight loop (see `docs/ARDUCOPTER_PARITY.md`).
 
 ## 2. Architecture
 
-_TBD during implementation phase 3._
+Geofence cylinder; breach triggers RTL/disarm path.
 
 ## 3. Data flow
 
-_TBD — uORB topics / HAL interfaces._
+LocalPosition → VRP_AC_Fence → fence_breached → SafetyCore RTL.
+
+uORB topics: `safety/fence`
 
 ## 4. Safety constraints (DAL B)
 
@@ -30,9 +35,17 @@ _TBD — uORB topics / HAL interfaces._
 
 | API | Description |
 |---|---|
-| `VRP_AC_Fence::init()` | Module initialization |
-| `VRP_AC_Fence::update()` | Periodic update |
+| `VRP_AC_Fence::init(radius_m)` | Init |
+| `VRP_AC_Fence::update(pos, armed)` | Fence check |
+
+Source: `src/libraries/VRP_AC_Fence/VRP_AC_Fence.h`
 
 ## 6. Verification
 
-See SVCP under `test/libraries/VRP_AC_Fence/` and LLRD test list.
+| Test Case | Type |
+|---|---|
+| `VRP-TST-C03` | SVCP / SITL |
+| `VRP-TC-COPTER-10` | SVCP / SITL |
+
+SVCP: `test/libraries/VRP_AC_Fence/`
+Traceability: `certification/traceability/VRP-RTM-001.md`

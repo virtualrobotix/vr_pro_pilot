@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_CustomRotations.yaml`](VRP-LLRD-AP_CustomRotations.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_CustomRotations.md`](VRP-SDD-AP_CustomRotations.md) | template |
-| SVCP tests | `test/libraries/VRP_CustomRotations/` | planned |
+| SDD | [`VRP-SDD-AP_CustomRotations.md`](VRP-SDD-AP_CustomRotations.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_CustomRotations/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

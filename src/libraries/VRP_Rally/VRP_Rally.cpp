@@ -33,6 +33,13 @@ RallyStatus VRP_Rally::nearest(const LocalPosition &pos) const {
   return out;
 }
 
+Waypoint VRP_Rally::target_at(size_t index) const {
+  if (index >= points_.size()) {
+    return Waypoint{};
+  }
+  return Waypoint{points_[index].x, points_[index].y, static_cast<double>(points_[index].alt_m)};
+}
+
 std::string format_rally(const RallyStatus &s) {
   std::ostringstream oss;
   oss << "RALLY idx=" << s.nearest_index << " dist=" << s.distance_m << " valid=" << (s.valid ? 1 : 0);

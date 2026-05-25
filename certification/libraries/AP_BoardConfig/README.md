@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_BoardConfig.yaml`](VRP-LLRD-AP_BoardConfig.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_BoardConfig.md`](VRP-SDD-AP_BoardConfig.md) | template |
-| SVCP tests | `test/libraries/VRP_BoardConfig/` | planned |
+| SDD | [`VRP-SDD-AP_BoardConfig.md`](VRP-SDD-AP_BoardConfig.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_BoardConfig/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

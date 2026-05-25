@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_AccelCal.yaml`](VRP-LLRD-AP_AccelCal.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_AccelCal.md`](VRP-SDD-AP_AccelCal.md) | template |
-| SVCP tests | `test/libraries/VRP_AccelCal/` | planned |
+| SDD | [`VRP-SDD-AP_AccelCal.md`](VRP-SDD-AP_AccelCal.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_AccelCal/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

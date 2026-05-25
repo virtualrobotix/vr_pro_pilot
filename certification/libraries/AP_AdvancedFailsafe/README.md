@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_AdvancedFailsafe.yaml`](VRP-LLRD-AP_AdvancedFailsafe.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_AdvancedFailsafe.md`](VRP-SDD-AP_AdvancedFailsafe.md) | template |
-| SVCP tests | `test/libraries/VRP_AdvancedFailsafe/` | planned |
+| SDD | [`VRP-SDD-AP_AdvancedFailsafe.md`](VRP-SDD-AP_AdvancedFailsafe.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_AdvancedFailsafe/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL B

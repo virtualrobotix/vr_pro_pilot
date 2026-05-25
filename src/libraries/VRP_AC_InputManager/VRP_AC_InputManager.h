@@ -16,6 +16,7 @@ class VRP_AC_InputManager {
 public:
   bool init();
   InputManagerState update(const RcChannels &rc, bool armed);
+  RcChannels apply_stabilize(const RcChannels &rc, double max_tilt_rad);
 };
 
 std::string format_input_manager(const InputManagerState &s);

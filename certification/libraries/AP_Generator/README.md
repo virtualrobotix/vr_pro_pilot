@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_Generator.yaml`](VRP-LLRD-AP_Generator.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_Generator.md`](VRP-SDD-AP_Generator.md) | template |
-| SVCP tests | `test/libraries/VRP_Generator/` | planned |
+| SDD | [`VRP-SDD-AP_Generator.md`](VRP-SDD-AP_Generator.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_Generator/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

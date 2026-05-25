@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_SBusOut.yaml`](VRP-LLRD-AP_SBusOut.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_SBusOut.md`](VRP-SDD-AP_SBusOut.md) | template |
-| SVCP tests | `test/libraries/VRP_SBusOut/` | planned |
+| SDD | [`VRP-SDD-AP_SBusOut.md`](VRP-SDD-AP_SBusOut.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_SBusOut/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL C

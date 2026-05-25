@@ -15,8 +15,8 @@
 | Artifact | Path | Stato |
 |---|---|---|
 | LLRD | [`VRP-LLRD-AP_ONVIF.yaml`](VRP-LLRD-AP_ONVIF.yaml) | baseline |
-| SDD | [`VRP-SDD-AP_ONVIF.md`](VRP-SDD-AP_ONVIF.md) | template |
-| SVCP tests | `test/libraries/VRP_ONVIF/` | planned |
+| SDD | [`VRP-SDD-AP_ONVIF.md`](VRP-SDD-AP_ONVIF.md) | **baseline** |
+| SVCP tests | `test/libraries/VRP_ONVIF/` | **present** |
 | Traceability | [`VRP-RTM-001.md`](../traceability/VRP-RTM-001.md) | auto-gen |
 
 ## Obiettivi DAL E
